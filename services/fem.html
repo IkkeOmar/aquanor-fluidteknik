@@ -403,8 +403,9 @@
       // von Mises blob: 0..1 utilization, radius 0..35
       const util = Math.min(1.0, vmMPa / ReMPa);
       VmBlob.setAttribute('r', (util * 38).toFixed(1));
-      VmBlob.setAttribute('fill', util > 1.0 ? '#f85149' : util > 0.66 ? '#d29922' : '#3fb950');
-      VmBlob.setAttribute('opacity', Math.max(0.15, util).toFixed(2));
+      const utilRaw = vmMPa / ReMPa;
+      VmBlob.setAttribute('fill', utilRaw > 1.0 ? '#f85149' : utilRaw > 0.66 ? '#d29922' : '#3fb950');
+      VmBlob.setAttribute('opacity', Math.max(0.15, Math.min(util, 1)).toFixed(2));
       // formula line
       Formula.textContent = 'σ_hoop = p·D/(2·t) = ' + hoopMPa.toFixed(1) + ' MPa  ·  σ_vM ≈ σ_hoop  ·  SF = Re/σ_vM = ' + sf.toFixed(2);
     }
