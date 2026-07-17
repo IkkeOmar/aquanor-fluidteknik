@@ -276,6 +276,13 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
 /* === HAMBURGER PRESS === */
 .hamburger{transition:transform .15s,background .15s}
 .hamburger:active{transform:scale(.92)}
+
+.cap-link{display:block;color:inherit;text-decoration:none;position:relative;overflow:hidden}
+.cap-link::after{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(135deg,rgba(255,107,26,.06) 0%,transparent 50%);opacity:0;transition:opacity .3s;pointer-events:none}
+.cap-link:hover::after{opacity:1}
+.cap-cta{display:inline-block;font-family:var(--mono);font-size:11px;color:var(--accent);margin-top:14px;letter-spacing:1px;text-transform:uppercase;opacity:.6;transition:opacity .2s,transform .2s}
+.cap-link:hover .cap-cta{opacity:1;transform:translateX(4px)}
+
 </style>
 </head>
 <body>
@@ -471,12 +478,12 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
   <h2 data-i18n="cap.title">Seks discipliner, ét fagligt fundament.</h2>
   <p class="section-lead" data-i18n="cap.lead">Vi dækker hele kæden fra simuleringsmodel til idriftsat anlæg — med samme ingeniør som ansvarlig fra start til slut.</p>
   <div class="cap-grid">
-    <div class="cap reveal" data-delay="1"><div class="cap-num">01</div><div class="cap-icon">∿</div><h3 data-i18n="cap1.title">CFD-analyse</h3><p class="cap-desc" data-i18n="cap1.desc">Computational Fluid Dynamics — beregning af tryk, hastighed og temperatur i rør, ventiler og komponenter. Vi bruger open-source-værktøjer (OpenFOAM, SU2) der kan verificeres linje for linje.</p></div>
-    <div class="cap reveal" data-delay="2"><div class="cap-num">02</div><div class="cap-icon">▦</div><h3 data-i18n="cap2.title">FEM-strukturanalyse</h3><p class="cap-desc" data-i18n="cap2.desc">Finite Element Method til styrkeberegning af rør, beholdere og understøtninger. Vi verificerer, at komponenter holder til tryk, temperatur og vibrationer i hele deres levetid.</p></div>
-    <div class="cap reveal" data-delay="3"><div class="cap-num">03</div><div class="cap-icon">⏚</div><h3 data-i18n="cap3.title">Rørsystem-design</h3><p class="cap-desc" data-i18n="cap3.desc">Fra procesdiagram til isometrisk tegning. Vi dimensionerer rør, vælger fittings og sikrer, at layout kan bygges uden kollisioner — uanset om det er sort stål, rustfrit eller PE.</p></div>
-    <div class="cap reveal" data-delay="4"><div class="cap-num">04</div><div class="cap-icon">Δ</div><h3 data-i18n="cap4.title">Trykfalds-beregning</h3><p class="cap-desc" data-i18n="cap4.desc">Darcy-Weisbach og Colebrook-White. Vi beregner nøjagtigt energitab over rørstrækninger, ventiler og fittings — så pumpestørrelsen passer, og anlægget kører effektivt.</p></div>
-    <div class="cap reveal" data-delay="5"><div class="cap-num">05</div><div class="cap-icon">⊙</div><h3 data-i18n="cap5.title">Pumpe-udvælgelse</h3><p class="cap-desc" data-i18n="cap5.desc">Valg af centrifugalpumpe, cirkulationspumpe eller doseerpumpe baseret på systemkurve, driftspunkt og NPSH. Vi leverer dokumentation der holder til myndighedernes tilsyn.</p></div>
-    <div class="cap reveal" data-delay="6"><div class="cap-num">06</div><div class="cap-icon">θ</div><h3 data-i18n="cap6.title">Termisk simulering</h3><p class="cap-desc" data-i18n="cap6.desc">Transient og stationær varmetransport — fra varmevekslere til fjernvarmeledninger. Vi forudsiger temperaturfald, energitab og responstid før anlægget bygges.</p></div>
+    <a href="services/cfd.html" class="cap reveal cap-link" data-delay="1"><div class="cap-num">01</div><div class="cap-icon">∿</div><h3>CFD-analyse</h3><p class="cap-desc">Computational Fluid Dynamics — beregning af tryk, hastighed og temperatur i rør, ventiler og komponenter. Vi bruger open-source-værktøjer (OpenFOAM, SU2) der kan verificeres linje for linje.</p><span class="cap-cta" data-i18n="cap.readmore">Læs mere →</span></a>
+    <a href="services/fem.html" class="cap reveal cap-link" data-delay="2"><div class="cap-num">02</div><div class="cap-icon">▦</div><h3>FEM-strukturanalyse</h3><p class="cap-desc">Finite Element Method til styrkeberegning af rør, beholdere og understøtninger. Vi verificerer, at komponenter holder til tryk, temperatur og vibrationer i hele deres levetid.</p><span class="cap-cta" data-i18n="cap.readmore">Læs mere →</span></a>
+    <a href="services/pipe-design.html" class="cap reveal cap-link" data-delay="3"><div class="cap-num">03</div><div class="cap-icon">⏚</div><h3>Rørsystem-design</h3><p class="cap-desc">Fra procesdiagram til isometrisk tegning. Vi dimensionerer rør, vælger fittings og sikrer, at layout kan bygges uden kollisioner — uanset om det er sort stål, rustfrit eller PE.</p><span class="cap-cta" data-i18n="cap.readmore">Læs mere →</span></a>
+    <a href="services/pressure-drop.html" class="cap reveal cap-link" data-delay="4"><div class="cap-num">04</div><div class="cap-icon">Δ</div><h3>Trykfalds-beregning</h3><p class="cap-desc">Darcy-Weisbach og Colebrook-White. Vi beregner nøjagtigt energitab over rørstrækninger, ventiler og fittings — så pumpestørrelsen passer, og anlægget kører effektivt.</p><span class="cap-cta" data-i18n="cap.readmore">Læs mere →</span></a>
+    <a href="services/pump-selection.html" class="cap reveal cap-link" data-delay="5"><div class="cap-num">05</div><div class="cap-icon">⊙</div><h3>Pumpe-udvælgelse</h3><p class="cap-desc">Valg af centrifugalpumpe, cirkulationspumpe eller doseerpumpe baseret på systemkurve, driftspunkt og NPSH. Vi leverer dokumentation der holder til myndighedernes tilsyn.</p><span class="cap-cta" data-i18n="cap.readmore">Læs mere →</span></a>
+    <a href="services/thermal.html" class="cap reveal cap-link" data-delay="6"><div class="cap-num">06</div><div class="cap-icon">θ</div><h3>Termisk simulering</h3><p class="cap-desc">Transient og stationær varmetransport — fra varmevekslere til fjernvarmeledninger. Vi forudsiger temperaturfald, energitab og responstid før anlægget bygges.</p><span class="cap-cta" data-i18n="cap.readmore">Læs mere →</span></a>
   </div>
 </section>
 
@@ -698,7 +705,7 @@ const I18N={
     "bridge.center_label":"Mellemled","bridge.center_tag":"Ingeniørberegninger → bygbare løsninger",
     "bridge.right_title":"Ingeniørverdenen",
     "bridge.right1":"CFD-analyse (OpenFOAM, SU2)","bridge.right2":"FEM-strukturanalyse (Elmer FEM, CalculiX)","bridge.right3":"Fluidmekanik og strømningslære","bridge.right4":"Termodynamik og varmetransport","bridge.right5":"Visualisering og rapportering (ParaView)","bridge.right6":"Varme- og masseoverførsel i hardware og serverkøling",
-    "cap.eyebrow":"Ydelser","cap.title":"Seks discipliner, ét fagligt fundament.","cap.lead":"Vi dækker hele kæden fra simuleringsmodel til idriftsat anlæg — med samme ingeniør som ansvarlig fra start til slut.",
+    "cap.eyebrow":"Ydelser","cap.title":"Seks discipliner, ét fagligt fundament.","cap.lead":"Vi dækker hele kæden fra simuleringsmodel til idriftsat anlæg — med samme ingeniør som ansvarlig fra start til slut.","cap.readmore":"Læs mere →",
     "cap1.title":"CFD-analyse","cap1.desc":"Computational Fluid Dynamics — beregning af tryk, hastighed og temperatur i rør, ventiler og komponenter. Vi bruger open-source-værktøjer (OpenFOAM, SU2) der kan verificeres linje for linje.",
     "cap2.title":"FEM-strukturanalyse","cap2.desc":"Finite Element Method til styrkeberegning af rør, beholdere og understøtninger. Vi verificerer, at komponenter holder til tryk, temperatur og vibrationer i hele deres levetid.",
     "cap3.title":"Rørsystem-design","cap3.desc":"Fra procesdiagram til isometrisk tegning. Vi dimensionerer rør, vælger fittings og sikrer, at layout kan bygges uden kollisioner — uanset om det er sort stål, rustfrit eller PE.",
@@ -747,7 +754,7 @@ const I18N={
     "bridge.center_label":"The link","bridge.center_tag":"Engineering analysis → buildable solutions",
     "bridge.right_title":"Engineering world",
     "bridge.right1":"CFD analysis (OpenFOAM, SU2)","bridge.right2":"FEM structural analysis (Elmer FEM, CalculiX)","bridge.right3":"Fluid mechanics and flow theory","bridge.right4":"Thermodynamics and heat transfer","bridge.right5":"Visualisation and reporting (ParaView)","bridge.right6":"Thermal-hydraulics for salt fluids in advanced energy","bridge.right7":"Liquid cooling of servers, GPU racks, and custom hardware loops","bridge.right8":"Single- and two-phase coolants, immersion and cold-plate",
-    "cap.eyebrow":"Services","cap.title":"Six disciplines, one technical foundation.","cap.lead":"We cover the full chain from simulation model to commissioned plant — with the same engineer responsible from start to finish.",
+    "cap.eyebrow":"Services","cap.title":"Six disciplines, one technical foundation.","cap.lead":"We cover the full chain from simulation model to commissioned plant — with the same engineer responsible from start to finish.","cap.readmore":"Read more →",
     "cap1.title":"CFD analysis","cap1.desc":"Computational Fluid Dynamics — pressure, velocity, and temperature prediction in pipes, valves, and components. We use open-source tools (OpenFOAM, SU2) that can be audited line by line.",
     "cap2.title":"FEM structural analysis","cap2.desc":"Finite Element Method for strength verification of pipes, vessels, and supports. We confirm that components withstand pressure, temperature, and vibration across their full service life.",
     "cap3.title":"Pipe system design","cap3.desc":"From P&ID to isometrics. We size pipes, select fittings, and ensure the layout can be built without clashes — whether carbon steel, stainless, or PE.",

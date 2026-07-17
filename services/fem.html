@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="da" data-lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FEM-strukturanalyse — styrkeberegning af rør, beholdere og understøtninger · Aquanor Fluidteknik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='b' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%231c1d23'/><stop offset='1' stop-color='%230d1117'/></linearGradient><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23ffd9b8'/><stop offset='0.5' stop-color='%23ff6b1a'/><stop offset='1' stop-color='%23b8480f'/></linearGradient><radialGradient id='d' cx='0.5' cy='0.5' r='0.5'><stop offset='0' stop-color='%23ffd9b8'/><stop offset='1' stop-color='%23ff6b1a'/></radialGradient></defs><rect width='64' height='64' rx='14' fill='url(%23b)'/><path d='M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z' fill='url(%23s)'/><rect x='6' y='42' width='52' height='6' fill='%230d1117' stroke='url(%23s)' stroke-width='1.5'/><rect x='10' y='44' width='44' height='2' fill='none' stroke='%23ff6b1a' stroke-width='0.6' opacity='0.5'/><circle cx='22' cy='45' r='1.3' fill='url(%23d)'/><circle cx='42' cy='45' r='1.3' fill='url(%23d)'/><circle cx='32' cy='8' r='2' fill='%23ffd9b8' opacity='0.9'/></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- STRIP -->
+<div class="strip">
+  <span><span class="dot"></span><span data-i18n="strip.oncall">Døgnvagt 24/7 — akut assistance hele døgnet</span></span>
+  <span data-i18n="strip.phone">+45 86 12 34 56</span>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="../index.html" class="logo">
+    <span class="logo-mark"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Aquanor"><defs><linearGradient id="aqBgV2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#0d1117"/></linearGradient><linearGradient id="aqStrV2s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b8"/><stop offset="0.5" stop-color="#ff6b1a"/><stop offset="1" stop-color="#b8480f"/></linearGradient><radialGradient id="aqDotV2s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd9b8"/><stop offset="1" stop-color="#ff6b1a"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="url(#aqBgV2s)"/><path d="M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z" fill="url(#aqStrV2s)"/><rect x="6" y="42" width="52" height="6" fill="#0d1117" stroke="url(#aqStrV2s)" stroke-width="1.5"/><rect x="10" y="44" width="44" height="2" fill="none" stroke="#ff6b1a" stroke-width="0.6" opacity="0.5"/><circle cx="22" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="42" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="32" cy="8" r="2" fill="#ffd9b8" opacity="0.9"/></svg></span>
+    <span>Aquanor Fluidteknik</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="active" data-i18n="nav.services">Ydelser</a></li>
+<li><a href="index.html#rolle" data-i18n="nav.role">Vores rolle</a></li>
+<li><a href="index.html#metode" data-i18n="nav.method">Metode</a></li>
+<li><a href="index.html#cases" data-i18n="nav.cases">Cases</a></li>
+<li><a href="index.html#beregner" data-i18n="nav.calc">Beregner</a></li>
+<li><a href="index.html#branches" data-i18n="nav.industries">Brancher</a></li>
+<li><a href="index.html#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+
+    <li><a href="../index.html" data-i18n="nav.back">← Tilbage til forsiden</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">EN</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- PAGE HERO -->
+<header class="page-hero">
+  <div>
+    <span class="page-eyebrow">Ydelse 02 · Finite Element Method</span>
+    <h1 class="page-title">FEM-strukturanalyse — styrkeberegning af rør, beholdere og understøtninger</h1>
+    <p class="page-lead">Finite Element Method opløser ligevægtsligninger for spændinger og deformationer i en vilkårlig 3D-geometri. Vi verificerer, at din komponent holder til det specificerede tryk, den specificerede temperatur og den specificerede levetid — i henhold til EN 13445, ASME VIII eller PED.</p>
+    <div class="page-tags"><span class="page-tag">Elmer FEM</span> <span class="page-tag">CalculiX</span> <span class="page-tag">EN 13445</span> <span class="page-tag">stress linearization</span> <span class="page-tag">PED</span> <span class="page-tag">varmespænding</span></div>
+    <a href="../index.html#kontakt" class="page-cta" data-i18n="cta.button">Kontakt os →</a>
+    <a href="../index.html#beregner" class="page-cta-ghost" data-i18n="nav.calc">Beregner</a>
+  </div>
+  <div class="hero-visual">
+    <h4 data-i18n="hero.visual">Teknisk reference</h4>
+    <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="femBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2129"/><stop offset="1" stop-color="#0d1117"/></linearGradient>
+      <radialGradient id="vonMises"><stop offset="0" stop-color="#ff6b1a"/><stop offset=".5" stop-color="#d29922"/><stop offset="1" stop-color="#58a6ff"/></radialGradient>
+    </defs>
+    <rect width="320" height="240" fill="url(#femBg)" rx="8"/>
+    <!-- Pipe cylinder cross-section -->
+    <g transform="translate(160 110)">
+      <circle r="60" fill="none" stroke="#30363d" stroke-width="2"/>
+      <circle r="50" fill="none" stroke="#30363d" stroke-width="1.5"/>
+      <circle r="60" fill="url(#vonMises)" opacity=".5"/>
+      <!-- Mesh lines -->
+      <g opacity=".4" stroke="#8b949e" stroke-width=".5" fill="none">
+        <line x1="-60" y1="0" x2="60" y2="0"/>
+        <line x1="0" y1="-60" x2="0" y2="60"/>
+        <line x1="-42" y1="-42" x2="42" y2="42"/>
+        <line x1="-42" y1="42" x2="42" y2="-42"/>
+        <circle r="20" fill="none"/>
+        <circle r="35" fill="none"/>
+      </g>
+      <!-- Radial stress arrows -->
+      <g stroke="#ff6b1a" stroke-width="1.5" fill="#ff6b1a">
+        <line x1="-65" y1="0" x2="-55" y2="0" marker-end="url(#arrF)"/>
+        <line x1="55" y1="0" x2="65" y2="0"/>
+        <line x1="0" y1="-65" x2="0" y2="-55"/>
+        <line x1="0" y1="55" x2="0" y2="65"/>
+      </g>
+      <!-- Hoop stress arrows -->
+      <g stroke="#d29922" stroke-width="1.5" fill="none">
+        <path d="M -60 -5 A 60 60 0 0 1 -55 -10" />
+        <path d="M 60 5 A 60 60 0 0 1 55 10" />
+      </g>
+    </g>
+    <defs>
+      <marker id="arrF" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#ff6b1a"/>
+      </marker>
+    </defs>
+    <text x="160" y="40" font-family="JetBrains Mono" font-size="11" fill="#8b949e" text-anchor="middle">cylindrisk trykbeholder</text>
+    <text x="160" y="200" font-family="JetBrains Mono" font-size="10" fill="#ff6b1a" text-anchor="middle">σ_vM = √(½·[(σ₁-σ₂)² + (σ₂-σ₃)² + (σ₃-σ₁)²])</text>
+    <text x="160" y="218" font-family="JetBrains Mono" font-size="10" fill="#8b949e" text-anchor="middle">von Mises spænding</text>
+  </svg>
+  </div>
+</header>
+
+<!-- LAYOUT: SIDEBAR + CONTENT -->
+<div class="layout">
+  <aside class="sidenav">
+    <h5>Indhold</h5>
+    <a href="#princip">Princip</a>
+<a href="#elementer">Elementtyper & mesh</a>
+<a href="#materialer">Materialer & modeller</a>
+<a href="#kategorier">Stress-kategorisering</a>
+<a href="#standarder">Standarder</a>
+<a href="#lasttilfælde">Lasttilfælde</a>
+<a href="#leverance">Hvad du får</a>
+
+  </aside>
+  <main class="content">
+    <div class="block" id="princip">
+<h2 data-i18n-da="Princippet bag FEM">Princippet bag FEM</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="FEM opdeler en vilkårlig 3D-geometri i tusinder eller millioner af små elementer — typisk tetraedre eller hexaedre — og opstiller en system af lineære ligninger der beskriver ligevægt mellem indre spændinger og ydre laster. Resultatet er spændings- og deformations-felter i alle punkter, som vi kan vise, integrere og sammenligne med tilladelige værdier i en standard." data-en="FEM subdivides an arbitrary 3D geometry into thousands or millions of small elements — typically tetrahedra or hexahedra — and assembles a system of linear equations describing equilibrium between internal stresses and external loads. The result is stress and displacement fields at all points, which we can visualise, integrate, and compare against allowable values in a standard.">FEM opdeler en vilkårlig 3D-geometri i tusinder eller millioner af små elementer — typisk tetraedre eller hexaedre — og opstiller en system af lineære ligninger der beskriver ligevægt mellem indre spændinger og ydre laster. Resultatet er spændings- og deformations-felter i alle punkter, som vi kan vise, integrere og sammenligne med tilladelige værdier i en standard.</p></div>
+<div class="formula reveal" data-delay="1">[K]{u} = {F}   ·   σ = D·ε   ·   u_i = Σ N_i(ξ,η,ζ)·u_node</div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Den afgørende forskel på en FEM-analyse og en håndregning: FEM kan håndtere vilkårlig geometri, ikke-ensartede materialer, lokal termisk spænding og kontakt — men den kræver en erfaren ingeniør til at vurdere om resultatet er realistisk. Et dårligt opstillet FEM-problem giver et falsk præcist svar." data-en="The critical difference between an FEM analysis and a hand calculation: FEM handles arbitrary geometry, non-uniform materials, local thermal stress, and contact — but it requires an experienced engineer to judge whether the result is realistic. A poorly set up FEM problem gives a falsely precise answer.">Den afgørende forskel på en FEM-analyse og en håndregning: FEM kan håndtere vilkårlig geometri, ikke-ensartede materialer, lokal termisk spænding og kontakt — men den kræver en erfaren ingeniør til at vurdere om resultatet er realistisk. Et dårligt opstillet FEM-problem giver et falsk præcist svar.</p></div>
+</div>
+<div class="block" id="elementer">
+<h2 data-i18n-da="Elementtyper &amp; mesh">Elementtyper & mesh</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Valget af elementtype afhænger af geometri og hvad du skal bruge resultatet til. Vi bruger tre hovedkategorier:" data-en="Element type choice depends on geometry and what you need the result for. We use three main categories:">Valget af elementtype afhænger af geometri og hvad du skal bruge resultatet til. Vi bruger tre hovedkategorier:</p></div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Mesh-strategi for trykbeholdere: vi bruger som minimum 8 elementer gennem godstykkelsen for at fange bøjnings-spændinger korrekt (lineær bøjning kræver mindst 4 lag, men 8 anbefales). I områder med spændingskoncentration — studs, flanges, svejsesøm — forfiner vi meshet lokalt. Element-forhold (aspect ratio) holdes under 1:5, idealer 1:1." data-en="Mesh strategy for pressure vessels: minimum 8 elements through the wall thickness to capture bending stress correctly (linear bending needs at least 4 layers, but 8 is recommended). In areas of stress concentration — nozzles, flanges, weld seams — we refine the mesh locally. Element aspect ratio kept below 1:5, ideally 1:1.">Mesh-strategi for trykbeholdere: vi bruger som minimum 8 elementer gennem godstykkelsen for at fange bøjnings-spændinger korrekt (lineær bøjning kræver mindst 4 lag, men 8 anbefales). I områder med spændingskoncentration — studs, flanges, svejsesøm — forfiner vi meshet lokalt. Element-forhold (aspect ratio) holdes under 1:5, idealer 1:1.</p></div>
+<div class="callout warn reveal" data-delay="1"><div class="icon">!</div><p>None</p></div>
+</div>
+<div class="block" id="materialer">
+<h2 data-i18n-da="Materialer &amp; modeller">Materialer & modeller</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Vi arbejder med de gængse konstruktionsmaterialer — sort stål, rustfrit (304/316), galvaniseret, PE/PP, duktilt jern — og kan tilføje nye materialer fra din specifikation. For høj-temperatur-anvendelser (salt-fluider op til 700 °C, kedler, varmevekslere) bruger vi temperaturafhængige egenskaber for E-modul, varmeledningsevne, varmefylde og krybning." data-en="We work with the standard engineering materials — carbon steel, stainless (304/316), galvanised, PE/PP, ductile iron — and can add new materials from your specification. For high-temperature applications (salt fluids up to 700 °C, boilers, heat exchangers) we use temperature-dependent properties for Young's modulus, thermal conductivity, specific heat, and creep.">Vi arbejder med de gængse konstruktionsmaterialer — sort stål, rustfrit (304/316), galvaniseret, PE/PP, duktilt jern — og kan tilføje nye materialer fra din specifikation. For høj-temperatur-anvendelser (salt-fluider op til 700 °C, kedler, varmevekslere) bruger vi temperaturafhængige egenskaber for E-modul, varmeledningsevne, varmefylde og krybning.</p></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Vi bruger elastisk-isotrop default, elastisk-plastisk (med flyde-flade, f.eks. von Mises) når flydezonen er afgrænset og vigtig, og krybningsmodeller (Norton-Bailey, ASME Section II Part D) for komponenter der holder længe ved høj temperatur." data-en="We use elastic-isotropic by default, elastic-plastic (with yield surface, e.g. von Mises) when the plastic zone is bounded and important, and creep models (Norton-Bailey, ASME Section II Part D) for components held long at high temperature.">Vi bruger elastisk-isotrop default, elastisk-plastisk (med flyde-flade, f.eks. von Mises) når flydezonen er afgrænset og vigtig, og krybningsmodeller (Norton-Bailey, ASME Section II Part D) for komponenter der holder længe ved høj temperatur.</p></div>
+</div>
+<div class="block" id="kategorier">
+<h2 data-i18n-da="Stress-kategorisering">Stress-kategorisering</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="For en trykbeholder i klasse A eller B er det ikke nok at vide, at spændingen et eller andet sted er 220 MPa. Standarderne kræver, at spændingen opdeles i kategorier — generel membran, lokal membran, bøjning, top — og at hver kategori sammenlignes med sin egen tilladelige værdi. Det kaldes stress linearization, og det er kernen i EN 13445 Annex C." data-en="For a class A or B pressure vessel, knowing that the stress somewhere is 220 MPa is not enough. The standards require splitting the stress into categories — general membrane, local membrane, bending, peak — and comparing each to its own allowable. That is called stress linearisation, and it's the core of EN 13445 Annex C.">For en trykbeholder i klasse A eller B er det ikke nok at vide, at spændingen et eller andet sted er 220 MPa. Standarderne kræver, at spændingen opdeles i kategorier — generel membran, lokal membran, bøjning, top — og at hver kategori sammenlignes med sin egen tilladelige værdi. Det kaldes stress linearization, og det er kernen i EN 13445 Annex C.</p></div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Stress linearization udføres ved at definere en path vinkelret på godstykkelsen, integrere spændings-komponenterne langs den, og dekomponere det integrerede signal i en konstant (membran) og en lineær (bøjning) del. Den residerende del er peak. Vi gør dette for hver path du har brug for — typisk 8–16 paths pr. komponent." data-en="Stress linearisation is performed by defining a path normal to the wall thickness, integrating the stress components along it, and decomposing the integrated signal into a constant (membrane) and a linear (bending) part. The residual is peak. We do this for each path you need — typically 8–16 paths per component.">Stress linearization udføres ved at definere en path vinkelret på godstykkelsen, integrere spændings-komponenterne langs den, og dekomponere det integrerede signal i en konstant (membran) og en lineær (bøjning) del. Den residerende del er peak. Vi gør dette for hver path du har brug for — typisk 8–16 paths pr. komponent.</p></div>
+</div>
+<div class="block" id="standarder">
+<h2 data-i18n-da="Standarder">Standarder</h2>
+<div class="reveal" data-delay="1"><ul><li><strong>EN 13445</strong> — ubrændte trykbeholdere. Design by Analysis i Annex C med stress-kategorisering.</li>
+<li><strong>EN 13480</strong> — trykbærende rørledninger. Metallisk industri-rørsystem.</li>
+<li><strong>ASME VIII Div 2</strong> — Design by Analysis. Stress-kategorisering med lidt andre navne end EN 13445, men konceptuelt identisk.</li>
+<li><strong>PED 2014/68/EU</strong> — EU-direktiv for trykbærende udstyr. Specificerer hvilken kategori en given komponent kræver.</li>
+<li><strong>DS/EN 378</strong> — køle- og varmepumpeanlæg. Relevant for køle- og salt-fluid-systemer.</li></ul></div>
+</div>
+<div class="block" id="lasttilfælde">
+<h2 data-i18n-da="Lasttilfælde">Lasttilfælde</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Vi kører typisk 4–8 lasttilfælde pr. komponent. Minimum:" data-en="We typically run 4–8 load cases per component. Minimum:">Vi kører typisk 4–8 lasttilfælde pr. komponent. Minimum:</p></div>
+<div class="reveal" data-delay="1"><ol><li>Designtilstand — fuld driftstryk, fuld driftstemperatur, alle vægte og reaktioner.</li>
+<li>Testtilstand — 1.3× eller 1.5× designtryk ved omgivelsestemperatur (typisk hydrostatisk test).</li>
+<li>Tomgang / kold — fyldt med væske, intet tryk, miljøtemperatur (termisk-last er nul).</li>
+<li>Termisk-shock — hurtig temperaturændring (f.eks. kold-start af et salt-fluid-system).</li>
+<li>Nedluk — maksimal temperaturgradient under kontrolleret nedkøling.</li>
+<li>Jordskælv / vind — hvis relevant (standardiseret spektrum eller projekt-specifik).</li>
+<li>Brand — brandkurve (hydrocarbon eller celleplast) påført eksternt, kombineret med internt tryk.</li></ol></div>
+</div>
+<div class="block" id="leverance">
+<h2 data-i18n-da="Hvad du får">Hvad du får</h2>
+<div class="reveal" data-delay="1"><ul><li>Komplet Elmer FEM- eller CalculiX-model — åben for revision.</li>
+<li>Beregnings-notat (PDF) med antagelser, geometri, mesh-statistik, lasttilfælde, spændings-plots og sammenligning med tilladelige værdier.</li>
+<li>Visuel spændings-rapport — von Mises, hovedspændinger, deformation, med markering af de path-integrerede kategorier.</li>
+<li>Tjekliste for design-ved-analyse-krav (EN 13445 Annex C eller ASME VIII Div 2).</li></ul></div>
+</div>
+  </main>
+</div>
+
+<!-- CTA STRIP -->
+<section class="cta-strip">
+  <h2 data-i18n="cta.title">Har du et projekt, der kræver denne disciplin?</h2>
+  <p data-i18n="cta.lead">Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.</p>
+  <a href="../index.html#kontakt" class="cta" data-i18n="cta.button">Kontakt os →</a>
+</section>
+
+<!-- RELATED -->
+<section class="related">
+  <div class="related-inner">
+    <h2 data-i18n="related.title">Relaterede ydelser</h2>
+    <div class="related-grid">
+      <a class="related-card" href="cfd.html">
+          <div class="related-num">02/cfd</div>
+          <div class="related-name">CFD-analyse</div>
+          <div class="related-desc">Tryk og temperatur på indersiden — input til FEM.</div>
+        </a><a class="related-card" href="pressure-drop.html">
+          <div class="related-num">02/pre</div>
+          <div class="related-name">Trykfalds-beregning</div>
+          <div class="related-desc">Driftstrykket og dets variation — fra Darcy-Weisbach.</div>
+        </a><a class="related-card" href="thermal.html">
+          <div class="related-num">02/the</div>
+          <div class="related-name">Termisk simulering</div>
+          <div class="related-desc">Transient og stationær temperaturfordeling — kobler til FEM's termiske-last.</div>
+        </a><a class="related-card" href="pipe-design.html">
+          <div class="related-num">02/pip</div>
+          <div class="related-name">Rørsystem-design</div>
+          <div class="related-desc">Fra FEM-resultat til støtte-placering og ekspansion.</div>
+        </a><a class="related-card" href="pump-selection.html">
+          <div class="related-num">02/pum</div>
+          <div class="related-name">Pumpe-udvælgelse</div>
+          <div class="related-desc">Driftstryk og trykstød — ind i pumpespecifikationen.</div>
+        </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Aquanor"><defs><linearGradient id="aqBgV2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#0d1117"/></linearGradient><linearGradient id="aqStrV2s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b8"/><stop offset="0.5" stop-color="#ff6b1a"/><stop offset="1" stop-color="#b8480f"/></linearGradient><radialGradient id="aqDotV2s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd9b8"/><stop offset="1" stop-color="#ff6b1a"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="url(#aqBgV2s)"/><path d="M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z" fill="url(#aqStrV2s)"/><rect x="6" y="42" width="52" height="6" fill="#0d1117" stroke="url(#aqStrV2s)" stroke-width="1.5"/><rect x="10" y="44" width="44" height="2" fill="none" stroke="#ff6b1a" stroke-width="0.6" opacity="0.5"/><circle cx="22" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="42" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="32" cy="8" r="2" fill="#ffd9b8" opacity="0.9"/></svg></span><span>Aquanor Fluidteknik</span></div>
+      <p data-i18n="footer.tag">Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.</p>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.nav">Navigation</h4>
+      <ul>
+        <li><a href="../index.html#ydelser" data-i18n="nav.services">Ydelser</a></li>
+        <li><a href="../index.html#metode" data-i18n="nav.method">Metode</a></li>
+        <li><a href="../index.html#cases" data-i18n="nav.cases">Cases</a></li>
+        <li><a href="../index.html#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.tools">Værktøjer</h4>
+      <ul>
+        <li><a href="../index.html#beregner" data-i18n="nav.calc">Beregner</a></li>
+        <li><a href="../index.html#branches" data-i18n="nav.industries">Brancher</a></li>
+        <li><a href="../index.html#rolle" data-i18n="nav.role">Vores rolle</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88</span>
+    <span data-i18n="footer.made">Lavet med ingeniør-præcision i Aarhus</span>
+  </div>
+</footer>
+
+<!-- I18N DATA -->
+<script id="page-i18n" type="application/json">{"strip.oncall": ["Døgnvagt 24/7 — akut assistance hele døgnet", "On-call dispatch 24/7 — emergency assistance around the clock"], "strip.phone": ["+45 86 12 34 56", "+45 86 12 34 56"], "nav.services": ["Ydelser", "Services"], "nav.role": ["Vores rolle", "Our role"], "nav.method": ["Metode", "Method"], "nav.cases": ["Cases", "Cases"], "nav.calc": ["Beregner", "Calculator"], "nav.industries": ["Brancher", "Industries"], "nav.contact": ["Kontakt", "Contact"], "nav.back": ["← Tilbage til forsiden", "← Back to overview"], "footer.tag": ["Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.", "Flow engineering and HVAC consultancy since 2009. We bridge the gap between CFD/FEM analysis and physical installation."], "footer.nav": ["Navigation", "Navigation"], "footer.tools": ["Værktøjer", "Tools"], "footer.made": ["Lavet med ingeniør-præcision i Aarhus", "Engineered with precision in Aarhus"], "footer.copyright": ["© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88", "© 2026 Aquanor Fluidteknik ApS · VAT 39 14 22 88"], "related.title": ["Relaterede ydelser", "Related services"], "related.lead": ["Vi leverer alle seks discipliner med samme ingeniør som ansvarlig fra start til slut.", "We deliver all six disciplines with the same engineer responsible from start to finish."], "cta.title": ["Har du et projekt, der kræver denne disciplin?", "Got a project that needs this discipline?"], "cta.lead": ["Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.", "Send a short description — we'll get back with an assessment of what's needed and what it costs."], "cta.button": ["Kontakt os →", "Get in touch →"], "title": ["FEM-strukturanalyse — styrkeberegning af rør, beholdere og understøtninger", "FEM structural analysis — strength verification of pipes, vessels, and supports"], "eyebrow": ["Ydelse 02 · Finite Element Method", "Service 02 · Finite Element Method"], "lead": ["Finite Element Method opløser ligevægtsligninger for spændinger og deformationer i en vilkårlig 3D-geometri. Vi verificerer, at din komponent holder til det specificerede tryk, den specificerede temperatur og den specificerede levetid — i henhold til EN 13445, ASME VIII eller PED.", "Finite Element Method solves equilibrium equations for stresses and deformations in arbitrary 3D geometry. We verify that your component withstands the specified pressure, the specified temperature, and the specified service life — per EN 13445, ASME VIII, or PED."], "tags": [["Elmer FEM", "CalculiX", "EN 13445", "stress linearization", "PED", "varmespænding"], ["Elmer FEM", "CalculiX", "EN 13445", "stress linearization", "PED", "thermal stress"]], "sections": {"princip": ["Princippet bag FEM", "The FEM principle"], "elementer": ["Elementtyper & mesh", "Element types & mesh"], "materialer": ["Materialer & modeller", "Materials & models"], "kategorier": ["Stress-kategorisering", "Stress categorisation"], "standarder": ["Standarder", "Standards"], "lasttilfælde": ["Lasttilfælde", "Load cases"], "leverance": ["Hvad du får", "What you receive"]}}</script>
+
+<script>
+(function(){
+  const PAGE_I18N = JSON.parse(document.getElementById('page-i18n').textContent);
+  let curLang = localStorage.getItem('aquanor-lang') || 'da';
+
+  function t(key){
+    const v = PAGE_I18N[key];
+    if(!v) return key;
+    return v[curLang === 'en' ? 1 : 0];
+  }
+
+  function setLang(lang){
+    curLang = lang;
+    localStorage.setItem('aquanor-lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.setAttribute('data-lang', lang);
+    // Update all data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = t(el.getAttribute('data-i18n'));
+      if(v !== undefined) el.textContent = v;
+    });
+    // Swap h2 + section headings: data-i18n-da holds DA text, English uses sections dict
+    document.querySelectorAll('[data-i18n-da]').forEach(el => {
+      // Check if there's a section mapping
+      const parent = el.closest('.block');
+      if(parent && parent.id){
+        const sec = PAGE_I18N.sections && PAGE_I18N.sections[parent.id];
+        if(sec){ el.textContent = sec[lang === 'en' ? 1 : 0]; return; }
+      }
+      // Fallback: keep DA text
+      el.textContent = el.getAttribute('data-i18n-da');
+    });
+    // Toggle button label
+    document.getElementById('langToggle').textContent = lang === 'da' ? 'EN' : 'DA';
+    // Update hero-eyebrow, title, lead, tags if present
+    const heroTitle = document.querySelector('.page-title');
+    if(heroTitle) heroTitle.textContent = t('title');
+    const heroLead = document.querySelector('.page-lead');
+    if(heroLead) heroLead.textContent = t('lead');
+    const heroEyebrow = document.querySelector('.page-eyebrow');
+    if(heroEyebrow) heroEyebrow.textContent = t('eyebrow');
+  }
+
+  document.getElementById('langToggle').addEventListener('click', () => {
+    setLang(curLang === 'da' ? 'en' : 'da');
+  });
+  setLang(curLang);
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  if(hamburger && navLinks){
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+  }
+
+  // Nav scroll state
+  const navEl = document.querySelector('.nav');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 80) navEl.classList.add('scrolled');
+    else navEl.classList.remove('scrolled');
+  }, {passive:true});
+
+  // Scroll progress
+  let _scrollTick = false;
+  window.addEventListener('scroll', () => {
+    if(!_scrollTick){
+      requestAnimationFrame(() => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+        const bar = document.getElementById('scrollProgress');
+        if(bar) bar.style.width = pct + '%';
+        _scrollTick = false;
+      });
+      _scrollTick = true;
+    }
+  }, {passive:true});
+
+  // Reveal on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('revealed'); obs.unobserve(e.target); }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -5% 0px'});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Active sidenav highlight on scroll
+  const sectionIds = Array.from(document.querySelectorAll('.block[id]')).map(b => b.id);
+  const sideLinks = Array.from(document.querySelectorAll('.sidenav a'));
+  const sideMap = Object.fromEntries(sideLinks.map(a => [a.getAttribute('href').slice(1), a]));
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const id = e.target.id;
+      const link = sideMap[id];
+      if(!link) return;
+      if(e.isIntersecting){
+        sideLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-30% 0px -60% 0px'});
+  document.querySelectorAll('.block[id]').forEach(b => sectionObs.observe(b));
+})();
+</script>
+
+</body>
+</html>

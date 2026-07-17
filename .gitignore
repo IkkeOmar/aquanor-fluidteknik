@@ -3,3 +3,5 @@ _shots/
 build/
 *.log
 .DS_Store
+build_pages.py
+ANIMATION_SPEC.md

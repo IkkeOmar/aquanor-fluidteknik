@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="da" data-lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trykfalds-beregning — Darcy-Weisbach og Colebrook-White · Aquanor Fluidteknik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='b' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%231c1d23'/><stop offset='1' stop-color='%230d1117'/></linearGradient><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23ffd9b8'/><stop offset='0.5' stop-color='%23ff6b1a'/><stop offset='1' stop-color='%23b8480f'/></linearGradient><radialGradient id='d' cx='0.5' cy='0.5' r='0.5'><stop offset='0' stop-color='%23ffd9b8'/><stop offset='1' stop-color='%23ff6b1a'/></radialGradient></defs><rect width='64' height='64' rx='14' fill='url(%23b)'/><path d='M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z' fill='url(%23s)'/><rect x='6' y='42' width='52' height='6' fill='%230d1117' stroke='url(%23s)' stroke-width='1.5'/><rect x='10' y='44' width='44' height='2' fill='none' stroke='%23ff6b1a' stroke-width='0.6' opacity='0.5'/><circle cx='22' cy='45' r='1.3' fill='url(%23d)'/><circle cx='42' cy='45' r='1.3' fill='url(%23d)'/><circle cx='32' cy='8' r='2' fill='%23ffd9b8' opacity='0.9'/></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- STRIP -->
+<div class="strip">
+  <span><span class="dot"></span><span data-i18n="strip.oncall">Døgnvagt 24/7 — akut assistance hele døgnet</span></span>
+  <span data-i18n="strip.phone">+45 86 12 34 56</span>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="../index.html" class="logo">
+    <span class="logo-mark"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Aquanor"><defs><linearGradient id="aqBgV2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#0d1117"/></linearGradient><linearGradient id="aqStrV2s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b8"/><stop offset="0.5" stop-color="#ff6b1a"/><stop offset="1" stop-color="#b8480f"/></linearGradient><radialGradient id="aqDotV2s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd9b8"/><stop offset="1" stop-color="#ff6b1a"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="url(#aqBgV2s)"/><path d="M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z" fill="url(#aqStrV2s)"/><rect x="6" y="42" width="52" height="6" fill="#0d1117" stroke="url(#aqStrV2s)" stroke-width="1.5"/><rect x="10" y="44" width="44" height="2" fill="none" stroke="#ff6b1a" stroke-width="0.6" opacity="0.5"/><circle cx="22" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="42" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="32" cy="8" r="2" fill="#ffd9b8" opacity="0.9"/></svg></span>
+    <span>Aquanor Fluidteknik</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="active" data-i18n="nav.services">Ydelser</a></li>
+<li><a href="index.html#rolle" data-i18n="nav.role">Vores rolle</a></li>
+<li><a href="index.html#metode" data-i18n="nav.method">Metode</a></li>
+<li><a href="index.html#cases" data-i18n="nav.cases">Cases</a></li>
+<li><a href="index.html#beregner" data-i18n="nav.calc">Beregner</a></li>
+<li><a href="index.html#branches" data-i18n="nav.industries">Brancher</a></li>
+<li><a href="index.html#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+
+    <li><a href="../index.html" data-i18n="nav.back">← Tilbage til forsiden</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">EN</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- PAGE HERO -->
+<header class="page-hero">
+  <div>
+    <span class="page-eyebrow">Ydelse 04 · Trykfalds-beregning</span>
+    <h1 class="page-title">Trykfalds-beregning — Darcy-Weisbach og Colebrook-White</h1>
+    <p class="page-lead">Tryktabet i et rør er det tryk der skal tilføres for at flytte væsken fra A til B — og det er halvdelen af hvad en pumpe skal levere. Vi beregner det nøjagtigt med Darcy-Weisbach og Colebrook-White, så dit anlæg kører effektivt uden overdimensionerede pumper eller dyre energitab.</p>
+    <div class="page-tags"><span class="page-tag">Darcy-Weisbach</span> <span class="page-tag">Colebrook-White</span> <span class="page-tag">Swamee-Jain</span> <span class="page-tag">2-fase</span> <span class="page-tag">K-værdier</span> <span class="page-tag">salt-fluid</span></div>
+    <a href="../index.html#kontakt" class="page-cta" data-i18n="cta.button">Kontakt os →</a>
+    <a href="../index.html#beregner" class="page-cta-ghost" data-i18n="nav.calc">Beregner</a>
+  </div>
+  <div class="hero-visual">
+    <h4 data-i18n="hero.visual">Teknisk reference</h4>
+    <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="dpBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2129"/><stop offset="1" stop-color="#0d1117"/></linearGradient>
+    </defs>
+    <rect width="320" height="240" fill="url(#dpBg)" rx="8"/>
+    <!-- Moody-style chart -->
+    <g transform="translate(50 30)">
+      <line x1="0" y1="170" x2="240" y2="170" stroke="#30363d" stroke-width="1"/>
+      <line x1="0" y1="0"   x2="0"   y2="170" stroke="#30363d" stroke-width="1"/>
+      <text x="-10" y="170" font-family="JetBrains Mono" font-size="9" fill="#6e7681" text-anchor="end">10⁻²</text>
+      <text x="-10" y="120" font-family="JetBrains Mono" font-size="9" fill="#6e7681" text-anchor="end">10⁻³</text>
+      <text x="-10" y="70"  font-family="JetBrains Mono" font-size="9" fill="#6e7681" text-anchor="end">10⁻⁴</text>
+      <text x="-10" y="20"  font-family="JetBrains Mono" font-size="9" fill="#6e7681" text-anchor="end">10⁻⁵</text>
+      <text x="120" y="186" font-family="JetBrains Mono" font-size="9" fill="#6e7681" text-anchor="middle">Re → 10⁴ ... 10⁸</text>
+      <text x="-30" y="80" font-family="JetBrains Mono" font-size="9" fill="#6e7681" text-anchor="middle" transform="rotate(-90 -30 80)">ε/D</text>
+      <!-- Moody curves -->
+      <path d="M0 30 Q60 50 120 75 T240 95" stroke="#58a6ff" stroke-width="1" fill="none" opacity=".7"/>
+      <text x="245" y="35" font-family="JetBrains Mono" font-size="9" fill="#58a6ff">smooth</text>
+      <path d="M0 50 Q60 70 120 90 T240 105" stroke="#d29922" stroke-width="1" fill="none" opacity=".7"/>
+      <text x="245" y="55" font-family="JetBrains Mono" font-size="9" fill="#d29922">ε/D = 0.001</text>
+      <path d="M0 80 Q60 95 120 110 T240 118" stroke="#ff6b1a" stroke-width="1" fill="none" opacity=".7"/>
+      <text x="245" y="85" font-family="JetBrains Mono" font-size="9" fill="#ff6b1a">ε/D = 0.01</text>
+      <!-- Operating point -->
+      <circle cx="140" cy="105" r="3.5" fill="#ff6b1a"/>
+      <text x="148" y="100" font-family="JetBrains Mono" font-size="9" fill="#ff6b1a">driftspunkt</text>
+    </g>
+    <text x="160" y="220" font-family="JetBrains Mono" font-size="10" fill="#8b949e" text-anchor="middle">Moody diagram · Colebrook-White</text>
+  </svg>
+  </div>
+</header>
+
+<!-- LAYOUT: SIDEBAR + CONTENT -->
+<div class="layout">
+  <aside class="sidenav">
+    <h5>Indhold</h5>
+    <a href="#darcu">Darcy-Weisbach</a>
+<a href="#colebrook">Colebrook-White & Swamee-Jain</a>
+<a href="#fittings">Fittings & K-værdier</a>
+<a href="#toefase">To-fase strømning</a>
+<a href="#saltfluid">Salt-fluid & høj-temp</a>
+<a href="#eksempel">Beregnings-eksempel</a>
+<a href="#leverance">Hvad du får</a>
+
+  </aside>
+  <main class="content">
+    <div class="block" id="darcu">
+<h2 data-i18n-da="Darcy-Weisbach-ligningen">Darcy-Weisbach-ligningen</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Darcy-Weisbach er det mest nøjagtige og det mest generelle udtryk for tryktab i et rør. Den er lige gyldig for laminar og turbulent strømning — det eneste der ændrer sig er friktionsfaktoren f." data-en="Darcy-Weisbach is the most accurate and most general expression for pressure loss in a pipe. It applies equally to laminar and turbulent flow — the only thing that changes is the friction factor f.">Darcy-Weisbach er det mest nøjagtige og det mest generelle udtryk for tryktab i et rør. Den er lige gyldig for laminar og turbulent strømning — det eneste der ændrer sig er friktionsfaktoren f.</p></div>
+<div class="formula reveal" data-delay="1">ΔP = f · (L/D) · (ρ·v²/2)</div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Hvor:&lt;br&gt;&lt;strong&gt;f&lt;/strong&gt; = Darcy friktionsfaktor (dimensionløs),&lt;br&gt;&lt;strong&gt;L&lt;/strong&gt; = rørlængde [m],&lt;br&gt;&lt;strong&gt;D&lt;/strong&gt; = indvendig diameter [m],&lt;br&gt;&lt;strong&gt;ρ&lt;/strong&gt; = væskens densitet [kg/m³],&lt;br&gt;&lt;strong&gt;v&lt;/strong&gt; = middelhastighed [m/s]." data-en="Where:&lt;br&gt;&lt;strong&gt;f&lt;/strong&gt; = Darcy friction factor (dimensionless),&lt;br&gt;&lt;strong&gt;L&lt;/strong&gt; = pipe length [m],&lt;br&gt;&lt;strong&gt;D&lt;/strong&gt; = internal diameter [m],&lt;br&gt;&lt;strong&gt;ρ&lt;/strong&gt; = fluid density [kg/m³],&lt;br&gt;&lt;strong&gt;v&lt;/strong&gt; = mean velocity [m/s].">Hvor:<br><strong>f</strong> = Darcy friktionsfaktor (dimensionløs),<br><strong>L</strong> = rørlængde [m],<br><strong>D</strong> = indvendig diameter [m],<br><strong>ρ</strong> = væskens densitet [kg/m³],<br><strong>v</strong> = middelhastighed [m/s].</p></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Læg mærke til at ΔP skalerer med v² — hvis du fordobler hastigheden, firedobler du tryktabet. Det er derfor, en lille reduktion i rør-diameter eller en afkortning af røret kan have overraskende stor effekt på energiforbruget." data-en="Notice that ΔP scales with v² — if you double the velocity, you quadruple the pressure loss. That's why a small reduction in pipe diameter or a shorter run can have a surprisingly large effect on energy consumption.">Læg mærke til at ΔP skalerer med v² — hvis du fordobler hastigheden, firedobler du tryktabet. Det er derfor, en lille reduktion i rør-diameter eller en afkortning af røret kan have overraskende stor effekt på energiforbruget.</p></div>
+</div>
+<div class="block" id="colebrook">
+<h2 data-i18n-da="Colebrook-White &amp; Swamee-Jain">Colebrook-White & Swamee-Jain</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Friktionsfaktoren f afhænger af to størrelser: Reynolds-tallet Re (forholdet mellem inerti- og viskose-kræfter) og den relative ruhed ε/D (forholdet mellem væg-ruhed og rør-diameter). Forholdet er opsummeret i Moody-diagrammet." data-en="The friction factor f depends on two quantities: Reynolds number Re (ratio of inertial to viscous forces) and relative roughness ε/D (ratio of wall roughness to pipe diameter). The relationship is summarised in the Moody diagram.">Friktionsfaktoren f afhænger af to størrelser: Reynolds-tallet Re (forholdet mellem inerti- og viskose-kræfter) og den relative ruhed ε/D (forholdet mellem væg-ruhed og rør-diameter). Forholdet er opsummeret i Moody-diagrammet.</p></div>
+<div class="formula reveal" data-delay="1">Colebrook-White (implicit):  1/√f = −2·log₁₀(ε/(3.7·D) + 2.51/(Re·√f))</div>
+<div class="formula reveal" data-delay="1">Swamee-Jain (eksplicit, nøjagtig inden for 1–2%):  f = 0.25 / [log₁₀(ε/(3.7·D) + 5.74/Re⁰·⁹)]²</div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Colebrook-White er en implicit ligning — f optræder på begge sider. Vi løser den iterativt (40 iterationer er nok til konvergens &amp;lt; 10⁻⁸). Swamee-Jain er en eksplicit approksimation der giver nøjagtighed inden for 1–2% af Colebrook-White over hele det praktiske område (Re &amp;gt; 5000, 10⁻⁶ &amp;lt; ε/D &amp;lt; 10⁻²). Den er ideel til håndregning eller indlejrede beregnings-værktøjer." data-en="Colebrook-White is an implicit equation — f appears on both sides. We solve it iteratively (40 iterations are enough for convergence &amp;lt; 10⁻⁸). Swamee-Jain is an explicit approximation accurate within 1–2% of Colebrook-White over the full practical range (Re &amp;gt; 5000, 10⁻⁶ &amp;lt; ε/D &amp;lt; 10⁻²). Ideal for hand calculations or embedded tools.">Colebrook-White er en implicit ligning — f optræder på begge sider. Vi løser den iterativt (40 iterationer er nok til konvergens &lt; 10⁻⁸). Swamee-Jain er en eksplicit approksimation der giver nøjagtighed inden for 1–2% af Colebrook-White over hele det praktiske område (Re &gt; 5000, 10⁻⁶ &lt; ε/D &lt; 10⁻²). Den er ideel til håndregning eller indlejrede beregnings-værktøjer.</p></div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+</div>
+<div class="block" id="fittings">
+<h2 data-i18n-da="Fittings &amp; K-værdier">Fittings & K-værdier</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="For hver komponent i rørsystemet — bøjning, T-rør, ventil, pludselig indsnævring — kan tryktabet enten udtrykkes som en ækvivalent længde L_eq/D (Tillads-metoden) eller som en K-værdi (singularitets-metoden). Vi bruger K-værdier, fordi de er uafhængige af rør-diameteren og kan genbruges direkte." data-en="For each component in the system — bend, tee, valve, sudden contraction — the pressure loss can be expressed either as an equivalent length L_eq/D or as a K-value (singularity method). We use K-values because they're independent of pipe diameter and can be reused directly.">For hver komponent i rørsystemet — bøjning, T-rør, ventil, pludselig indsnævring — kan tryktabet enten udtrykkes som en ækvivalent længde L_eq/D (Tillads-metoden) eller som en K-værdi (singularitets-metoden). Vi bruger K-værdier, fordi de er uafhængige af rør-diameteren og kan genbruges direkte.</p></div>
+<div class="formula reveal" data-delay="1">ΔP_fitting = K · (ρ·v²/2)</div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+</div>
+<div class="block" id="toefase">
+<h2 data-i18n-da="To-fase strømning">To-fase strømning</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Når to faser strømmer sammen — f.eks. væske og damp, eller to ikke-blandbare væsker — stiger kompleksiteten markant. Der findes ikke én enkelt ligning for tryktab; man skal specificere strømnings-mønsteret (flow pattern) først." data-en="When two phases flow together — e.g. liquid and vapour, or two immiscible liquids — complexity rises sharply. There is no single equation for pressure loss; one must first specify the flow pattern.">Når to faser strømmer sammen — f.eks. væske og damp, eller to ikke-blandbare væsker — stiger kompleksiteten markant. Der findes ikke én enkelt ligning for tryktab; man skal specificere strømnings-mønsteret (flow pattern) først.</p></div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="callout warn reveal" data-delay="1"><div class="icon">!</div><p>None</p></div>
+</div>
+<div class="block" id="saltfluid">
+<h2 data-i18n-da="Salt-fluid &amp; høj-temperatur">Salt-fluid & høj-temperatur</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Salt-fluider (FLiBe, NaCl-MgCl₂, KNO₃-NaNO₃) adskiller sig fra vand på tre måder, der alle påvirker tryktabs-beregningen:" data-en="Salt fluids (FLiBe, NaCl-MgCl₂, KNO₃-NaNO₃) differ from water in three ways that all affect pressure-loss calculations:">Salt-fluider (FLiBe, NaCl-MgCl₂, KNO₃-NaNO₃) adskiller sig fra vand på tre måder, der alle påvirker tryktabs-beregningen:</p></div>
+<div class="reveal" data-delay="1"><ol><li><strong>Højere densitet</strong> (FLiBe: 1960 kg/m³, NaCl-MgCl₂: 1640 kg/m³ vs. vand: 1000 kg/m³). ρ·v²/2-leddet vokser proportionalt.</li>
+<li><strong>Højere viskositet</strong> (FLiBe: ~5 mPa·s ved 700 °C vs. vand: 0.25 mPa·s ved 100 °C). Lavere Re ved samme flow, og større laminart område.</li>
+<li><strong>Ikke-Newtonsk adfærd</strong> i nogle blandinger ved fase-overgange — kræver særlig model (f.eks. Carreau eller Bingham-plastisk).</li></ol></div>
+</div>
+<div class="block" id="eksempel">
+<h2 data-i18n-da="Beregnings-eksempel">Beregnings-eksempel</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Lad os verificere et typisk fjernvarme-problem: 100 m DN100 stålrør (ε = 0.045 mm), 50 m³/h vand ved 80 °C." data-en="Let's verify a typical district-heating problem: 100 m DN100 steel pipe (ε = 0.045 mm), 50 m³/h water at 80 °C.">Lad os verificere et typisk fjernvarme-problem: 100 m DN100 stålrør (ε = 0.045 mm), 50 m³/h vand ved 80 °C.</p></div>
+<div class="code reveal" data-delay="1"><span class="c-com"># Input</span>
+ρ = 971.8 kg/m³   <span class="c-com"># vand ved 80 °C</span>
+μ = 0.355 mPa·s   <span class="c-com"># vand ved 80 °C</span>
+Q = 50 m³/h       <span class="c-com"># 13.89 × 10⁻³ m³/s</span>
+D = 100 mm = 0.100 m
+ε = 0.045 mm      <span class="c-com"># sort stål, nyt</span>
+
+<span class="c-com"># Beregning</span>
+A = π·D²/4 = 7.854 × 10⁻³ m²
+v = Q/A = <span class="c-num">1.77 m/s</span>
+Re = ρ·v·D/μ = <span class="c-num">485,400</span>          <span class="c-com"># turbulent</span>
+ε/D = 0.045/100 = 4.5 × 10⁻⁴
+
+<span class="c-com"># Friktionsfaktor (Colebrook-White, iterativ)</span>
+f = <span class="c-num">0.0201</span>
+
+<span class="c-com"># Tryktab</span>
+ΔP = f · (L/D) · ρ·v²/2
+   = 0.0201 · 1000 · 971.8 · 1.77² / 2
+   = <span class="c-num">30,600 Pa ≈ 0.31 bar</span></div>
+</div>
+<div class="block" id="leverance">
+<h2 data-i18n-da="Hvad du får">Hvad du får</h2>
+<div class="reveal" data-delay="1"><ul><li>Komplet trykfalds-beregning i tabel-form per rør-sektion, med angivelse af bidrag fra lige rør, bøjninger, T-rør, ventiler og andre fittings.</li>
+<li>Plot af systemkurve (tryktab vs. flow) — bruges direkte i pumpe-udvælgelsen.</li>
+<li>Følsomheds-analyse: hvad sker der hvis rørene tilstoppes (ε stiger), flowet stiger, eller temperaturen falder (viskositet stiger)?</li>
+<li>Ingeniør-notat med antagelser, grænser og referencer — klar til myndighedsgodkendelse.</li></ul></div>
+</div>
+  </main>
+</div>
+
+<!-- CTA STRIP -->
+<section class="cta-strip">
+  <h2 data-i18n="cta.title">Har du et projekt, der kræver denne disciplin?</h2>
+  <p data-i18n="cta.lead">Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.</p>
+  <a href="../index.html#kontakt" class="cta" data-i18n="cta.button">Kontakt os →</a>
+</section>
+
+<!-- RELATED -->
+<section class="related">
+  <div class="related-inner">
+    <h2 data-i18n="related.title">Relaterede ydelser</h2>
+    <div class="related-grid">
+      <a class="related-card" href="cfd.html">
+          <div class="related-num">04/cfd</div>
+          <div class="related-name">CFD-analyse</div>
+          <div class="related-desc">K-værdier for ikke-standard fittings — beregnet i 3D.</div>
+        </a><a class="related-card" href="pipe-design.html">
+          <div class="related-num">04/pip</div>
+          <div class="related-name">Rørsystem-design</div>
+          <div class="related-desc">Rør-dimensionering — valg af DN ud fra acceptabelt tryktab.</div>
+        </a><a class="related-card" href="pump-selection.html">
+          <div class="related-num">04/pum</div>
+          <div class="related-name">Pumpe-udvælgelse</div>
+          <div class="related-desc">Systemkurven er pumpens primære specifikation.</div>
+        </a><a class="related-card" href="thermal.html">
+          <div class="related-num">04/the</div>
+          <div class="related-name">Termisk simulering</div>
+          <div class="related-desc">Temperatur-fald påvirker viskositet og dermed tryktab.</div>
+        </a><a class="related-card" href="fem.html">
+          <div class="related-num">04/fem</div>
+          <div class="related-name">FEM-strukturanalyse</div>
+          <div class="related-desc">Trykstød-beregning (Joukowsky) — input til FEM-svingsnings-analyse.</div>
+        </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Aquanor"><defs><linearGradient id="aqBgV2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#0d1117"/></linearGradient><linearGradient id="aqStrV2s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b8"/><stop offset="0.5" stop-color="#ff6b1a"/><stop offset="1" stop-color="#b8480f"/></linearGradient><radialGradient id="aqDotV2s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd9b8"/><stop offset="1" stop-color="#ff6b1a"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="url(#aqBgV2s)"/><path d="M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z" fill="url(#aqStrV2s)"/><rect x="6" y="42" width="52" height="6" fill="#0d1117" stroke="url(#aqStrV2s)" stroke-width="1.5"/><rect x="10" y="44" width="44" height="2" fill="none" stroke="#ff6b1a" stroke-width="0.6" opacity="0.5"/><circle cx="22" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="42" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="32" cy="8" r="2" fill="#ffd9b8" opacity="0.9"/></svg></span><span>Aquanor Fluidteknik</span></div>
+      <p data-i18n="footer.tag">Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.</p>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.nav">Navigation</h4>
+      <ul>
+        <li><a href="../index.html#ydelser" data-i18n="nav.services">Ydelser</a></li>
+        <li><a href="../index.html#metode" data-i18n="nav.method">Metode</a></li>
+        <li><a href="../index.html#cases" data-i18n="nav.cases">Cases</a></li>
+        <li><a href="../index.html#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.tools">Værktøjer</h4>
+      <ul>
+        <li><a href="../index.html#beregner" data-i18n="nav.calc">Beregner</a></li>
+        <li><a href="../index.html#branches" data-i18n="nav.industries">Brancher</a></li>
+        <li><a href="../index.html#rolle" data-i18n="nav.role">Vores rolle</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88</span>
+    <span data-i18n="footer.made">Lavet med ingeniør-præcision i Aarhus</span>
+  </div>
+</footer>
+
+<!-- I18N DATA -->
+<script id="page-i18n" type="application/json">{"strip.oncall": ["Døgnvagt 24/7 — akut assistance hele døgnet", "On-call dispatch 24/7 — emergency assistance around the clock"], "strip.phone": ["+45 86 12 34 56", "+45 86 12 34 56"], "nav.services": ["Ydelser", "Services"], "nav.role": ["Vores rolle", "Our role"], "nav.method": ["Metode", "Method"], "nav.cases": ["Cases", "Cases"], "nav.calc": ["Beregner", "Calculator"], "nav.industries": ["Brancher", "Industries"], "nav.contact": ["Kontakt", "Contact"], "nav.back": ["← Tilbage til forsiden", "← Back to overview"], "footer.tag": ["Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.", "Flow engineering and HVAC consultancy since 2009. We bridge the gap between CFD/FEM analysis and physical installation."], "footer.nav": ["Navigation", "Navigation"], "footer.tools": ["Værktøjer", "Tools"], "footer.made": ["Lavet med ingeniør-præcision i Aarhus", "Engineered with precision in Aarhus"], "footer.copyright": ["© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88", "© 2026 Aquanor Fluidteknik ApS · VAT 39 14 22 88"], "related.title": ["Relaterede ydelser", "Related services"], "related.lead": ["Vi leverer alle seks discipliner med samme ingeniør som ansvarlig fra start til slut.", "We deliver all six disciplines with the same engineer responsible from start to finish."], "cta.title": ["Har du et projekt, der kræver denne disciplin?", "Got a project that needs this discipline?"], "cta.lead": ["Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.", "Send a short description — we'll get back with an assessment of what's needed and what it costs."], "cta.button": ["Kontakt os →", "Get in touch →"], "title": ["Trykfalds-beregning — Darcy-Weisbach og Colebrook-White", "Pressure drop calculation — Darcy-Weisbach and Colebrook-White"], "eyebrow": ["Ydelse 04 · Trykfalds-beregning", "Service 04 · Pressure drop calculation"], "lead": ["Tryktabet i et rør er det tryk der skal tilføres for at flytte væsken fra A til B — og det er halvdelen af hvad en pumpe skal levere. Vi beregner det nøjagtigt med Darcy-Weisbach og Colebrook-White, så dit anlæg kører effektivt uden overdimensionerede pumper eller dyre energitab.", "Pressure loss in a pipe is the pressure needed to move the fluid from A to B — and it's half of what a pump must deliver. We compute it exactly with Darcy-Weisbach and Colebrook-White, so your plant runs efficiently without oversized pumps or expensive energy losses."], "tags": [["Darcy-Weisbach", "Colebrook-White", "Swamee-Jain", "2-fase", "K-værdier", "salt-fluid"], ["Darcy-Weisbach", "Colebrook-White", "Swamee-Jain", "two-phase", "K-values", "salt fluid"]], "sections": {"darcu": ["Darcy-Weisbach-ligningen", "The Darcy-Weisbach equation"], "colebrook": ["Colebrook-White & Swamee-Jain", "Colebrook-White & Swamee-Jain"], "fittings": ["Fittings & K-værdier", "Fittings & K-values"], "toefase": ["To-fase strømning", "Two-phase flow"], "saltfluid": ["Salt-fluid & høj-temperatur", "Salt fluid & high-temperature"], "eksempel": ["Beregnings-eksempel", "Calculation example"], "leverance": ["Hvad du får", "What you receive"]}}</script>
+
+<script>
+(function(){
+  const PAGE_I18N = JSON.parse(document.getElementById('page-i18n').textContent);
+  let curLang = localStorage.getItem('aquanor-lang') || 'da';
+
+  function t(key){
+    const v = PAGE_I18N[key];
+    if(!v) return key;
+    return v[curLang === 'en' ? 1 : 0];
+  }
+
+  function setLang(lang){
+    curLang = lang;
+    localStorage.setItem('aquanor-lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.setAttribute('data-lang', lang);
+    // Update all data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = t(el.getAttribute('data-i18n'));
+      if(v !== undefined) el.textContent = v;
+    });
+    // Swap h2 + section headings: data-i18n-da holds DA text, English uses sections dict
+    document.querySelectorAll('[data-i18n-da]').forEach(el => {
+      // Check if there's a section mapping
+      const parent = el.closest('.block');
+      if(parent && parent.id){
+        const sec = PAGE_I18N.sections && PAGE_I18N.sections[parent.id];
+        if(sec){ el.textContent = sec[lang === 'en' ? 1 : 0]; return; }
+      }
+      // Fallback: keep DA text
+      el.textContent = el.getAttribute('data-i18n-da');
+    });
+    // Toggle button label
+    document.getElementById('langToggle').textContent = lang === 'da' ? 'EN' : 'DA';
+    // Update hero-eyebrow, title, lead, tags if present
+    const heroTitle = document.querySelector('.page-title');
+    if(heroTitle) heroTitle.textContent = t('title');
+    const heroLead = document.querySelector('.page-lead');
+    if(heroLead) heroLead.textContent = t('lead');
+    const heroEyebrow = document.querySelector('.page-eyebrow');
+    if(heroEyebrow) heroEyebrow.textContent = t('eyebrow');
+  }
+
+  document.getElementById('langToggle').addEventListener('click', () => {
+    setLang(curLang === 'da' ? 'en' : 'da');
+  });
+  setLang(curLang);
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  if(hamburger && navLinks){
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+  }
+
+  // Nav scroll state
+  const navEl = document.querySelector('.nav');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 80) navEl.classList.add('scrolled');
+    else navEl.classList.remove('scrolled');
+  }, {passive:true});
+
+  // Scroll progress
+  let _scrollTick = false;
+  window.addEventListener('scroll', () => {
+    if(!_scrollTick){
+      requestAnimationFrame(() => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+        const bar = document.getElementById('scrollProgress');
+        if(bar) bar.style.width = pct + '%';
+        _scrollTick = false;
+      });
+      _scrollTick = true;
+    }
+  }, {passive:true});
+
+  // Reveal on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('revealed'); obs.unobserve(e.target); }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -5% 0px'});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Active sidenav highlight on scroll
+  const sectionIds = Array.from(document.querySelectorAll('.block[id]')).map(b => b.id);
+  const sideLinks = Array.from(document.querySelectorAll('.sidenav a'));
+  const sideMap = Object.fromEntries(sideLinks.map(a => [a.getAttribute('href').slice(1), a]));
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const id = e.target.id;
+      const link = sideMap[id];
+      if(!link) return;
+      if(e.isIntersecting){
+        sideLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-30% 0px -60% 0px'});
+  document.querySelectorAll('.block[id]').forEach(b => sectionObs.observe(b));
+})();
+</script>
+
+</body>
+</html>

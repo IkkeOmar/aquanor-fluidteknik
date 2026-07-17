@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="da" data-lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rørsystem-design — fra P&amp;ID til isometrisk tegning · Aquanor Fluidteknik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='b' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%231c1d23'/><stop offset='1' stop-color='%230d1117'/></linearGradient><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23ffd9b8'/><stop offset='0.5' stop-color='%23ff6b1a'/><stop offset='1' stop-color='%23b8480f'/></linearGradient><radialGradient id='d' cx='0.5' cy='0.5' r='0.5'><stop offset='0' stop-color='%23ffd9b8'/><stop offset='1' stop-color='%23ff6b1a'/></radialGradient></defs><rect width='64' height='64' rx='14' fill='url(%23b)'/><path d='M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z' fill='url(%23s)'/><rect x='6' y='42' width='52' height='6' fill='%230d1117' stroke='url(%23s)' stroke-width='1.5'/><rect x='10' y='44' width='44' height='2' fill='none' stroke='%23ff6b1a' stroke-width='0.6' opacity='0.5'/><circle cx='22' cy='45' r='1.3' fill='url(%23d)'/><circle cx='42' cy='45' r='1.3' fill='url(%23d)'/><circle cx='32' cy='8' r='2' fill='%23ffd9b8' opacity='0.9'/></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- STRIP -->
+<div class="strip">
+  <span><span class="dot"></span><span data-i18n="strip.oncall">Døgnvagt 24/7 — akut assistance hele døgnet</span></span>
+  <span data-i18n="strip.phone">+45 86 12 34 56</span>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="../index.html" class="logo">
+    <span class="logo-mark"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Aquanor"><defs><linearGradient id="aqBgV2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#0d1117"/></linearGradient><linearGradient id="aqStrV2s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b8"/><stop offset="0.5" stop-color="#ff6b1a"/><stop offset="1" stop-color="#b8480f"/></linearGradient><radialGradient id="aqDotV2s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd9b8"/><stop offset="1" stop-color="#ff6b1a"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="url(#aqBgV2s)"/><path d="M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z" fill="url(#aqStrV2s)"/><rect x="6" y="42" width="52" height="6" fill="#0d1117" stroke="url(#aqStrV2s)" stroke-width="1.5"/><rect x="10" y="44" width="44" height="2" fill="none" stroke="#ff6b1a" stroke-width="0.6" opacity="0.5"/><circle cx="22" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="42" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="32" cy="8" r="2" fill="#ffd9b8" opacity="0.9"/></svg></span>
+    <span>Aquanor Fluidteknik</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="active" data-i18n="nav.services">Ydelser</a></li>
+<li><a href="index.html#rolle" data-i18n="nav.role">Vores rolle</a></li>
+<li><a href="index.html#metode" data-i18n="nav.method">Metode</a></li>
+<li><a href="index.html#cases" data-i18n="nav.cases">Cases</a></li>
+<li><a href="index.html#beregner" data-i18n="nav.calc">Beregner</a></li>
+<li><a href="index.html#branches" data-i18n="nav.industries">Brancher</a></li>
+<li><a href="index.html#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+
+    <li><a href="../index.html" data-i18n="nav.back">← Tilbage til forsiden</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">EN</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- PAGE HERO -->
+<header class="page-hero">
+  <div>
+    <span class="page-eyebrow">Ydelse 03 · Rørsystem-design</span>
+    <h1 class="page-title">Rørsystem-design — fra P&amp;ID til isometrisk tegning</h1>
+    <p class="page-lead">Vi designer rørsystemer der kan bygges uden kollisioner, uden dyre omarbejdninger og uden overraskelser på byggepladsen. Fra procesdiagram til isometrisk tegning — med komplet materialeliste, støtteplan og ekspansionstag i lige meget.</p>
+    <div class="page-tags"><span class="page-tag">P&amp;ID</span> <span class="page-tag">isometri</span> <span class="page-tag">rørklasser</span> <span class="page-tag">støtte-spacing</span> <span class="page-tag">ekspansion</span> <span class="page-tag">materialeliste</span></div>
+    <a href="../index.html#kontakt" class="page-cta" data-i18n="cta.button">Kontakt os →</a>
+    <a href="../index.html#beregner" class="page-cta-ghost" data-i18n="nav.calc">Beregner</a>
+  </div>
+  <div class="hero-visual">
+    <h4 data-i18n="hero.visual">Teknisk reference</h4>
+    <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="psdBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2129"/><stop offset="1" stop-color="#0d1117"/></linearGradient>
+    </defs>
+    <rect width="320" height="240" fill="url(#psdBg)" rx="8"/>
+    <!-- Isometric grid -->
+    <g opacity=".15" stroke="#8b949e" stroke-width=".4" fill="none">
+      <line x1="0"   y1="60"  x2="320" y2="60"/>
+      <line x1="0"   y1="120" x2="320" y2="120"/>
+      <line x1="0"   y1="180" x2="320" y2="180"/>
+      <line x1="80"  y1="0"   x2="80"  y2="240"/>
+      <line x1="160" y1="0"   x2="160" y2="240"/>
+      <line x1="240" y1="0"   x2="240" y2="240"/>
+      <!-- Iso axes -->
+      <line x1="40"  y1="200" x2="280" y2="80"  stroke-dasharray="2 4"/>
+      <line x1="40"  y1="200" x2="160" y2="40"  stroke-dasharray="2 4"/>
+    </g>
+    <!-- Isometric pipe run -->
+    <g stroke="#30363d" stroke-width="6" stroke-linecap="round" fill="none">
+      <line x1="40"  y1="200" x2="160" y2="200"/>
+      <line x1="160" y1="200" x2="160" y2="120"/>
+      <line x1="160" y1="120" x2="240" y2="80"/>
+    </g>
+    <g stroke="#ff6b1a" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="40"  y1="200" x2="160" y2="200"/>
+      <line x1="160" y1="200" x2="160" y2="120"/>
+      <line x1="160" y1="120" x2="240" y2="80"/>
+    </g>
+    <!-- Elbow -->
+    <circle cx="160" cy="200" r="9" fill="#0d1117" stroke="#30363d" stroke-width="2"/>
+    <circle cx="160" cy="120" r="9" fill="#0d1117" stroke="#30363d" stroke-width="2"/>
+    <!-- Flange -->
+    <g transform="translate(60 200)">
+      <rect x="-4" y="-8" width="8" height="16" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+      <line x1="0" y1="-10" x2="0" y2="10" stroke="#ff6b1a" stroke-width="1"/>
+    </g>
+    <!-- Support -->
+    <g transform="translate(100 200)">
+      <rect x="-3" y="0" width="6" height="20" fill="#58a6ff"/>
+      <rect x="-10" y="20" width="20" height="3" fill="#58a6ff"/>
+    </g>
+    <!-- Annotation -->
+    <text x="100" y="195" font-family="JetBrains Mono" font-size="10" fill="#58a6ff">støtte</text>
+    <text x="200" y="115" font-family="JetBrains Mono" font-size="10" fill="#8b949e">90° bøjning</text>
+    <text x="245" y="75"  font-family="JetBrains Mono" font-size="10" fill="#ff6b1a">DN100</text>
+    <text x="160" y="32"  font-family="JetBrains Mono" font-size="11" fill="#e6edf3" text-anchor="middle">isometrisk tegning</text>
+    <text x="160" y="220" font-family="JetBrains Mono" font-size="10" fill="#8b949e" text-anchor="middle">P&amp;ID → 3D → BOM → byggeplads</text>
+  </svg>
+  </div>
+</header>
+
+<!-- LAYOUT: SIDEBAR + CONTENT -->
+<div class="layout">
+  <aside class="sidenav">
+    <h5>Indhold</h5>
+    <a href="#proces">Fra proces til isometri</a>
+<a href="#pid">P&amp;ID</a>
+<a href="#klasser">Rørklasser & materialer</a>
+<a href="#stoette">Støtte-spacing</a>
+<a href="#ekspansion">Ekspansion & fleksibilitet</a>
+<a href="#leverance">Hvad du får</a>
+
+  </aside>
+  <main class="content">
+    <div class="block" id="proces">
+<h2 data-i18n-da="Fra proces til isometri">Fra proces til isometri</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Et rørsystem gennemgår fire faser: procesdiagram (flow sheet) → P&amp;amp;ID (med instrumentering) → 3D-layout (rumlig placering) → isometrisk tegning (fremstillingstegning). Vi arbejder i alle fire faser, men vi starter altid med P&amp;amp;ID — det er her fejl begraves, og det er her fejl skal graves op igen." data-en="A pipe system goes through four phases: process flow diagram → P&amp;amp;ID (with instrumentation) → 3D layout (spatial placement) → isometric drawing (fabrication drawing). We work in all four phases, but we always start with the P&amp;amp;ID — that's where mistakes get buried, and where they need to be dug back up.">Et rørsystem gennemgår fire faser: procesdiagram (flow sheet) → P&amp;ID (med instrumentering) → 3D-layout (rumlig placering) → isometrisk tegning (fremstillingstegning). Vi arbejder i alle fire faser, men vi starter altid med P&amp;ID — det er her fejl begraves, og det er her fejl skal graves op igen.</p></div>
+<div class="diagram reveal" data-delay="1"><h5>Proces-flow</h5><svg viewBox="0 0 600 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="600" height="80" fill="none"/>
+            <g font-family="JetBrains Mono" font-size="11" fill="#e6edf3">
+              <rect x="20"  y="20" width="80" height="40" rx="4" fill="#1c2129" stroke="#ff6b1a" stroke-width="1.5"/>
+              <text x="60"  y="45" text-anchor="middle">Flow sheet</text>
+              <rect x="160" y="20" width="80" height="40" rx="4" fill="#1c2129" stroke="#ff6b1a" stroke-width="2"/>
+              <text x="200" y="45" text-anchor="middle" fill="#ff6b1a">P&amp;ID</text>
+              <rect x="300" y="20" width="80" height="40" rx="4" fill="#1c2129" stroke="#ff6b1a" stroke-width="1.5"/>
+              <text x="340" y="45" text-anchor="middle">3D-layout</text>
+              <rect x="440" y="20" width="80" height="40" rx="4" fill="#1c2129" stroke="#ff6b1a" stroke-width="1.5"/>
+              <text x="480" y="45" text-anchor="middle">Isometri</text>
+            </g>
+            <g stroke="#8b949e" stroke-width="1" fill="none" marker-end="url(#arrP)">
+              <line x1="100" y1="40" x2="160" y2="40"/>
+              <line x1="240" y1="40" x2="300" y2="40"/>
+              <line x1="380" y1="40" x2="440" y2="40"/>
+            </g>
+            <defs>
+              <marker id="arrP" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#8b949e"/>
+              </marker>
+            </defs>
+            <g font-family="JetBrains Mono" font-size="9" fill="#8b949e" text-anchor="middle">
+              <text x="130" y="30">flow + P/T</text>
+              <text x="270" y="30">layout</text>
+              <text x="410" y="30">fremstilling</text>
+            </g>
+          </svg></div>
+</div>
+<div class="block" id="pid">
+<h2 data-i18n-da="P&amp;amp;ID">P&amp;ID</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Piping &amp;amp; Instrumentation Diagram er det dokument, hvor hele proces-designet møder instrumenterings-designet. Alt hvad røret rører — pumper, ventiler, varmevekslere, beholdere, instrumenter, sikkerhedsventiler — er vist med en standardiseret symbolik (ISA-5.1 eller DIN ISO 14617)." data-en="Piping &amp;amp; Instrumentation Diagram is the document where the entire process design meets the instrumentation design. Everything the pipe touches — pumps, valves, heat exchangers, vessels, instruments, safety valves — is shown with standardised symbology (ISA-5.1 or DIN ISO 14617).">Piping &amp; Instrumentation Diagram er det dokument, hvor hele proces-designet møder instrumenterings-designet. Alt hvad røret rører — pumper, ventiler, varmevekslere, beholdere, instrumenter, sikkerhedsventiler — er vist med en standardiseret symbolik (ISA-5.1 eller DIN ISO 14617).</p></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="En god P&amp;amp;ID har: entydig navngivning af alt udstyr (tag-nummer, f.eks. P-101 = pumpe nr. 101), specifikation af alle rør-linjer (linie-nummer, f.eks. 2&amp;quot;-HC-1001-A2A, hvor A2A er rørklasse), specifikation af alle instrumenter (PI = pressure indicator, FT = flow transmitter, FV = flow valve), alle interlock- og ESD-signaler, og en komplet materialebalance med fase, tryk, temperatur og flow for hver linje." data-en="A good P&amp;amp;ID has: unique naming of all equipment (tag number, e.g. P-101 = pump 101), specification of all pipe lines (line number, e.g. 2&amp;quot;-HC-1001-A2A where A2A is the pipe class), specification of all instruments (PI = pressure indicator, FT = flow transmitter, FV = flow valve), all interlock and ESD signals, and a complete material balance with phase, pressure, temperature, and flow for each line.">En god P&amp;ID har: entydig navngivning af alt udstyr (tag-nummer, f.eks. P-101 = pumpe nr. 101), specifikation af alle rør-linjer (linie-nummer, f.eks. 2&quot;-HC-1001-A2A, hvor A2A er rørklasse), specifikation af alle instrumenter (PI = pressure indicator, FT = flow transmitter, FV = flow valve), alle interlock- og ESD-signaler, og en komplet materialebalance med fase, tryk, temperatur og flow for hver linje.</p></div>
+<div class="callout tip reveal" data-delay="1"><div class="icon">i</div><p>None</p></div>
+</div>
+<div class="block" id="klasser">
+<h2 data-i18n-da="Rørklasser &amp; materialer">Rørklasser & materialer</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="En rørklasse er en samling af komponent-specifikationer: rør-materiale, fittings-type, flange-klasse, gevind- eller svejse-type, pakninger, boltemateriale og tilladelige tryk/temperatur-grænser. Vi designer typisk 3–6 rørklasser pr. anlæg — en for hoved-kredsløb, en for instrument-luft, en for dræn, osv." data-en="A pipe class is a bundle of component specifications: pipe material, fitting type, flange class, threaded or welded type, gaskets, bolt material, and allowable pressure/temperature limits. We typically design 3–6 pipe classes per plant — one for the main loop, one for instrument air, one for drains, etc.">En rørklasse er en samling af komponent-specifikationer: rør-materiale, fittings-type, flange-klasse, gevind- eller svejse-type, pakninger, boltemateriale og tilladelige tryk/temperatur-grænser. Vi designer typisk 3–6 rørklasser pr. anlæg — en for hoved-kredsløb, en for instrument-luft, en for dræn, osv.</p></div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="callout note reveal" data-delay="1"><div class="icon">★</div><p>None</p></div>
+</div>
+<div class="block" id="stoette">
+<h2 data-i18n-da="Støtte-spacing">Støtte-spacing</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Støtte-afstand bestemmes af fire laster: egenvægt af rør + indhold + isolering, termisk-ekspansion, vibration, og ekstern mekanisk last (f.eks. vind på udendørs rør). Vi bruger en forsimplet bjælketeori: røret er en kontinuert bjælke på elastiske understøtninger, og den tilladelige spænding og nedbøjning er givet af standarden." data-en="Support spacing is determined by four loads: self-weight of pipe + contents + insulation, thermal expansion, vibration, and external mechanical load (e.g. wind on outdoor piping). We use a simplified beam theory: the pipe is a continuous beam on elastic supports, and the allowable stress and deflection are given by the standard.">Støtte-afstand bestemmes af fire laster: egenvægt af rør + indhold + isolering, termisk-ekspansion, vibration, og ekstern mekanisk last (f.eks. vind på udendørs rør). Vi bruger en forsimplet bjælketeori: røret er en kontinuert bjælke på elastiske understøtninger, og den tilladelige spænding og nedbøjning er givet af standarden.</p></div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="For procesrør med termisk ekspansion reduceres støtte-afstanden typisk 20–30% på grund af friktionslaster på glidelejer. Vi placerer altid faste punkter (anchors) i enderne af en ekspansionssektion og glide-lejer (guides) i intervaller på ca. 12·D for at styre retningen af ekspansionen." data-en="For process pipe with thermal expansion, support spacing is typically reduced 20–30% due to friction loads on sliding supports. We always place anchors at the ends of an expansion section and guides at intervals of about 12·D to control the direction of expansion.">For procesrør med termisk ekspansion reduceres støtte-afstanden typisk 20–30% på grund af friktionslaster på glidelejer. Vi placerer altid faste punkter (anchors) i enderne af en ekspansionssektion og glide-lejer (guides) i intervaller på ca. 12·D for at styre retningen af ekspansionen.</p></div>
+</div>
+<div class="block" id="ekspansion">
+<h2 data-i18n-da="Ekspansion &amp; fleksibilitet">Ekspansion & fleksibilitet</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Et stålrør der opvarmes fra 20 °C til 200 °C udvider sig ca. 235 mm per 10 m længde. Hvis denne ekspansion ikke absorberes, opstår der store spændinger i røret, i studsene på tilsluttede beholdere, og i selve understøtningerne. Vi håndterer det på tre måter:" data-en="A steel pipe heated from 20 °C to 200 °C expands about 235 mm per 10 m length. If this expansion isn't absorbed, large stresses build up in the pipe, in nozzles on connected vessels, and in the supports themselves. We handle it three ways:">Et stålrør der opvarmes fra 20 °C til 200 °C udvider sig ca. 235 mm per 10 m længde. Hvis denne ekspansion ikke absorberes, opstår der store spændinger i røret, i studsene på tilsluttede beholdere, og i selve understøtningerne. Vi håndterer det på tre måter:</p></div>
+<div class="reveal" data-delay="1"><ol><li><strong>Naturlig fleksibilitet</strong> — rørsystemet har så mange bøjninger at det selv absorberer ekspansionen. Beregnes ved Cantilever- eller Karman-metoden, eller numerisk med et 1D-rør-lednings-program.</li>
+<li><strong>Ekspansions-bøjning (expansion loop)</strong> — en U- eller Z-formet sektion, der tillader ekspansion uden spændings-koncentration. Bruges når naturlig fleksibilitet ikke er nok, og der er plads.</li>
+<li><strong>Ekspansions-kompensator (bellows)</strong> — en metalbælg der optager lineær ekspansion. Bruges når pladsen er trang. Kræver styr på trykstød og forankring.</li></ol></div>
+<div class="callout warn reveal" data-delay="1"><div class="icon">!</div><p>None</p></div>
+</div>
+<div class="block" id="leverance">
+<h2 data-i18n-da="Hvad du får">Hvad du får</h2>
+<div class="reveal" data-delay="1"><ul><li>Komplet P&amp;ID for hele anlægget — i PDF og som redigerbar kilde (AutoCAD, DraftSight eller SmartPlant).</li>
+<li>3D-model af rørsystemet — vi bruger open-source-værktøjer (FreeCAD, OpenSCAD) eller dit foretrukne CAD-format.</li>
+<li>Isometriske tegninger — en per rør-linje, med komplet BOM (rør, fittings, flanger, pakninger, bolte), svejse-notering, støtte-placering og inspektions-punkter.</li>
+<li>Støtte-plan — tabel over hver support med type, belastning og placering.</li>
+<li>Materialeliste samlet — klar til indkøb.</li></ul></div>
+</div>
+  </main>
+</div>
+
+<!-- CTA STRIP -->
+<section class="cta-strip">
+  <h2 data-i18n="cta.title">Har du et projekt, der kræver denne disciplin?</h2>
+  <p data-i18n="cta.lead">Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.</p>
+  <a href="../index.html#kontakt" class="cta" data-i18n="cta.button">Kontakt os →</a>
+</section>
+
+<!-- RELATED -->
+<section class="related">
+  <div class="related-inner">
+    <h2 data-i18n="related.title">Relaterede ydelser</h2>
+    <div class="related-grid">
+      <a class="related-card" href="cfd.html">
+          <div class="related-num">03/cfd</div>
+          <div class="related-name">CFD-analyse</div>
+          <div class="related-desc">Tryktabs- og flow-fordelings-analyse for manifold-design.</div>
+        </a><a class="related-card" href="fem.html">
+          <div class="related-num">03/fem</div>
+          <div class="related-name">FEM-strukturanalyse</div>
+          <div class="related-desc">Studs-reaktionskræfter og støtte-spændinger verificeret.</div>
+        </a><a class="related-card" href="pressure-drop.html">
+          <div class="related-num">03/pre</div>
+          <div class="related-name">Trykfalds-beregning</div>
+          <div class="related-desc">Dimensionering af rør — fra flow og acceptabelt tryktab.</div>
+        </a><a class="related-card" href="pump-selection.html">
+          <div class="related-num">03/pum</div>
+          <div class="related-name">Pumpe-udvælgelse</div>
+          <div class="related-desc">Systemkurve bygget fra tryktab og statisk løftehøjde.</div>
+        </a><a class="related-card" href="thermal.html">
+          <div class="related-num">03/the</div>
+          <div class="related-name">Termisk simulering</div>
+          <div class="related-desc">Temperaturfald i rør-ledning og varme-tab til omgivelser.</div>
+        </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Aquanor"><defs><linearGradient id="aqBgV2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#0d1117"/></linearGradient><linearGradient id="aqStrV2s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b8"/><stop offset="0.5" stop-color="#ff6b1a"/><stop offset="1" stop-color="#b8480f"/></linearGradient><radialGradient id="aqDotV2s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd9b8"/><stop offset="1" stop-color="#ff6b1a"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="url(#aqBgV2s)"/><path d="M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z" fill="url(#aqStrV2s)"/><rect x="6" y="42" width="52" height="6" fill="#0d1117" stroke="url(#aqStrV2s)" stroke-width="1.5"/><rect x="10" y="44" width="44" height="2" fill="none" stroke="#ff6b1a" stroke-width="0.6" opacity="0.5"/><circle cx="22" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="42" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="32" cy="8" r="2" fill="#ffd9b8" opacity="0.9"/></svg></span><span>Aquanor Fluidteknik</span></div>
+      <p data-i18n="footer.tag">Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.</p>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.nav">Navigation</h4>
+      <ul>
+        <li><a href="../index.html#ydelser" data-i18n="nav.services">Ydelser</a></li>
+        <li><a href="../index.html#metode" data-i18n="nav.method">Metode</a></li>
+        <li><a href="../index.html#cases" data-i18n="nav.cases">Cases</a></li>
+        <li><a href="../index.html#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.tools">Værktøjer</h4>
+      <ul>
+        <li><a href="../index.html#beregner" data-i18n="nav.calc">Beregner</a></li>
+        <li><a href="../index.html#branches" data-i18n="nav.industries">Brancher</a></li>
+        <li><a href="../index.html#rolle" data-i18n="nav.role">Vores rolle</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88</span>
+    <span data-i18n="footer.made">Lavet med ingeniør-præcision i Aarhus</span>
+  </div>
+</footer>
+
+<!-- I18N DATA -->
+<script id="page-i18n" type="application/json">{"strip.oncall": ["Døgnvagt 24/7 — akut assistance hele døgnet", "On-call dispatch 24/7 — emergency assistance around the clock"], "strip.phone": ["+45 86 12 34 56", "+45 86 12 34 56"], "nav.services": ["Ydelser", "Services"], "nav.role": ["Vores rolle", "Our role"], "nav.method": ["Metode", "Method"], "nav.cases": ["Cases", "Cases"], "nav.calc": ["Beregner", "Calculator"], "nav.industries": ["Brancher", "Industries"], "nav.contact": ["Kontakt", "Contact"], "nav.back": ["← Tilbage til forsiden", "← Back to overview"], "footer.tag": ["Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.", "Flow engineering and HVAC consultancy since 2009. We bridge the gap between CFD/FEM analysis and physical installation."], "footer.nav": ["Navigation", "Navigation"], "footer.tools": ["Værktøjer", "Tools"], "footer.made": ["Lavet med ingeniør-præcision i Aarhus", "Engineered with precision in Aarhus"], "footer.copyright": ["© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88", "© 2026 Aquanor Fluidteknik ApS · VAT 39 14 22 88"], "related.title": ["Relaterede ydelser", "Related services"], "related.lead": ["Vi leverer alle seks discipliner med samme ingeniør som ansvarlig fra start til slut.", "We deliver all six disciplines with the same engineer responsible from start to finish."], "cta.title": ["Har du et projekt, der kræver denne disciplin?", "Got a project that needs this discipline?"], "cta.lead": ["Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.", "Send a short description — we'll get back with an assessment of what's needed and what it costs."], "cta.button": ["Kontakt os →", "Get in touch →"], "title": ["Rørsystem-design — fra P&amp;ID til isometrisk tegning", "Pipe system design — from P&amp;ID to isometric drawing"], "eyebrow": ["Ydelse 03 · Rørsystem-design", "Service 03 · Pipe system design"], "lead": ["Vi designer rørsystemer der kan bygges uden kollisioner, uden dyre omarbejdninger og uden overraskelser på byggepladsen. Fra procesdiagram til isometrisk tegning — med komplet materialeliste, støtteplan og ekspansionstag i lige meget.", "We design pipe systems that can be built without clashes, without expensive rework, and without surprises on site. From process diagram to isometric drawing — with complete BOM, support plan, and expansion handling in the same package."], "tags": [["P&ID", "isometri", "rørklasser", "støtte-spacing", "ekspansion", "materialeliste"], ["P&ID", "isometric", "pipe classes", "support spacing", "expansion", "BOM"]], "sections": {"proces": ["Fra proces til isometri", "From process to isometric"], "pid": ["P&amp;ID", "P&amp;ID"], "klasser": ["Rørklasser & materialer", "Pipe classes & materials"], "stoette": ["Støtte-spacing", "Support spacing"], "ekspansion": ["Ekspansion & fleksibilitet", "Expansion & flexibility"], "leverance": ["Hvad du får", "What you receive"]}}</script>
+
+<script>
+(function(){
+  const PAGE_I18N = JSON.parse(document.getElementById('page-i18n').textContent);
+  let curLang = localStorage.getItem('aquanor-lang') || 'da';
+
+  function t(key){
+    const v = PAGE_I18N[key];
+    if(!v) return key;
+    return v[curLang === 'en' ? 1 : 0];
+  }
+
+  function setLang(lang){
+    curLang = lang;
+    localStorage.setItem('aquanor-lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.setAttribute('data-lang', lang);
+    // Update all data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = t(el.getAttribute('data-i18n'));
+      if(v !== undefined) el.textContent = v;
+    });
+    // Swap h2 + section headings: data-i18n-da holds DA text, English uses sections dict
+    document.querySelectorAll('[data-i18n-da]').forEach(el => {
+      // Check if there's a section mapping
+      const parent = el.closest('.block');
+      if(parent && parent.id){
+        const sec = PAGE_I18N.sections && PAGE_I18N.sections[parent.id];
+        if(sec){ el.textContent = sec[lang === 'en' ? 1 : 0]; return; }
+      }
+      // Fallback: keep DA text
+      el.textContent = el.getAttribute('data-i18n-da');
+    });
+    // Toggle button label
+    document.getElementById('langToggle').textContent = lang === 'da' ? 'EN' : 'DA';
+    // Update hero-eyebrow, title, lead, tags if present
+    const heroTitle = document.querySelector('.page-title');
+    if(heroTitle) heroTitle.textContent = t('title');
+    const heroLead = document.querySelector('.page-lead');
+    if(heroLead) heroLead.textContent = t('lead');
+    const heroEyebrow = document.querySelector('.page-eyebrow');
+    if(heroEyebrow) heroEyebrow.textContent = t('eyebrow');
+  }
+
+  document.getElementById('langToggle').addEventListener('click', () => {
+    setLang(curLang === 'da' ? 'en' : 'da');
+  });
+  setLang(curLang);
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  if(hamburger && navLinks){
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+  }
+
+  // Nav scroll state
+  const navEl = document.querySelector('.nav');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 80) navEl.classList.add('scrolled');
+    else navEl.classList.remove('scrolled');
+  }, {passive:true});
+
+  // Scroll progress
+  let _scrollTick = false;
+  window.addEventListener('scroll', () => {
+    if(!_scrollTick){
+      requestAnimationFrame(() => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+        const bar = document.getElementById('scrollProgress');
+        if(bar) bar.style.width = pct + '%';
+        _scrollTick = false;
+      });
+      _scrollTick = true;
+    }
+  }, {passive:true});
+
+  // Reveal on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('revealed'); obs.unobserve(e.target); }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -5% 0px'});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Active sidenav highlight on scroll
+  const sectionIds = Array.from(document.querySelectorAll('.block[id]')).map(b => b.id);
+  const sideLinks = Array.from(document.querySelectorAll('.sidenav a'));
+  const sideMap = Object.fromEntries(sideLinks.map(a => [a.getAttribute('href').slice(1), a]));
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const id = e.target.id;
+      const link = sideMap[id];
+      if(!link) return;
+      if(e.isIntersecting){
+        sideLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-30% 0px -60% 0px'});
+  document.querySelectorAll('.block[id]').forEach(b => sectionObs.observe(b));
+})();
+</script>
+
+</body>
+</html>

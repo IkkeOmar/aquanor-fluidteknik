@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="da" data-lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Termisk simulering — transient og stationær varmetransport · Aquanor Fluidteknik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='b' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%231c1d23'/><stop offset='1' stop-color='%230d1117'/></linearGradient><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23ffd9b8'/><stop offset='0.5' stop-color='%23ff6b1a'/><stop offset='1' stop-color='%23b8480f'/></linearGradient><radialGradient id='d' cx='0.5' cy='0.5' r='0.5'><stop offset='0' stop-color='%23ffd9b8'/><stop offset='1' stop-color='%23ff6b1a'/></radialGradient></defs><rect width='64' height='64' rx='14' fill='url(%23b)'/><path d='M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z' fill='url(%23s)'/><rect x='6' y='42' width='52' height='6' fill='%230d1117' stroke='url(%23s)' stroke-width='1.5'/><rect x='10' y='44' width='44' height='2' fill='none' stroke='%23ff6b1a' stroke-width='0.6' opacity='0.5'/><circle cx='22' cy='45' r='1.3' fill='url(%23d)'/><circle cx='42' cy='45' r='1.3' fill='url(%23d)'/><circle cx='32' cy='8' r='2' fill='%23ffd9b8' opacity='0.9'/></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- STRIP -->
+<div class="strip">
+  <span><span class="dot"></span><span data-i18n="strip.oncall">Døgnvagt 24/7 — akut assistance hele døgnet</span></span>
+  <span data-i18n="strip.phone">+45 86 12 34 56</span>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="../index.html" class="logo">
+    <span class="logo-mark"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Aquanor"><defs><linearGradient id="aqBgV2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#0d1117"/></linearGradient><linearGradient id="aqStrV2s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b8"/><stop offset="0.5" stop-color="#ff6b1a"/><stop offset="1" stop-color="#b8480f"/></linearGradient><radialGradient id="aqDotV2s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd9b8"/><stop offset="1" stop-color="#ff6b1a"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="url(#aqBgV2s)"/><path d="M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z" fill="url(#aqStrV2s)"/><rect x="6" y="42" width="52" height="6" fill="#0d1117" stroke="url(#aqStrV2s)" stroke-width="1.5"/><rect x="10" y="44" width="44" height="2" fill="none" stroke="#ff6b1a" stroke-width="0.6" opacity="0.5"/><circle cx="22" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="42" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="32" cy="8" r="2" fill="#ffd9b8" opacity="0.9"/></svg></span>
+    <span>Aquanor Fluidteknik</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="active" data-i18n="nav.services">Ydelser</a></li>
+<li><a href="index.html#rolle" data-i18n="nav.role">Vores rolle</a></li>
+<li><a href="index.html#metode" data-i18n="nav.method">Metode</a></li>
+<li><a href="index.html#cases" data-i18n="nav.cases">Cases</a></li>
+<li><a href="index.html#beregner" data-i18n="nav.calc">Beregner</a></li>
+<li><a href="index.html#branches" data-i18n="nav.industries">Brancher</a></li>
+<li><a href="index.html#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+
+    <li><a href="../index.html" data-i18n="nav.back">← Tilbage til forsiden</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">EN</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- PAGE HERO -->
+<header class="page-hero">
+  <div>
+    <span class="page-eyebrow">Ydelse 06 · Termisk simulering</span>
+    <h1 class="page-title">Termisk simulering — transient og stationær varmetransport</h1>
+    <p class="page-lead">Vi forudsiger temperaturfordeling, varmetab og responstid før anlægget bygges — uanset om det er en varmeveksler, en fjernvarmeledning, en køleplade til en GPU eller et salt-fluid-kredsløb ved 700 °C. Vi kobler termisk og hydraulisk analyse, så vi får det samlede billede.</p>
+    <div class="page-tags"><span class="page-tag">LMTD</span> <span class="page-tag">NTU</span> <span class="page-tag">transient</span> <span class="page-tag">varmeveksler</span> <span class="page-tag">fjernvarme</span> <span class="page-tag">CFD-kobling</span></div>
+    <a href="../index.html#kontakt" class="page-cta" data-i18n="cta.button">Kontakt os →</a>
+    <a href="../index.html#beregner" class="page-cta-ghost" data-i18n="nav.calc">Beregner</a>
+  </div>
+  <div class="hero-visual">
+    <h4 data-i18n="hero.visual">Teknisk reference</h4>
+    <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="thBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2129"/><stop offset="1" stop-color="#0d1117"/></linearGradient>
+      <linearGradient id="thHot" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#f85149"/>
+        <stop offset=".5" stop-color="#ff6b1a"/>
+        <stop offset="1" stop-color="#d29922"/>
+      </linearGradient>
+      <linearGradient id="thCold" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#58a6ff"/>
+        <stop offset="1" stop-color="#3fb950"/>
+      </linearGradient>
+    </defs>
+    <rect width="320" height="240" fill="url(#thBg)" rx="8"/>
+    <!-- Counter-flow heat exchanger -->
+    <g transform="translate(40 70)">
+      <rect x="0" y="0" width="240" height="60" rx="6" fill="none" stroke="#30363d" stroke-width="2"/>
+      <rect x="0" y="0" width="240" height="60" rx="6" fill="url(#thHot)" opacity=".25"/>
+      <text x="6" y="14" font-family="JetBrains Mono" font-size="9" fill="#ff6b1a">varm (ind)</text>
+      <text x="234" y="52" font-family="JetBrains Mono" font-size="9" fill="#d29922" text-anchor="end">varm (ud)</text>
+      <text x="6" y="52" font-family="JetBrains Mono" font-size="9" fill="#58a6ff">kold (ud)</text>
+      <text x="234" y="14" font-family="JetBrains Mono" font-size="9" fill="#3fb950" text-anchor="end">kold (ind)</text>
+      <!-- Flow arrows -->
+      <g stroke="#ff6b1a" stroke-width="2" fill="#ff6b1a">
+        <line x1="20" y1="20" x2="220" y2="20" marker-end="url(#arrH)"/>
+        <line x1="220" y1="40" x2="20" y2="40" stroke="#58a6ff" marker-end="url(#arrC)"/>
+      </g>
+      <defs>
+        <marker id="arrH" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#ff6b1a"/></marker>
+        <marker id="arrC" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#58a6ff"/></marker>
+      </defs>
+      <!-- Temperature gradient curves -->
+      <path d="M10 22 Q120 18 230 22" stroke="#ff6b1a" stroke-width="1.5" fill="none"/>
+      <path d="M10 38 Q120 42 230 38" stroke="#58a6ff" stroke-width="1.5" fill="none"/>
+    </g>
+    <text x="160" y="40" font-family="JetBrains Mono" font-size="11" fill="#8b949e" text-anchor="middle">modstrøms varmeveksler</text>
+    <text x="160" y="160" font-family="JetBrains Mono" font-size="11" fill="#8b949e" text-anchor="middle">LMTD · NTU-metode</text>
+    <text x="160" y="180" font-family="JetBrains Mono" font-size="10" fill="#ff6b1a" text-anchor="middle">Q = U·A·ΔT_LM = ε·C_min·(T_h,in − T_c,in)</text>
+    <text x="160" y="220" font-family="JetBrains Mono" font-size="10" fill="#8b949e" text-anchor="middle">stationær og transient</text>
+  </svg>
+  </div>
+</header>
+
+<!-- LAYOUT: SIDEBAR + CONTENT -->
+<div class="layout">
+  <aside class="sidenav">
+    <h5>Indhold</h5>
+    <a href="#princip">Tre varmetransport-mekanismer</a>
+<a href="#lmtd">LMTD-metoden</a>
+<a href="#ntu">NTU-metoden</a>
+<a href="#transient">Transient analyse</a>
+<a href="#jord">Jordledninger & fjernvarme</a>
+<a href="#saltfluid">Salt-fluid termisk</a>
+<a href="#leverance">Hvad du får</a>
+
+  </aside>
+  <main class="content">
+    <div class="block" id="princip">
+<h2 data-i18n-da="Tre varmetransport-mekanismer">Tre varmetransport-mekanismer</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Al varmetransport sker gennem en af tre mekanismer — ofte flere samtidigt:" data-en="All heat transfer occurs through one of three modes — often several at once:">Al varmetransport sker gennem en af tre mekanismer — ofte flere samtidigt:</p></div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Varme-modstand (thermal resistance) er summen af de enkelte modstande i serie — som et elektrisk kredsløb:" data-en="Thermal resistance is the sum of the individual resistances in series — like an electrical circuit:">Varme-modstand (thermal resistance) er summen af de enkelte modstande i serie — som et elektrisk kredsløb:</p></div>
+<div class="formula reveal" data-delay="1">R_total = 1/(h_i·A) + δ/k + 1/(h_u·A)   [m²·K/W]</div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="h_i og h_u er de indre og ydre varme-overgangskoefficienter, δ er godstykkelsen, k er varmeledningsevnen. Den totale U-værdi (overall heat transfer coefficient) er 1/R_total — og den bestemmer, hvor meget varme der flyttes pr. grad temperaturforskel pr. areal." data-en="h_i and h_u are the inner and outer convective heat-transfer coefficients, δ is the wall thickness, k is the thermal conductivity. The total U-value (overall heat transfer coefficient) is 1/R_total — and it determines how much heat moves per degree temperature difference per area.">h_i og h_u er de indre og ydre varme-overgangskoefficienter, δ er godstykkelsen, k er varmeledningsevnen. Den totale U-værdi (overall heat transfer coefficient) er 1/R_total — og den bestemmer, hvor meget varme der flyttes pr. grad temperaturforskel pr. areal.</p></div>
+</div>
+<div class="block" id="lmtd">
+<h2 data-i18n-da="LMTD-metoden">LMTD-metoden</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="LMTD (Log Mean Temperature Difference) er den simpleste metode til at beregne varme-overføring i en varmeveksler, når man kender indløbs- og udløbs-temperaturerne på begge sider." data-en="LMTD (Log Mean Temperature Difference) is the simplest method for computing heat transfer in a heat exchanger when you know the inlet and outlet temperatures on both sides.">LMTD (Log Mean Temperature Difference) er den simpleste metode til at beregne varme-overføring i en varmeveksler, når man kender indløbs- og udløbs-temperaturerne på begge sider.</p></div>
+<div class="formula reveal" data-delay="1">Q = U·A·ΔT_LM        ΔT_LM = (ΔT₁ − ΔT₂) / ln(ΔT₁/ΔT₂)</div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="ΔT₁ og ΔT₂ er temperatur-forskellene i de to ender af varmeveksleren. For en modstrøms-veksler er ΔT₁ = T_h,in − T_c,out og ΔT₂ = T_h,out − T_c,in. For medstrøm er ΔT₂ = T_h,out − T_c,out." data-en="ΔT₁ and ΔT₂ are the temperature differences at the two ends of the exchanger. For counter-flow, ΔT₁ = T_h,in − T_c,out and ΔT₂ = T_h,out − T_c,in. For co-current, ΔT₂ = T_h,out − T_c,out.">ΔT₁ og ΔT₂ er temperatur-forskellene i de to ender af varmeveksleren. For en modstrøms-veksler er ΔT₁ = T_h,in − T_c,out og ΔT₂ = T_h,out − T_c,in. For medstrøm er ΔT₂ = T_h,out − T_c,out.</p></div>
+<div class="callout tip reveal" data-delay="1"><div class="icon">i</div><p>None</p></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="For mere komplekse geometrier (kryds-strøm, shell-and-tube med multiple passes) bruges en korrektions-faktor F:" data-en="For more complex geometries (cross-flow, shell-and-tube with multiple passes) a correction factor F is used:">For mere komplekse geometrier (kryds-strøm, shell-and-tube med multiple passes) bruges en korrektions-faktor F:</p></div>
+<div class="formula reveal" data-delay="1">Q = U·A·F·ΔT_LM    hvor F &lt; 1 for kryds-strøm og multi-pass</div>
+</div>
+<div class="block" id="ntu">
+<h2 data-i18n-da="NTU-metoden">NTU-metoden</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="NTU (Number of Transfer Units) er den foretrukne metode, når du kender geometrien og U-værdien men ikke udløbs-temperaturerne — eller når du vil vide, hvor tæt en veksler er på sin termodynamiske grænse." data-en="NTU (Number of Transfer Units) is the preferred method when you know geometry and U-value but not the outlet temperatures — or when you want to know how close an exchanger is to its thermodynamic limit.">NTU (Number of Transfer Units) er den foretrukne metode, når du kender geometrien og U-værdien men ikke udløbs-temperaturerne — eller når du vil vide, hvor tæt en veksler er på sin termodynamiske grænse.</p></div>
+<div class="formula reveal" data-delay="1">NTU = U·A/C_min        ε = f(NTU, C_r, flow_config)</div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Hvor C_min er den mindste af de to varmekapacitets-rater (ṁ·cₚ), C_r = C_min/C_max er deres forhold, og ε (effectiveness) er den aktuelle varme-overføring divideret med den maksimalt mulige. Sammenhængen mellem ε og NTU afhænger af flow-konfigurationen:" data-en="Where C_min is the smaller of the two heat capacity rates (ṁ·cₚ), C_r = C_min/C_max is their ratio, and ε (effectiveness) is the actual heat transfer divided by the maximum possible. The relationship between ε and NTU depends on the flow configuration:">Hvor C_min er den mindste af de to varmekapacitets-rater (ṁ·cₚ), C_r = C_min/C_max er deres forhold, og ε (effectiveness) er den aktuelle varme-overføring divideret med den maksimalt mulige. Sammenhængen mellem ε og NTU afhænger af flow-konfigurationen:</p></div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Modstrøm er termodynamisk overlegen — den højeste ε for et givet NTU. Den når 100% effektivitet kun i grænsen NTU → ∞ (uendelig areal). I praksis designer vi til ε = 0.6–0.8 for proces-vekslere, lavere for luft-vand-vekslere (hvor U er lav)." data-en="Counter-flow is thermodynamically superior — highest ε for a given NTU. It reaches 100% efficiency only in the limit NTU → ∞ (infinite area). In practice we design for ε = 0.6–0.8 for process exchangers, lower for air-water exchangers (where U is low).">Modstrøm er termodynamisk overlegen — den højeste ε for et givet NTU. Den når 100% effektivitet kun i grænsen NTU → ∞ (uendelig areal). I praksis designer vi til ε = 0.6–0.8 for proces-vekslere, lavere for luft-vand-vekslere (hvor U er lav).</p></div>
+</div>
+<div class="block" id="transient">
+<h2 data-i18n-da="Transient analyse">Transient analyse</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Stationær analyse svarer på 'hvad er temperaturen når systemet har kørt i lang tid?' Transient analyse svarer på 'hvornår når vi der?' — og det er afgørende for opstart, nedluk, regulerings-design og sikkerheds-analyse." data-en="Steady-state answers 'what is the temperature when the system has been running for a long time?' Transient answers 'when do we get there?' — and that's critical for startup, shutdown, control design, and safety analysis.">Stationær analyse svarer på 'hvad er temperaturen når systemet har kørt i lang tid?' Transient analyse svarer på 'hvornår når vi der?' — og det er afgørende for opstart, nedluk, regulerings-design og sikkerheds-analyse.</p></div>
+<div class="formula reveal" data-delay="1">ρ·cₚ·∂T/∂t = ∇·(k·∇T) + Q̇</div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="For et simpelt system (en tank med væske og en varme-veksler) kan vi karakterisere responstiden med tids-konstanten τ = ρ·V·cₚ / (U·A):" data-en="For a simple system (a tank with fluid and a heat exchanger) we can characterise response time with the time constant τ = ρ·V·cₚ / (U·A):">For et simpelt system (en tank med væske og en varme-veksler) kan vi karakterisere responstiden med tids-konstanten τ = ρ·V·cₚ / (U·A):</p></div>
+<div class="reveal" data-delay="1"><ul><li><strong>τ &lt; 5 min</strong> — meget responsiv. Velegnet til regulering med hurtige sætpunkts-ændringer.</li>
+<li><strong>τ = 5–30 min</strong> — typisk proces-tids-skala. Kræver moderat regulerings-design.</li>
+<li><strong>τ = 30 min–2 h</strong> — langsom. Velegnet til fjernvarme-net og store buffertanke.</li>
+<li><strong>τ &gt; 2 h</strong> — meget langsom. Kræver overvejelse om nat-sænkning og opstarts-strategi.</li></ul></div>
+</div>
+<div class="block" id="jord">
+<h2 data-i18n-da="Jordledninger &amp; fjernvarme">Jordledninger & fjernvarme</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="En nedgravet fjernvarmeledning taber varme til jorden — og det er et stort økonomisk og miljømæssigt problem. Vi modellerer varmetabet som en 2D akse-symmetrisk problem: rør-i-rør, isolering (PUR-skum, mineraluld eller PEX-skum), kapillar-beskyttelse (PE-kappe) og jordens termiske egenskaber." data-en="A buried district-heating pipe loses heat to the ground — a major economic and environmental problem. We model the heat loss as a 2D axisymmetric problem: pipe-in-pipe, insulation (PUR foam, mineral wool, or PEX foam), capillary protection (PE jacket), and soil thermal properties.">En nedgravet fjernvarmeledning taber varme til jorden — og det er et stort økonomisk og miljømæssigt problem. Vi modellerer varmetabet som en 2D akse-symmetrisk problem: rør-i-rør, isolering (PUR-skum, mineraluld eller PEX-skum), kapillar-beskyttelse (PE-kappe) og jordens termiske egenskaber.</p></div>
+<div class="formula reveal" data-delay="1">q' = (T_rør − T_jord) / R'_total        R'_total = Σ R'_i</div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="R'_total inkluderer: konvektion indvendig (h_i), ledning gennem stålrør (δ_s/k_s), ledning gennem isolering (δ_i/k_i), ledning gennem PE-kappe (δ_p/k_p), og ledning i jorden (afhænger af dybde og jordtype — typisk 1.5–2.5 W/m·K for vådt ler, 0.5–1.0 for tør sand)." data-en="R'_total includes: internal convection (h_i), conduction through steel pipe (δ_s/k_s), conduction through insulation (δ_i/k_i), conduction through PE jacket (δ_p/k_p), and conduction through soil (depends on depth and soil type — typically 1.5–2.5 W/m·K for wet clay, 0.5–1.0 for dry sand).">R'_total inkluderer: konvektion indvendig (h_i), ledning gennem stålrør (δ_s/k_s), ledning gennem isolering (δ_i/k_i), ledning gennem PE-kappe (δ_p/k_p), og ledning i jorden (afhænger af dybde og jordtype — typisk 1.5–2.5 W/m·K for vådt ler, 0.5–1.0 for tør sand).</p></div>
+<div class="diagram reveal" data-delay="1"><h5>Tværsnit af præisoleret fjernvarmerør</h5><svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="600" height="220" fill="none"/>
+            <!-- Outer PE jacket -->
+            <circle cx="300" cy="110" r="90" fill="#1c2129" stroke="#30363d" stroke-width="2"/>
+            <!-- PUR foam -->
+            <circle cx="300" cy="110" r="78" fill="#161b22" stroke="#58a6ff" stroke-width="1" opacity=".5"/>
+            <circle cx="300" cy="110" r="78" fill="url(#foamGrad)" opacity=".6"/>
+            <defs>
+              <radialGradient id="foamGrad"><stop offset=".7" stop-color="#1c2129" stop-opacity="0"/><stop offset="1" stop-color="#3fb950" stop-opacity=".3"/></radialGradient>
+            </defs>
+            <!-- Steel service pipe -->
+            <circle cx="300" cy="110" r="28" fill="#0d1117" stroke="#8b949e" stroke-width="2"/>
+            <circle cx="300" cy="110" r="22" fill="none" stroke="#ff6b1a" stroke-width="1"/>
+            <!-- Labels -->
+            <text x="300" y="105" font-family="JetBrains Mono" font-size="11" fill="#ff6b1a" text-anchor="middle">stål</text>
+            <text x="300" y="115" font-family="JetBrains Mono" font-size="9"  fill="#ff6b1a" text-anchor="middle">DN100</text>
+            <text x="370" y="78"  font-family="JetBrains Mono" font-size="10" fill="#3fb950">PUR-skum</text>
+            <text x="395" y="120" font-family="JetBrains Mono" font-size="10" fill="#8b949e">PE-kappe</text>
+            <line x1="328" y1="92" x2="365" y2="80" stroke="#3fb950" stroke-width=".5"/>
+            <line x1="335" y1="120" x2="390" y2="120" stroke="#8b949e" stroke-width=".5"/>
+            <!-- Temperature gradient arrows -->
+            <g stroke="#ff6b1a" stroke-width=".8" fill="none" opacity=".5">
+              <line x1="328" y1="110" x2="368" y2="110"/>
+              <line x1="328" y1="100" x2="368" y2="100"/>
+              <line x1="328" y1="120" x2="368" y2="120"/>
+            </g>
+            <text x="348" y="95" font-family="JetBrains Mono" font-size="9" fill="#ff6b1a">80°C → 20°C</text>
+            <text x="300" y="208" font-family="JetBrains Mono" font-size="10" fill="#8b949e" text-anchor="middle">R'_total ≈ 0.20 m·K/W · q' ≈ 300 W/m ved 60 K drift</text>
+          </svg></div>
+</div>
+<div class="block" id="saltfluid">
+<h2 data-i18n-da="Salt-fluid termisk">Salt-fluid termisk</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Salt-fluider (FLiBe, NaCl-MgCl₂, solar-salt) har termiske egenskaber, der adskiller sig markant fra vand:" data-en="Salt fluids (FLiBe, NaCl-MgCl₂, solar salt) have thermal properties that differ significantly from water:">Salt-fluider (FLiBe, NaCl-MgCl₂, solar-salt) har termiske egenskaber, der adskiller sig markant fra vand:</p></div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Den lavere varmefylde betyder, at et salt-fluid-system har en mindre termisk buffer end et vand-system — det reagerer hurtigere på opvarmning og afkøling, men det kræver også mere præcis styring for at undgå frysning (for solar salt: frysepunkt 220 °C, et stort problem ved nedluk)." data-en="The lower specific heat means a salt-fluid system has less thermal buffer than a water system — it responds faster to heating and cooling, but it also needs more precise control to avoid freezing (for solar salt: freezing point 220 °C, a major shutdown issue).">Den lavere varmefylde betyder, at et salt-fluid-system har en mindre termisk buffer end et vand-system — det reagerer hurtigere på opvarmning og afkøling, men det kræver også mere præcis styring for at undgå frysning (for solar salt: frysepunkt 220 °C, et stort problem ved nedluk).</p></div>
+<div class="callout warn reveal" data-delay="1"><div class="icon">!</div><p>None</p></div>
+</div>
+<div class="block" id="leverance">
+<h2 data-i18n-da="Hvad du får">Hvad du får</h2>
+<div class="reveal" data-delay="1"><ul><li>Komplet termisk beregning — stationær og/eller transient, afhængig af hvad projektet kræver.</li>
+<li>Anbefalet varmeveksler-type og -størrelse, baseret på ε-NTU-analyse.</li>
+<li>Plot af temperatur-profiler gennem anlægget ved forskellige drifts-tilstande.</li>
+<li>Sizing af isolering, kuldebro-beregning, og varmetabs-specifikation for fjernvarme-ledninger.</li>
+<li>Kobling til CFD eller FEM hvis projektet kræver det — f.eks. termisk stress i varmeveksler-væggen.</li></ul></div>
+</div>
+  </main>
+</div>
+
+<!-- CTA STRIP -->
+<section class="cta-strip">
+  <h2 data-i18n="cta.title">Har du et projekt, der kræver denne disciplin?</h2>
+  <p data-i18n="cta.lead">Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.</p>
+  <a href="../index.html#kontakt" class="cta" data-i18n="cta.button">Kontakt os →</a>
+</section>
+
+<!-- RELATED -->
+<section class="related">
+  <div class="related-inner">
+    <h2 data-i18n="related.title">Relaterede ydelser</h2>
+    <div class="related-grid">
+      <a class="related-card" href="cfd.html">
+          <div class="related-num">06/cfd</div>
+          <div class="related-name">CFD-analyse</div>
+          <div class="related-desc">3D temperatur-felter — kobling mellem varmeoverføring og strømning.</div>
+        </a><a class="related-card" href="fem.html">
+          <div class="related-num">06/fem</div>
+          <div class="related-name">FEM-strukturanalyse</div>
+          <div class="related-desc">Termisk stress i beholdere og varmeveksler-vægge.</div>
+        </a><a class="related-card" href="pipe-design.html">
+          <div class="related-num">06/pip</div>
+          <div class="related-name">Rørsystem-design</div>
+          <div class="related-desc">Isolering-specifikation og ekspansion-tag.</div>
+        </a><a class="related-card" href="pump-selection.html">
+          <div class="related-num">06/pum</div>
+          <div class="related-name">Pumpe-udvælgelse</div>
+          <div class="related-desc">Temperatur-afhængig viskositet — ind i pumpe-spec.</div>
+        </a><a class="related-card" href="pressure-drop.html">
+          <div class="related-num">06/pre</div>
+          <div class="related-name">Trykfalds-beregning</div>
+          <div class="related-desc">Viskositet og densitet varierer med temperatur — tryktab varierer.</div>
+        </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Aquanor"><defs><linearGradient id="aqBgV2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#0d1117"/></linearGradient><linearGradient id="aqStrV2s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b8"/><stop offset="0.5" stop-color="#ff6b1a"/><stop offset="1" stop-color="#b8480f"/></linearGradient><radialGradient id="aqDotV2s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd9b8"/><stop offset="1" stop-color="#ff6b1a"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="url(#aqBgV2s)"/><path d="M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z" fill="url(#aqStrV2s)"/><rect x="6" y="42" width="52" height="6" fill="#0d1117" stroke="url(#aqStrV2s)" stroke-width="1.5"/><rect x="10" y="44" width="44" height="2" fill="none" stroke="#ff6b1a" stroke-width="0.6" opacity="0.5"/><circle cx="22" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="42" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="32" cy="8" r="2" fill="#ffd9b8" opacity="0.9"/></svg></span><span>Aquanor Fluidteknik</span></div>
+      <p data-i18n="footer.tag">Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.</p>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.nav">Navigation</h4>
+      <ul>
+        <li><a href="../index.html#ydelser" data-i18n="nav.services">Ydelser</a></li>
+        <li><a href="../index.html#metode" data-i18n="nav.method">Metode</a></li>
+        <li><a href="../index.html#cases" data-i18n="nav.cases">Cases</a></li>
+        <li><a href="../index.html#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.tools">Værktøjer</h4>
+      <ul>
+        <li><a href="../index.html#beregner" data-i18n="nav.calc">Beregner</a></li>
+        <li><a href="../index.html#branches" data-i18n="nav.industries">Brancher</a></li>
+        <li><a href="../index.html#rolle" data-i18n="nav.role">Vores rolle</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88</span>
+    <span data-i18n="footer.made">Lavet med ingeniør-præcision i Aarhus</span>
+  </div>
+</footer>
+
+<!-- I18N DATA -->
+<script id="page-i18n" type="application/json">{"strip.oncall": ["Døgnvagt 24/7 — akut assistance hele døgnet", "On-call dispatch 24/7 — emergency assistance around the clock"], "strip.phone": ["+45 86 12 34 56", "+45 86 12 34 56"], "nav.services": ["Ydelser", "Services"], "nav.role": ["Vores rolle", "Our role"], "nav.method": ["Metode", "Method"], "nav.cases": ["Cases", "Cases"], "nav.calc": ["Beregner", "Calculator"], "nav.industries": ["Brancher", "Industries"], "nav.contact": ["Kontakt", "Contact"], "nav.back": ["← Tilbage til forsiden", "← Back to overview"], "footer.tag": ["Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.", "Flow engineering and HVAC consultancy since 2009. We bridge the gap between CFD/FEM analysis and physical installation."], "footer.nav": ["Navigation", "Navigation"], "footer.tools": ["Værktøjer", "Tools"], "footer.made": ["Lavet med ingeniør-præcision i Aarhus", "Engineered with precision in Aarhus"], "footer.copyright": ["© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88", "© 2026 Aquanor Fluidteknik ApS · VAT 39 14 22 88"], "related.title": ["Relaterede ydelser", "Related services"], "related.lead": ["Vi leverer alle seks discipliner med samme ingeniør som ansvarlig fra start til slut.", "We deliver all six disciplines with the same engineer responsible from start to finish."], "cta.title": ["Har du et projekt, der kræver denne disciplin?", "Got a project that needs this discipline?"], "cta.lead": ["Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.", "Send a short description — we'll get back with an assessment of what's needed and what it costs."], "cta.button": ["Kontakt os →", "Get in touch →"], "title": ["Termisk simulering — transient og stationær varmetransport", "Thermal simulation — transient and steady-state heat transfer"], "eyebrow": ["Ydelse 06 · Termisk simulering", "Service 06 · Thermal simulation"], "lead": ["Vi forudsiger temperaturfordeling, varmetab og responstid før anlægget bygges — uanset om det er en varmeveksler, en fjernvarmeledning, en køleplade til en GPU eller et salt-fluid-kredsløb ved 700 °C. Vi kobler termisk og hydraulisk analyse, så vi får det samlede billede.", "We predict temperature distribution, heat loss, and response time before the plant is built — whether it's a heat exchanger, a district-heating main, a GPU cold plate, or a salt-fluid loop at 700 °C. We couple thermal and hydraulic analysis so we get the full picture."], "tags": [["LMTD", "NTU", "transient", "varmeveksler", "fjernvarme", "CFD-kobling"], ["LMTD", "NTU", "transient", "heat exchanger", "district heating", "CFD coupling"]], "sections": {"princip": ["Tre varmetransport-mekanismer", "Three heat transfer modes"], "lmtd": ["LMTD-metoden", "The LMTD method"], "ntu": ["NTU-metoden", "The NTU method"], "transient": ["Transient analyse", "Transient analysis"], "jord": ["Jordledninger & fjernvarme", "Buried lines & district heating"], "saltfluid": ["Salt-fluid termisk", "Salt-fluid thermal"], "leverance": ["Hvad du får", "What you receive"]}}</script>
+
+<script>
+(function(){
+  const PAGE_I18N = JSON.parse(document.getElementById('page-i18n').textContent);
+  let curLang = localStorage.getItem('aquanor-lang') || 'da';
+
+  function t(key){
+    const v = PAGE_I18N[key];
+    if(!v) return key;
+    return v[curLang === 'en' ? 1 : 0];
+  }
+
+  function setLang(lang){
+    curLang = lang;
+    localStorage.setItem('aquanor-lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.setAttribute('data-lang', lang);
+    // Update all data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = t(el.getAttribute('data-i18n'));
+      if(v !== undefined) el.textContent = v;
+    });
+    // Swap h2 + section headings: data-i18n-da holds DA text, English uses sections dict
+    document.querySelectorAll('[data-i18n-da]').forEach(el => {
+      // Check if there's a section mapping
+      const parent = el.closest('.block');
+      if(parent && parent.id){
+        const sec = PAGE_I18N.sections && PAGE_I18N.sections[parent.id];
+        if(sec){ el.textContent = sec[lang === 'en' ? 1 : 0]; return; }
+      }
+      // Fallback: keep DA text
+      el.textContent = el.getAttribute('data-i18n-da');
+    });
+    // Toggle button label
+    document.getElementById('langToggle').textContent = lang === 'da' ? 'EN' : 'DA';
+    // Update hero-eyebrow, title, lead, tags if present
+    const heroTitle = document.querySelector('.page-title');
+    if(heroTitle) heroTitle.textContent = t('title');
+    const heroLead = document.querySelector('.page-lead');
+    if(heroLead) heroLead.textContent = t('lead');
+    const heroEyebrow = document.querySelector('.page-eyebrow');
+    if(heroEyebrow) heroEyebrow.textContent = t('eyebrow');
+  }
+
+  document.getElementById('langToggle').addEventListener('click', () => {
+    setLang(curLang === 'da' ? 'en' : 'da');
+  });
+  setLang(curLang);
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  if(hamburger && navLinks){
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+  }
+
+  // Nav scroll state
+  const navEl = document.querySelector('.nav');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 80) navEl.classList.add('scrolled');
+    else navEl.classList.remove('scrolled');
+  }, {passive:true});
+
+  // Scroll progress
+  let _scrollTick = false;
+  window.addEventListener('scroll', () => {
+    if(!_scrollTick){
+      requestAnimationFrame(() => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+        const bar = document.getElementById('scrollProgress');
+        if(bar) bar.style.width = pct + '%';
+        _scrollTick = false;
+      });
+      _scrollTick = true;
+    }
+  }, {passive:true});
+
+  // Reveal on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('revealed'); obs.unobserve(e.target); }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -5% 0px'});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Active sidenav highlight on scroll
+  const sectionIds = Array.from(document.querySelectorAll('.block[id]')).map(b => b.id);
+  const sideLinks = Array.from(document.querySelectorAll('.sidenav a'));
+  const sideMap = Object.fromEntries(sideLinks.map(a => [a.getAttribute('href').slice(1), a]));
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const id = e.target.id;
+      const link = sideMap[id];
+      if(!link) return;
+      if(e.isIntersecting){
+        sideLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-30% 0px -60% 0px'});
+  document.querySelectorAll('.block[id]').forEach(b => sectionObs.observe(b));
+})();
+</script>
+
+</body>
+</html>

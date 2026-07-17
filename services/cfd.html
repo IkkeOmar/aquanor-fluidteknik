@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="da" data-lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFD-analyse — beregning af tryk, hastighed og temperatur i rør og komponenter · Aquanor Fluidteknik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='b' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%231c1d23'/><stop offset='1' stop-color='%230d1117'/></linearGradient><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23ffd9b8'/><stop offset='0.5' stop-color='%23ff6b1a'/><stop offset='1' stop-color='%23b8480f'/></linearGradient><radialGradient id='d' cx='0.5' cy='0.5' r='0.5'><stop offset='0' stop-color='%23ffd9b8'/><stop offset='1' stop-color='%23ff6b1a'/></radialGradient></defs><rect width='64' height='64' rx='14' fill='url(%23b)'/><path d='M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z' fill='url(%23s)'/><rect x='6' y='42' width='52' height='6' fill='%230d1117' stroke='url(%23s)' stroke-width='1.5'/><rect x='10' y='44' width='44' height='2' fill='none' stroke='%23ff6b1a' stroke-width='0.6' opacity='0.5'/><circle cx='22' cy='45' r='1.3' fill='url(%23d)'/><circle cx='42' cy='45' r='1.3' fill='url(%23d)'/><circle cx='32' cy='8' r='2' fill='%23ffd9b8' opacity='0.9'/></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- STRIP -->
+<div class="strip">
+  <span><span class="dot"></span><span data-i18n="strip.oncall">Døgnvagt 24/7 — akut assistance hele døgnet</span></span>
+  <span data-i18n="strip.phone">+45 86 12 34 56</span>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="../index.html" class="logo">
+    <span class="logo-mark"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Aquanor"><defs><linearGradient id="aqBgV2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#0d1117"/></linearGradient><linearGradient id="aqStrV2s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b8"/><stop offset="0.5" stop-color="#ff6b1a"/><stop offset="1" stop-color="#b8480f"/></linearGradient><radialGradient id="aqDotV2s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd9b8"/><stop offset="1" stop-color="#ff6b1a"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="url(#aqBgV2s)"/><path d="M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z" fill="url(#aqStrV2s)"/><rect x="6" y="42" width="52" height="6" fill="#0d1117" stroke="url(#aqStrV2s)" stroke-width="1.5"/><rect x="10" y="44" width="44" height="2" fill="none" stroke="#ff6b1a" stroke-width="0.6" opacity="0.5"/><circle cx="22" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="42" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="32" cy="8" r="2" fill="#ffd9b8" opacity="0.9"/></svg></span>
+    <span>Aquanor Fluidteknik</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="active" data-i18n="nav.services">Ydelser</a></li>
+<li><a href="index.html#rolle" data-i18n="nav.role">Vores rolle</a></li>
+<li><a href="index.html#metode" data-i18n="nav.method">Metode</a></li>
+<li><a href="index.html#cases" data-i18n="nav.cases">Cases</a></li>
+<li><a href="index.html#beregner" data-i18n="nav.calc">Beregner</a></li>
+<li><a href="index.html#branches" data-i18n="nav.industries">Brancher</a></li>
+<li><a href="index.html#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+
+    <li><a href="../index.html" data-i18n="nav.back">← Tilbage til forsiden</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">EN</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- PAGE HERO -->
+<header class="page-hero">
+  <div>
+    <span class="page-eyebrow">Ydelse 01 · Computational Fluid Dynamics</span>
+    <h1 class="page-title">CFD-analyse — beregning af tryk, hastighed og temperatur i rør og komponenter</h1>
+    <p class="page-lead">Computational Fluid Dynamics opløser Navier-Stokes-ligningerne numerisk i et 3D-volumen. Vi bruger open-source-værktøjer (OpenFOAM, SU2), så koden kan auditeres linje for linje — ikke en sort boks.</p>
+    <div class="page-tags"><span class="page-tag">OpenFOAM</span> <span class="page-tag">SU2</span> <span class="page-tag">ParaView</span> <span class="page-tag">RANS</span> <span class="page-tag">LES</span> <span class="page-tag">y+ sensitivitet</span></div>
+    <a href="../index.html#kontakt" class="page-cta" data-i18n="cta.button">Kontakt os →</a>
+    <a href="../index.html#beregner" class="page-cta-ghost" data-i18n="nav.calc">Beregner</a>
+  </div>
+  <div class="hero-visual">
+    <h4 data-i18n="hero.visual">Teknisk reference</h4>
+    <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="cfdBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2129"/><stop offset="1" stop-color="#0d1117"/></linearGradient>
+      <linearGradient id="cfdHeat" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#58a6ff" stop-opacity="0.2"/>
+        <stop offset=".5" stop-color="#58a6ff" stop-opacity=".9"/>
+        <stop offset="1" stop-color="#58a6ff" stop-opacity="0.2"/>
+      </linearGradient>
+    </defs>
+    <rect width="320" height="240" fill="url(#cfdBg)" rx="8"/>
+    <!-- Pipe -->
+    <path d="M20 120 H300" stroke="#30363d" stroke-width="36" fill="none" stroke-linecap="round"/>
+    <path d="M20 120 H300" stroke="#0d1117" stroke-width="30" fill="none" stroke-linecap="round"/>
+    <!-- Velocity profile parabola -->
+    <path d="M30 120 Q165 70 300 120" stroke="#58a6ff" stroke-width="1.5" fill="none" opacity=".7"/>
+    <path d="M30 120 Q165 90 300 120" stroke="#58a6ff" stroke-width="1.2" fill="none" opacity=".5"/>
+    <path d="M30 120 Q165 105 300 120" stroke="#58a6ff" stroke-width="1" fill="none" opacity=".3"/>
+    <!-- Flow particles -->
+    <circle cx="60"  cy="120" r="2" fill="#58a6ff"/>
+    <circle cx="100" cy="115" r="2.2" fill="#ff6b1a"/>
+    <circle cx="140" cy="105" r="2.4" fill="#58a6ff"/>
+    <circle cx="180" cy="98"  r="2.6" fill="#ff6b1a"/>
+    <circle cx="220" cy="105" r="2.4" fill="#58a6ff"/>
+    <circle cx="260" cy="115" r="2.2" fill="#ff6b1a"/>
+    <!-- Mesh hint -->
+    <g opacity=".15" stroke="#8b949e" stroke-width=".4" fill="none">
+      <line x1="20" y1="100" x2="300" y2="100"/><line x1="20" y1="140" x2="300" y2="140"/>
+      <line x1="60"  y1="80" x2="60"  y2="160"/><line x1="120" y1="80" x2="120" y2="160"/>
+      <line x1="180" y1="80" x2="180" y2="160"/><line x1="240" y1="80" x2="240" y2="160"/>
+    </g>
+    <!-- Annotation -->
+    <text x="160" y="40" font-family="JetBrains Mono" font-size="11" fill="#8b949e" text-anchor="middle">udviklet hastighedsprofil</text>
+    <text x="160" y="55" font-family="JetBrains Mono" font-size="10" fill="#58a6ff" text-anchor="middle">u(y) = u_max · (1 − (r/R)²)</text>
+    <text x="160" y="200" font-family="JetBrains Mono" font-size="11" fill="#ff6b1a" text-anchor="middle">mesh: 1.2M celler · y⁺ &lt; 1</text>
+    <text x="160" y="218" font-family="JetBrains Mono" font-size="10" fill="#8b949e" text-anchor="middle">Re = 38,000 · k-ω SST</text>
+  </svg>
+  </div>
+</header>
+
+<!-- LAYOUT: SIDEBAR + CONTENT -->
+<div class="layout">
+  <aside class="sidenav">
+    <h5>Indhold</h5>
+    <a href="#hvad">Hvad vi beregner</a>
+<a href="#model">Model & mesh</a>
+<a href="#turbulens">Turbulensmodeller</a>
+<a href="#setup">Setup & randbetingelser</a>
+<a href="#validering">Validering & usikkerhed</a>
+<a href="#leverance">Hvad du får</a>
+<a href="#anvendelse">Typiske anvendelser</a>
+
+  </aside>
+  <main class="content">
+    <div class="block" id="hvad">
+<h2 data-i18n-da="Hvad vi beregner">Hvad vi beregner</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="CFD opløser Navier-Stokes-ligningerne — bevarelse af masse, momentum og energi — numerisk på et beregningsnet (mesh). Resultatet er et fuldstændigt 3D-felt af tryk, hastighed, temperatur og eventuelt turbulens. Vi bruger det, hvor håndregning eller 1D-systemmodeller ikke er tilstrækkelige: omkring ventiler, i T-rør, ved bøjninger, i varmevekslere og i alle situationer hvor strømningen separerer eller recirkulerer." data-en="CFD solves the Navier-Stokes equations — conservation of mass, momentum, and energy — numerically on a computational mesh. The result is a complete 3D field of pressure, velocity, temperature, and (where needed) turbulence. We use it where hand-calc or 1D system models are insufficient: around valves, in tees, at bends, in heat exchangers, and anywhere the flow separates or recirculates.">CFD opløser Navier-Stokes-ligningerne — bevarelse af masse, momentum og energi — numerisk på et beregningsnet (mesh). Resultatet er et fuldstændigt 3D-felt af tryk, hastighed, temperatur og eventuelt turbulens. Vi bruger det, hvor håndregning eller 1D-systemmodeller ikke er tilstrækkelige: omkring ventiler, i T-rør, ved bøjninger, i varmevekslere og i alle situationer hvor strømningen separerer eller recirkulerer.</p></div>
+<div class="formula reveal" data-delay="1">kontinuitet:  ∇·u = 0   ·   momentum:  ρ(∂u/∂t + u·∇u) = −∇p + μ∇²u + ρg   ·   energi:  ρcₚ(DT/Dt) = k∇²T + Φ</div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Vi modellerer både inkompressible (vand, lav-hastigheds-luft) og svagt kompressible strømninger, og vi kan koble energiligningen på, så vi også løser temperatur- og varmetransport simultant. For salt-fluider og høj-temperatur-medier (op til 700 °C) bruger vi temperatur-afhængige materialeegenskaber og kan aktivere Boussinesq- eller fuld naturlig-konvektion." data-en="We model both incompressible (water, low-velocity air) and weakly compressible flows, and we can couple the energy equation so we solve temperature and heat transfer simultaneously. For salt fluids and high-temperature media (up to 700 °C) we use temperature-dependent material properties and can activate Boussinesq or full natural convection.">Vi modellerer både inkompressible (vand, lav-hastigheds-luft) og svagt kompressible strømninger, og vi kan koble energiligningen på, så vi også løser temperatur- og varmetransport simultant. For salt-fluider og høj-temperatur-medier (op til 700 °C) bruger vi temperatur-afhængige materialeegenskaber og kan aktivere Boussinesq- eller fuld naturlig-konvektion.</p></div>
+<div class="callout tip reveal" data-delay="1"><div class="icon">i</div><p>None</p></div>
+</div>
+<div class="block" id="model">
+<h2 data-i18n-da="Model &amp; mesh">Model & mesh</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Vi bygger geometrien fra CAD (STEP/IGES) eller fra mål på en eksisterende komponent. Volumenet discretiseres med polyhedrale eller hex-dominante celler — sidstnævnte foretrækkes ved kanalsystemer hvor retningen er kendt. Ved vægge bruger vi prism-lag (inflation) for at løse den viskøse undergrænse korrekt: typisk 8–12 lag med vækstfaktor 1.2, så y⁺-værdien holdes under 1 (for lav-Re-modeller) eller mellem 30–60 (for vægfunktion-baserede modeller)." data-en="We build the geometry from CAD (STEP/IGES) or from measurements on an existing component. The volume is discretised with polyhedral or hex-dominant cells — the latter preferred for ducted systems where the direction is known. At walls we use prism layers (inflation) to resolve the viscous sublayer correctly: typically 8–12 layers with growth ratio 1.2, keeping y⁺ below 1 (low-Re models) or between 30–60 (wall-function models).">Vi bygger geometrien fra CAD (STEP/IGES) eller fra mål på en eksisterende komponent. Volumenet discretiseres med polyhedrale eller hex-dominante celler — sidstnævnte foretrækkes ved kanalsystemer hvor retningen er kendt. Ved vægge bruger vi prism-lag (inflation) for at løse den viskøse undergrænse korrekt: typisk 8–12 lag med vækstfaktor 1.2, så y⁺-værdien holdes under 1 (for lav-Re-modeller) eller mellem 30–60 (for vægfunktion-baserede modeller).</p></div>
+<div class="diagram reveal" data-delay="1"><h5>Mesh-konvergens</h5><svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="600" height="220" fill="none"/>
+            <line x1="40" y1="180" x2="580" y2="180" stroke="#30363d" stroke-width="1"/>
+            <line x1="40" y1="20"  x2="40"  y2="180" stroke="#30363d" stroke-width="1"/>
+            <!-- y axis ticks -->
+            <g font-family="JetBrains Mono" font-size="9" fill="#6e7681">
+              <text x="32" y="184" text-anchor="end">0</text>
+              <text x="32" y="144" text-anchor="end">2</text>
+              <text x="32" y="104" text-anchor="end">4</text>
+              <text x="32" y="64"  text-anchor="end">6</text>
+              <text x="32" y="24"  text-anchor="end">8</text>
+              <text x="14" y="100" text-anchor="end" transform="rotate(-90 14 100)">ΔP [kPa]</text>
+            </g>
+            <!-- x axis ticks -->
+            <g font-family="JetBrains Mono" font-size="9" fill="#6e7681" text-anchor="middle">
+              <text x="100" y="195">0.2M</text>
+              <text x="200" y="195">0.5M</text>
+              <text x="310" y="195">1.2M</text>
+              <text x="420" y="195">2.5M</text>
+              <text x="530" y="195">5M</text>
+              <text x="310" y="215">antal celler</text>
+            </g>
+            <!-- Convergence curve -->
+            <path d="M80 70 Q140 92 200 105 T310 113 T420 116 T530 117" stroke="#ff6b1a" stroke-width="2" fill="none"/>
+            <circle cx="80"  cy="70"  r="3" fill="#ff6b1a"/>
+            <circle cx="200" cy="105" r="3" fill="#ff6b1a"/>
+            <circle cx="310" cy="113" r="3" fill="#ff6b1a"/>
+            <circle cx="420" cy="116" r="3" fill="#ff6b1a"/>
+            <circle cx="530" cy="117" r="3" fill="#ff6b1a"/>
+            <!-- Highlight converged region -->
+            <rect x="310" y="40" width="270" height="140" fill="none" stroke="#3fb950" stroke-width="1" stroke-dasharray="4 4" opacity=".5"/>
+            <text x="445" y="55" font-family="JetBrains Mono" font-size="10" fill="#3fb950">konvergeret</text>
+            <text x="445" y="68" font-family="JetBrains Mono" font-size="9" fill="#8b949e">ændring &lt; 0.5%</text>
+          </svg></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Mesh-uafhængighed er ikke et ønske — det er et krav. Vi kører som minimum tre mesh-niveauer (typisk 0.5M / 1.2M / 2.5M celler) og verificerer, at en integreret mængde — f.eks. tryktab over komponenten eller middelhastighed i udløbet — ændrer sig med mindre end 0.5% mellem de to fineste niveauer. Først da er løsningen mesh-uafhængig." data-en="Mesh independence is not optional — it's a requirement. We run at minimum three mesh levels (typically 0.5M / 1.2M / 2.5M cells) and verify that an integrated quantity — e.g. pressure drop across the component or mean outlet velocity — changes by less than 0.5% between the two finest levels. Only then is the solution mesh-independent.">Mesh-uafhængighed er ikke et ønske — det er et krav. Vi kører som minimum tre mesh-niveauer (typisk 0.5M / 1.2M / 2.5M celler) og verificerer, at en integreret mængde — f.eks. tryktab over komponenten eller middelhastighed i udløbet — ændrer sig med mindre end 0.5% mellem de to fineste niveauer. Først da er løsningen mesh-uafhængig.</p></div>
+</div>
+<div class="block" id="turbulens">
+<h2 data-i18n-da="Turbulensmodeller">Turbulensmodeller</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Valget af turbulensmodel er det mest afgørende valg i en CFD-analyse. Forkert model giver et forkert resultat — uanset hvor fint meshet er. Vi vælger model ud fra Reynolds-tal, geometri og hvad du skal bruge resultatet til:" data-en="The turbulence model choice is the single most important decision in a CFD analysis. The wrong model gives a wrong result — no matter how fine the mesh. We pick the model from Reynolds number, geometry, and what you need the result for:">Valget af turbulensmodel er det mest afgørende valg i en CFD-analyse. Forkert model giver et forkert resultat — uanset hvor fint meshet er. Vi vælger model ud fra Reynolds-tal, geometri og hvad du skal bruge resultatet til:</p></div>
+<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="callout note reveal" data-delay="1"><div class="icon">★</div><p>None</p></div>
+</div>
+<div class="block" id="setup">
+<h2 data-i18n-da="Setup &amp; randbetingelser">Setup & randbetingelser</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="En CFD-analyse er kun så god som dens randbetingelser. Vi bruger følgende konventioner:" data-en="A CFD analysis is only as good as its boundary conditions. We use the following conventions:">En CFD-analyse er kun så god som dens randbetingelser. Vi bruger følgende konventioner:</p></div>
+<div class="reveal" data-delay="1"><ul><li>Inlet — mass-flow eller velocity inlet, med specificeret turbulent intensitet (typisk 1–5%) og turbulent længdeskala (typisk 0.07·D).</li>
+<li>Outlet — tryk-udløb (p = atmosfærisk eller system-tryk), med 'average over outlet'-konditionering for at undgå numerisk reflektion.</li>
+<li>Vægge — no-slip for ruheds-fri vægge; ru-vægge (roughWall) hvis ε &gt; 0 (salt-fluider i stålrør, betonkanaler).</li>
+<li>Symmetri — når geometri og flow er symmetrisk omkring en plan; halverer regnetid og forbedrer konvergens.</li>
+<li>Porøs zone — til filtre, pakninger, varmeveksler-rørbundter (modelleret som modstand +惯走).</li></ul></div>
+</div>
+<div class="block" id="validering">
+<h2 data-i18n-da="Validering &amp; usikkerhed">Validering & usikkerhed</h2>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Vi leverer ikke et resultat vi ikke kan forklare. Efter hver analyse laver vi en krydscheck mod en håndregning (Darcy-Weisbach, Bernoullis ligning, eller en relevant korrelation) og rapporterer afvigelsen i procent. For nye komponenter sammenligner vi direkte med feltmålinger." data-en="We do not deliver a result we cannot explain. After each analysis we cross-check against a hand calculation (Darcy-Weisbach, Bernoulli, or a relevant correlation) and report the deviation in percent. For novel components we compare directly with field measurements.">Vi leverer ikke et resultat vi ikke kan forklare. Efter hver analyse laver vi en krydscheck mod en håndregning (Darcy-Weisbach, Bernoullis ligning, eller en relevant korrelation) og rapporterer afvigelsen i procent. For nye komponenter sammenligner vi direkte med feltmålinger.</p></div>
+<div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Usikkerheds-bidrag i en CFD-analyse kommer fra fire kilder: modelfejl (turbulensmodel vs virkelighed), diskretiseringsfejl (mesh), input-usikkerhed (driftsdata) og brugerfejl (geometri, randbetingelser). Vi rapporterer alle fire og angiver en samlet usikkerhedsgrænse på den beregnede størrelse." data-en="Uncertainty in a CFD analysis comes from four sources: model error (turbulence model vs reality), discretisation error (mesh), input uncertainty (operating data), and user error (geometry, BCs). We report all four and give a combined uncertainty bound on the computed quantity.">Usikkerheds-bidrag i en CFD-analyse kommer fra fire kilder: modelfejl (turbulensmodel vs virkelighed), diskretiseringsfejl (mesh), input-usikkerhed (driftsdata) og brugerfejl (geometri, randbetingelser). Vi rapporterer alle fire og angiver en samlet usikkerhedsgrænse på den beregnede størrelse.</p></div>
+</div>
+<div class="block" id="leverance">
+<h2 data-i18n-da="Hvad du får">Hvad du får</h2>
+<div class="reveal" data-delay="1"><ul><li>Komplet OpenFOAM- eller SU2-case-mappe, klar til at blive gen-kørt eller auditeret.</li>
+<li>Visualisering i ParaView: streamlines, væg-shear, trykkontur, hastigheds-profiler langs vilkårlige snit.</li>
+<li>PDF-rapport med antagelser, randbetingelser, mesh-statistik, konvergens-plots, tværsnits-målinger, sammenligning med håndregning og en konklusion med anbefaling.</li>
+<li>Følsomheds-analyse hvis relevant: hvad sker der, hvis flowet stiger 20% eller hvis ruheden fordobles?</li></ul></div>
+</div>
+<div class="block" id="anvendelse">
+<h2 data-i18n-da="Typiske anvendelser">Typiske anvendelser</h2>
+<div class="reveal" data-delay="1"><ul><li>Ventil-karakterisering — tryktabs-koefficient K vs åbningsgrad, for sædeventiler, kugleventiler, butterfly-ventiler.</li>
+<li>Manifold-design — ligelig flowfordeling i multi-port manifolds, f.eks. i køleplader til server-racks.</li>
+<li>Rørbøjninger og T-rør — tryktabs-koefficient for ikke-standard geometrier; reduktion af erosion og støj.</li>
+<li>Salt-fluid-kredsløb — termisk-hydraulik i flerfase-blanding (FLiBe, NaCl-MgCl₂) med fase-skift og korrosion.</li>
+<li>Akustik — vortex-shedding frekvensanalyse for støj-forudsigelse og afhjælpning.</li></ul></div>
+</div>
+  </main>
+</div>
+
+<!-- CTA STRIP -->
+<section class="cta-strip">
+  <h2 data-i18n="cta.title">Har du et projekt, der kræver denne disciplin?</h2>
+  <p data-i18n="cta.lead">Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.</p>
+  <a href="../index.html#kontakt" class="cta" data-i18n="cta.button">Kontakt os →</a>
+</section>
+
+<!-- RELATED -->
+<section class="related">
+  <div class="related-inner">
+    <h2 data-i18n="related.title">Relaterede ydelser</h2>
+    <div class="related-grid">
+      <a class="related-card" href="fem.html">
+          <div class="related-num">01/fem</div>
+          <div class="related-name">FEM-strukturanalyse</div>
+          <div class="related-desc">Tryk- og temperatur-belastede komponenter verificeret mod EN 13445.</div>
+        </a><a class="related-card" href="pressure-drop.html">
+          <div class="related-num">01/pre</div>
+          <div class="related-name">Trykfalds-beregning</div>
+          <div class="related-desc">Håndregning med Darcy-Weisbach og Colebrook-White — direkte link fra CFD.</div>
+        </a><a class="related-card" href="pipe-design.html">
+          <div class="related-num">01/pip</div>
+          <div class="related-name">Rørsystem-design</div>
+          <div class="related-desc">Fra CFD-resultat til P&amp;ID og isometrisk tegning.</div>
+        </a><a class="related-card" href="pump-selection.html">
+          <div class="related-num">01/pum</div>
+          <div class="related-name">Pumpe-udvælgelse</div>
+          <div class="related-desc">Systemkurve og driftspunkt — baseret på det CFD-beregnede tryktab.</div>
+        </a><a class="related-card" href="thermal.html">
+          <div class="related-num">01/the</div>
+          <div class="related-name">Termisk simulering</div>
+          <div class="related-desc">Transient og stationær varmetransport — kobler direkte til CFD.</div>
+        </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Aquanor"><defs><linearGradient id="aqBgV2s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#0d1117"/></linearGradient><linearGradient id="aqStrV2s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b8"/><stop offset="0.5" stop-color="#ff6b1a"/><stop offset="1" stop-color="#b8480f"/></linearGradient><radialGradient id="aqDotV2s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd9b8"/><stop offset="1" stop-color="#ff6b1a"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="url(#aqBgV2s)"/><path d="M32 8 L8 56 H22 L26 47 L38 47 L42 56 H56 Z M30 35 L32 30 L34 35 Z" fill="url(#aqStrV2s)"/><rect x="6" y="42" width="52" height="6" fill="#0d1117" stroke="url(#aqStrV2s)" stroke-width="1.5"/><rect x="10" y="44" width="44" height="2" fill="none" stroke="#ff6b1a" stroke-width="0.6" opacity="0.5"/><circle cx="22" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="42" cy="45" r="1.3" fill="url(#aqDotV2s)"/><circle cx="32" cy="8" r="2" fill="#ffd9b8" opacity="0.9"/></svg></span><span>Aquanor Fluidteknik</span></div>
+      <p data-i18n="footer.tag">Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.</p>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.nav">Navigation</h4>
+      <ul>
+        <li><a href="../index.html#ydelser" data-i18n="nav.services">Ydelser</a></li>
+        <li><a href="../index.html#metode" data-i18n="nav.method">Metode</a></li>
+        <li><a href="../index.html#cases" data-i18n="nav.cases">Cases</a></li>
+        <li><a href="../index.html#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.tools">Værktøjer</h4>
+      <ul>
+        <li><a href="../index.html#beregner" data-i18n="nav.calc">Beregner</a></li>
+        <li><a href="../index.html#branches" data-i18n="nav.industries">Brancher</a></li>
+        <li><a href="../index.html#rolle" data-i18n="nav.role">Vores rolle</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88</span>
+    <span data-i18n="footer.made">Lavet med ingeniør-præcision i Aarhus</span>
+  </div>
+</footer>
+
+<!-- I18N DATA -->
+<script id="page-i18n" type="application/json">{"strip.oncall": ["Døgnvagt 24/7 — akut assistance hele døgnet", "On-call dispatch 24/7 — emergency assistance around the clock"], "strip.phone": ["+45 86 12 34 56", "+45 86 12 34 56"], "nav.services": ["Ydelser", "Services"], "nav.role": ["Vores rolle", "Our role"], "nav.method": ["Metode", "Method"], "nav.cases": ["Cases", "Cases"], "nav.calc": ["Beregner", "Calculator"], "nav.industries": ["Brancher", "Industries"], "nav.contact": ["Kontakt", "Contact"], "nav.back": ["← Tilbage til forsiden", "← Back to overview"], "footer.tag": ["Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.", "Flow engineering and HVAC consultancy since 2009. We bridge the gap between CFD/FEM analysis and physical installation."], "footer.nav": ["Navigation", "Navigation"], "footer.tools": ["Værktøjer", "Tools"], "footer.made": ["Lavet med ingeniør-præcision i Aarhus", "Engineered with precision in Aarhus"], "footer.copyright": ["© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88", "© 2026 Aquanor Fluidteknik ApS · VAT 39 14 22 88"], "related.title": ["Relaterede ydelser", "Related services"], "related.lead": ["Vi leverer alle seks discipliner med samme ingeniør som ansvarlig fra start til slut.", "We deliver all six disciplines with the same engineer responsible from start to finish."], "cta.title": ["Har du et projekt, der kræver denne disciplin?", "Got a project that needs this discipline?"], "cta.lead": ["Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.", "Send a short description — we'll get back with an assessment of what's needed and what it costs."], "cta.button": ["Kontakt os →", "Get in touch →"], "title": ["CFD-analyse — beregning af tryk, hastighed og temperatur i rør og komponenter", "CFD analysis — pressure, velocity, and temperature prediction in pipes and components"], "eyebrow": ["Ydelse 01 · Computational Fluid Dynamics", "Service 01 · Computational Fluid Dynamics"], "lead": ["Computational Fluid Dynamics opløser Navier-Stokes-ligningerne numerisk i et 3D-volumen. Vi bruger open-source-værktøjer (OpenFOAM, SU2), så koden kan auditeres linje for linje — ikke en sort boks.", "Computational Fluid Dynamics solves the Navier-Stokes equations numerically in a 3D volume. We use open-source tools (OpenFOAM, SU2) so the code can be audited line by line — not a black box."], "tags": [["OpenFOAM", "SU2", "ParaView", "RANS", "LES", "y+ sensitivitet"], ["OpenFOAM", "SU2", "ParaView", "RANS", "LES", "y+ sensitivity"]], "sections": {"hvad": ["Hvad vi beregner", "What we compute"], "model": ["Model & mesh", "Model & mesh"], "turbulens": ["Turbulensmodeller", "Turbulence models"], "setup": ["Setup & randbetingelser", "Setup & boundary conditions"], "validering": ["Validering & usikkerhed", "Validation & uncertainty"], "leverance": ["Hvad du får", "What you receive"], "anvendelse": ["Typiske anvendelser", "Typical applications"]}}</script>
+
+<script>
+(function(){
+  const PAGE_I18N = JSON.parse(document.getElementById('page-i18n').textContent);
+  let curLang = localStorage.getItem('aquanor-lang') || 'da';
+
+  function t(key){
+    const v = PAGE_I18N[key];
+    if(!v) return key;
+    return v[curLang === 'en' ? 1 : 0];
+  }
+
+  function setLang(lang){
+    curLang = lang;
+    localStorage.setItem('aquanor-lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.setAttribute('data-lang', lang);
+    // Update all data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = t(el.getAttribute('data-i18n'));
+      if(v !== undefined) el.textContent = v;
+    });
+    // Swap h2 + section headings: data-i18n-da holds DA text, English uses sections dict
+    document.querySelectorAll('[data-i18n-da]').forEach(el => {
+      // Check if there's a section mapping
+      const parent = el.closest('.block');
+      if(parent && parent.id){
+        const sec = PAGE_I18N.sections && PAGE_I18N.sections[parent.id];
+        if(sec){ el.textContent = sec[lang === 'en' ? 1 : 0]; return; }
+      }
+      // Fallback: keep DA text
+      el.textContent = el.getAttribute('data-i18n-da');
+    });
+    // Toggle button label
+    document.getElementById('langToggle').textContent = lang === 'da' ? 'EN' : 'DA';
+    // Update hero-eyebrow, title, lead, tags if present
+    const heroTitle = document.querySelector('.page-title');
+    if(heroTitle) heroTitle.textContent = t('title');
+    const heroLead = document.querySelector('.page-lead');
+    if(heroLead) heroLead.textContent = t('lead');
+    const heroEyebrow = document.querySelector('.page-eyebrow');
+    if(heroEyebrow) heroEyebrow.textContent = t('eyebrow');
+  }
+
+  document.getElementById('langToggle').addEventListener('click', () => {
+    setLang(curLang === 'da' ? 'en' : 'da');
+  });
+  setLang(curLang);
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  if(hamburger && navLinks){
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+  }
+
+  // Nav scroll state
+  const navEl = document.querySelector('.nav');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 80) navEl.classList.add('scrolled');
+    else navEl.classList.remove('scrolled');
+  }, {passive:true});
+
+  // Scroll progress
+  let _scrollTick = false;
+  window.addEventListener('scroll', () => {
+    if(!_scrollTick){
+      requestAnimationFrame(() => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+        const bar = document.getElementById('scrollProgress');
+        if(bar) bar.style.width = pct + '%';
+        _scrollTick = false;
+      });
+      _scrollTick = true;
+    }
+  }, {passive:true});
+
+  // Reveal on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('revealed'); obs.unobserve(e.target); }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -5% 0px'});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Active sidenav highlight on scroll
+  const sectionIds = Array.from(document.querySelectorAll('.block[id]')).map(b => b.id);
+  const sideLinks = Array.from(document.querySelectorAll('.sidenav a'));
+  const sideMap = Object.fromEntries(sideLinks.map(a => [a.getAttribute('href').slice(1), a]));
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const id = e.target.id;
+      const link = sideMap[id];
+      if(!link) return;
+      if(e.isIntersecting){
+        sideLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-30% 0px -60% 0px'});
+  document.querySelectorAll('.block[id]').forEach(b => sectionObs.observe(b));
+})();
+</script>
+
+</body>
+</html>
