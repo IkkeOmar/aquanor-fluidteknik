@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="da" data-lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aquanor Fluidteknik ApS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117;--bg-elev:#161b22;--bg-card:#1c2129;--border:#30363d;
+  --text:#e6edf3;--text-dim:#8b949e;--text-faint:#6e7681;
+  --accent:#ff6b1a;--accent-dim:#b8480f;
+  --blue:#58a6ff;--green:#3fb950;--purple:#bc8cff;
+  --mono:'JetBrains Mono',monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img,svg{max-width:100%;display:block}
+
+/* === STRIP === */
+.strip{background:var(--accent);color:#fff;font-family:var(--mono);font-size:13px;padding:6px clamp(16px,4vw,48px);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.strip .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#fff;animation:pulse 2s infinite;margin-right:8px;vertical-align:middle}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* === NAV === */
+.nav{position:sticky;top:0;z-index:50;background:rgba(13,17,23,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-family:var(--mono);font-weight:600;font-size:16px;color:var(--text);letter-spacing:.5px;display:flex;align-items:center;gap:10px}
+.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dim) 100%);border-radius:6px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:14px;color:#fff}
+.nav-links{display:flex;gap:28px;list-style:none;align-items:center}
+.nav-links a{color:var(--text-dim);font-size:14px;font-weight:500;transition:color .15s}
+.nav-links a:hover{color:var(--accent)}
+.nav-actions{display:flex;align-items:center;gap:12px}
+.lang-toggle{font-family:var(--mono);font-size:12px;font-weight:600;padding:6px 10px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--text-dim);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:var(--text)}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);margin:5px 0;transition:transform .2s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+@media (max-width:900px){
+  .hamburger{display:block}
+  .nav-links{position:absolute;top:100%;left:0;right:0;background:var(--bg-elev);flex-direction:column;gap:0;padding:0;border-bottom:1px solid var(--border);display:none}
+  .nav-links.open{display:flex}
+  .nav-links li{width:100%;border-bottom:1px solid var(--border)}
+  .nav-links a{display:block;padding:16px 24px}
+  .lang-toggle{margin-left:auto}
+}
+
+/* === HERO === */
+.hero{padding:clamp(48px,8vw,96px) clamp(16px,4vw,48px);display:grid;grid-template-columns:1fr;gap:48px;max-width:1280px;margin:0 auto;align-items:center}
+@media(min-width:900px){.hero{grid-template-columns:1.4fr 1fr}}
+.hero-eyebrow{font-family:var(--mono);font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;display:inline-flex;align-items:center;gap:8px}
+.hero-eyebrow::before{content:"";width:24px;height:1px;background:var(--accent)}
+h1{font-size:clamp(32px,5.5vw,56px);line-height:1.05;font-weight:600;letter-spacing:-.02em;margin-bottom:24px}
+h1 .accent{color:var(--accent)}
+.lead{font-size:clamp(16px,1.8vw,19px);color:var(--text-dim);margin-bottom:32px;max-width:540px}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;max-width:560px}
+.stat{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.stat-num{font-family:var(--mono);font-size:clamp(20px,2.6vw,28px);font-weight:600;color:var(--accent);line-height:1}
+.stat-label{font-family:var(--mono);font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1.2px;margin-top:6px}
+.cta{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;padding:14px 24px;border-radius:6px;font-weight:600;font-size:15px;border:none;cursor:pointer;transition:background .15s}
+.cta:hover{background:var(--accent-dim)}
+.cta-ghost{display:inline-flex;align-items:center;gap:8px;color:var(--text-dim);padding:14px 20px;font-weight:500;font-size:15px;border:1px solid var(--border);border-radius:6px;margin-left:8px;transition:all .15s}
+.cta-ghost:hover{border-color:var(--text-dim);color:var(--text)}
+
+/* Animated pipe SVG */
+.pipe-svg{width:100%;height:auto;max-width:420px;margin:0 auto;display:block}
+.pipe-svg .flow{stroke-dasharray:8 12;animation:flow 1.6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-40}}
+
+/* === SECTION COMMON === */
+section{padding:clamp(56px,8vw,96px) clamp(16px,4vw,48px);max-width:1280px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px}
+h2{font-size:clamp(26px,4vw,40px);line-height:1.15;font-weight:600;letter-spacing:-.015em;margin-bottom:18px;max-width:780px}
+h3{font-size:clamp(18px,2vw,22px);font-weight:600;margin-bottom:10px}
+.section-lead{font-size:clamp(15px,1.6vw,17px);color:var(--text-dim);max-width:640px;margin-bottom:48px}
+
+/* === BRIDGE SECTION === */
+.bridge{background:var(--bg-elev);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.bridge-inner{max-width:1280px;margin:0 auto;padding:clamp(56px,8vw,96px) clamp(16px,4vw,48px)}
+.bridge-grid{display:grid;grid-template-columns:1fr;gap:24px;margin-top:32px;align-items:stretch}
+@media(min-width:900px){.bridge-grid{grid-template-columns:1fr auto 1fr;gap:24px}}
+.bridge-side{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px;position:relative}
+.bridge-side.left::before{content:"";position:absolute;top:24px;right:-1px;bottom:24px;width:2px;background:linear-gradient(to bottom,transparent,var(--accent),transparent);opacity:.3}
+@media(min-width:900px){.bridge-side.left::before{display:none}}
+.bridge-side-title{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-faint);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.bridge-side-title .icon{width:24px;height:24px;border-radius:4px;background:var(--bg-elev);border:1px solid var(--border);display:grid;place-items:center;font-family:var(--mono);font-size:13px}
+.bridge-side.left .icon{color:var(--blue)}
+.bridge-side.right .icon{color:var(--purple)}
+.bridge-list{list-style:none}
+.bridge-list li{padding:8px 0;color:var(--text-dim);font-size:14px;display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.bridge-list li::before{content:"▸";color:var(--accent);flex-shrink:0;margin-top:2px}
+.bridge-center{display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dim) 100%);border-radius:12px;padding:32px 24px;min-height:140px;text-align:center;color:#fff;position:relative}
+.bridge-center-label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:2px;opacity:.8;margin-bottom:8px}
+.bridge-center-name{font-family:var(--sans);font-size:24px;font-weight:700;margin-bottom:12px}
+.bridge-center-tag{font-size:13px;opacity:.92;line-height:1.5;max-width:200px}
+.bridge-center-arrows{position:absolute;left:-22px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:18px;color:var(--accent);display:none}
+.bridge-center-arrows.right{left:auto;right:-22px}
+@media(min-width:900px){.bridge-center-arrows{display:block}}
+
+/* === CAPABILITIES === */
+.cap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.cap{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:24px;transition:all .2s;position:relative;overflow:hidden}
+.cap:hover{border-color:var(--accent);transform:translateY(-2px)}
+.cap-icon{width:40px;height:40px;border-radius:8px;background:var(--bg-elev);border:1px solid var(--border);display:grid;place-items:center;margin-bottom:16px;font-family:var(--mono);font-size:18px;color:var(--accent)}
+.cap-num{position:absolute;top:18px;right:20px;font-family:var(--mono);font-size:11px;color:var(--text-faint)}
+.cap-desc{color:var(--text-dim);font-size:14px;line-height:1.55}
+
+/* === METHODOLOGY === */
+.method-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:32px}
+.method-step{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:24px;position:relative}
+.method-num{font-family:var(--mono);font-size:32px;font-weight:700;color:var(--accent);opacity:.4;line-height:1;margin-bottom:12px}
+.method-step h3{font-size:16px;color:var(--text)}
+.method-step p{color:var(--text-dim);font-size:14px;line-height:1.55;margin-top:8px}
+
+/* === CASE === */
+.case{background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;padding:clamp(28px,4vw,40px);display:grid;grid-template-columns:1fr;gap:24px;margin-top:32px}
+@media(min-width:800px){.case{grid-template-columns:1fr 1fr;gap:40px;align-items:center}}
+.case-tag{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:12px}
+.case h3{font-size:clamp(20px,2.4vw,26px);margin-bottom:14px}
+.case p{color:var(--text-dim);font-size:15px;line-height:1.6;margin-bottom:12px}
+.case-metric{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:24px;text-align:center}
+.case-metric-num{font-family:var(--mono);font-size:clamp(36px,5vw,52px);font-weight:700;color:var(--green);line-height:1}
+.case-metric-label{font-family:var(--mono);font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1.5px;margin-top:8px}
+.case-before-after{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.ba-cell{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px}
+.ba-label{font-family:var(--mono);font-size:10px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
+.ba-value{font-family:var(--mono);font-size:18px;font-weight:600}
+.ba-value.before{color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--red,#f85149)}
+.ba-value.after{color:var(--green)}
+
+/* === CALCULATOR === */
+.calc-wrap{display:grid;grid-template-columns:1fr;gap:24px;background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;padding:clamp(24px,3vw,32px);margin-top:32px}
+@media(min-width:900px){.calc-wrap{grid-template-columns:1fr 1fr;gap:40px}}
+.calc-inputs{display:flex;flex-direction:column;gap:16px}
+.calc-row{display:flex;flex-direction:column;gap:6px}
+.calc-row label{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px}
+.calc-row input,.calc-row select{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-family:var(--mono);font-size:14px;width:100%;transition:border-color .15s}
+.calc-row input:focus,.calc-row select:focus{outline:none;border-color:var(--accent)}
+.calc-output{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.calc-output-row{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.calc-output-row:last-child{border-bottom:none}
+.calc-out-label{font-family:var(--mono);font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px}
+.calc-out-value{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--accent)}
+.calc-out-unit{font-family:var(--mono);font-size:12px;color:var(--text-faint);margin-left:4px}
+
+/* === INDUSTRIES === */
+.ind-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:32px}
+.ind{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;text-align:center;transition:all .2s}
+.ind:hover{border-color:var(--accent);background:var(--bg-elev)}
+.ind-icon{font-size:28px;margin-bottom:10px;display:block}
+.ind-name{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text)}
+
+/* === CREDENTIALS === */
+.cred-grid{display:grid;grid-template-columns:1fr;gap:24px;margin-top:32px}
+@media(min-width:800px){.cred-grid{grid-template-columns:1fr 1fr;gap:32px}}
+.cred-block{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:24px}
+.cred-block h3{font-family:var(--mono);font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:18px}
+.cred-list{list-style:none}
+.cred-list li{padding:8px 0;color:var(--text-dim);font-size:14px;font-family:var(--mono);border-bottom:1px dashed var(--border)}
+.cred-list li:last-child{border-bottom:none}
+
+/* === CONTACT === */
+.contact-grid{display:grid;grid-template-columns:1fr;gap:32px;margin-top:32px}
+@media(min-width:900px){.contact-grid{grid-template-columns:1fr 1.4fr;gap:48px}}
+.contact-info{display:flex;flex-direction:column;gap:20px}
+.contact-row{display:flex;flex-direction:column;gap:4px}
+.contact-label{font-family:var(--mono);font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1.2px}
+.contact-value{color:var(--text);font-size:15px}
+.contact-form{display:flex;flex-direction:column;gap:14px}
+.form-row{display:flex;flex-direction:column;gap:6px}
+.form-row label{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px}
+.form-row input,.form-row textarea,.form-row select{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:12px;color:var(--text);font-family:var(--sans);font-size:14px;transition:border-color .15s}
+.form-row input:focus,.form-row textarea:focus,.form-row select:focus{outline:none;border-color:var(--accent)}
+.form-row textarea{resize:vertical;min-height:110px;font-family:var(--mono);font-size:13px}
+.form-success{background:rgba(63,185,80,.1);border:1px solid var(--green);color:var(--green);padding:14px;border-radius:6px;font-size:14px;display:none}
+.form-success.show{display:block}
+
+/* === FOOTER === */
+footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px clamp(16px,4vw,48px) 24px;margin-top:64px}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:32px}
+@media(min-width:800px){.footer-inner{grid-template-columns:2fr 1fr 1fr;gap:48px}}
+.footer-brand p{color:var(--text-dim);font-size:14px;line-height:1.6;margin-top:12px;max-width:340px}
+.footer-col h4{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-faint);margin-bottom:14px}
+.footer-col ul{list-style:none}
+.footer-col li{padding:4px 0;font-size:14px}
+.footer-col a{color:var(--text-dim);transition:color .15s}
+.footer-col a:hover{color:var(--accent)}
+.footer-bottom{max-width:1280px;margin:32px auto 0;padding-top:24px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;color:var(--text-faint);font-size:12px;font-family:var(--mono)}
+</style>
+</head>
+<body>
+
+<!-- 1. STRIP -->
+<div class="strip">
+  <span><span class="dot"></span><span data-i18n="strip.oncall">Døgnvagt 24/7 — akut assistance hele døgnet</span></span>
+  <span data-i18n="strip.phone">+45 86 12 34 56</span>
+</div>
+
+<!-- 2. NAV -->
+<nav class="nav">
+  <a href="#" class="logo">
+    <span class="logo-mark">A</span>
+    <span>Aquanor Fluidteknik</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#ydelser" data-i18n="nav.services">Ydelser</a></li>
+    <li><a href="#rolle" data-i18n="nav.role">Vores rolle</a></li>
+    <li><a href="#metode" data-i18n="nav.method">Metode</a></li>
+    <li><a href="#cases" data-i18n="nav.cases">Cases</a></li>
+    <li><a href="#beregner" data-i18n="nav.calc">Beregner</a></li>
+    <li><a href="#branches" data-i18n="nav.industries">Brancher</a></li>
+    <li><a href="#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">EN</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- 3. HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="hero-eyebrow" data-i18n="hero.eyebrow">Strømningsteknik & VVS-rådgivning</span>
+    <h1 data-i18n="hero.title">Flow engineering der <span class="accent">holder i praksis</span></h1>
+    <p class="lead" data-i18n="hero.lead">Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation. Aquanor leverer ingeniørberegninger, der kan omsættes direkte til rør, pumper og ventiler — uden omskrivning på byggepladsen.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">28%</div>
+        <div class="stat-label" data-i18n="hero.stat1">Lavere tryktab, garanteret</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">350+</div>
+        <div class="stat-label" data-i18n="hero.stat2">Projekter gennemført</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">15 år</div>
+        <div class="stat-label" data-i18n="hero.stat3">Erfaring i VVS & proces</div>
+      </div>
+    </div>
+    <a href="#kontakt" class="cta" data-i18n="hero.cta">Kontakt os →</a>
+    <a href="#beregner" class="cta-ghost" data-i18n="hero.cta2">Prøv beregner</a>
+  </div>
+  <div>
+    <svg class="pipe-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="pipeGrad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#30363d"/>
+          <stop offset="1" stop-color="#161b22"/>
+        </linearGradient>
+        <linearGradient id="flowGrad" x1="0" x2="1">
+          <stop offset="0" stop-color="#ff6b1a" stop-opacity="0.2"/>
+          <stop offset=".5" stop-color="#ff6b1a" stop-opacity="1"/>
+          <stop offset="1" stop-color="#ff6b1a" stop-opacity="0.2"/>
+        </linearGradient>
+      </defs>
+      <!-- Pipe body -->
+      <rect x="40" y="120" width="320" height="60" rx="30" fill="none" stroke="url(#pipeGrad)" stroke-width="2"/>
+      <rect x="40" y="120" width="320" height="60" rx="30" fill="none" stroke="#30363d" stroke-width="3"/>
+      <!-- Flow line -->
+      <line x1="60" y1="150" x2="340" y2="150" stroke="url(#flowGrad)" stroke-width="6" stroke-linecap="round" class="flow"/>
+      <!-- Inlet -->
+      <rect x="20" y="135" width="20" height="30" fill="#30363d" stroke="#6e7681"/>
+      <line x1="20" y1="150" x2="40" y2="150" stroke="#8b949e" stroke-width="1.5"/>
+      <!-- Outlet -->
+      <rect x="360" y="135" width="20" height="30" fill="#30363d" stroke="#6e7681"/>
+      <line x1="360" y1="150" x2="380" y2="150" stroke="#8b949e" stroke-width="1.5"/>
+      <!-- Annotations -->
+      <text x="60" y="100" font-family="JetBrains Mono" font-size="11" fill="#8b949e">P₁ inlet</text>
+      <text x="340" y="100" font-family="JetBrains Mono" font-size="11" fill="#8b949e" text-anchor="end">P₂ outlet</text>
+      <text x="200" y="220" font-family="JetBrains Mono" font-size="11" fill="#ff6b1a" text-anchor="middle">ΔP = f(L, D, ρ, v, ε)</text>
+      <!-- Pressure drop arrow -->
+      <line x1="80" y1="200" x2="320" y2="200" stroke="#30363d" stroke-width="1" stroke-dasharray="4 4"/>
+      <polygon points="320,200 312,196 312,204" fill="#ff6b1a"/>
+      <polygon points="80,200 88,196 88,204" fill="#ff6b1a"/>
+    </svg>
+  </div>
+</section>
+
+<!-- 4. BRIDGE SECTION -->
+<section class="bridge" id="rolle">
+  <div class="bridge-inner">
+    <span class="eyebrow" data-i18n="bridge.eyebrow">Vores rolle</span>
+    <h2 data-i18n="bridge.title">Vi er det bindeled, som byggeprojekter mangler.</h2>
+    <p class="section-lead" data-i18n="bridge.lead">Installatører og rådgivende ingeniører taler forskellige sprog. Aquanor oversætter mellem CFD/FEM-analysen og den virkelige verden — pumper, rør og ventiler der skal virke fra dag ét.</p>
+    <div class="bridge-grid">
+      <div class="bridge-side left">
+        <div class="bridge-side-title"><span class="icon">⌭</span><span data-i18n="bridge.left_title">VVS- & byggeverdenen</span></div>
+        <ul class="bridge-list">
+          <li data-i18n="bridge.left1">VVS-installatører og entreprenører</li>
+          <li data-i18n="bridge.left2">Kommunale indkøbere og forsyningsselskaber</li>
+          <li data-i18n="bridge.left3">Byggeledelse og tilsyn</li>
+          <li data-i18n="bridge.left4">Driftsansvarlige på fjernvarme og procesanlæg</li>
+          <li data-i18n="bridge.left5">Myndighedsgodkendelser og DS-standarder</li>
+        </ul>
+      </div>
+      <div class="bridge-center">
+        <div class="bridge-center-label" data-i18n="bridge.center_label">Mellemled</div>
+        <div class="bridge-center-name">Aquanor</div>
+        <div class="bridge-center-tag" data-i18n="bridge.center_tag">Ingeniørberegninger → bygbare løsninger</div>
+        <div class="bridge-center-arrows">←</div>
+        <div class="bridge-center-arrows right">→</div>
+      </div>
+      <div class="bridge-side right">
+        <div class="bridge-side-title"><span class="icon">∫</span><span data-i18n="bridge.right_title">Ingeniørverdenen</span></div>
+        <ul class="bridge-list">
+          <li data-i18n="bridge.right1">CFD-analyse (OpenFOAM, SU2)</li>
+          <li data-i18n="bridge.right2">FEM-strukturanalyse (Elmer FEM, CalculiX)</li>
+          <li data-i18n="bridge.right3">Fluidmekanik og strømningslære</li>
+          <li data-i18n="bridge.right4">Termodynamik og varmetransport</li>
+          <li data-i18n="bridge.right5">Visualisering og rapportering (ParaView)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. CAPABILITIES -->
+<section id="ydelser">
+  <span class="eyebrow" data-i18n="cap.eyebrow">Ydelser</span>
+  <h2 data-i18n="cap.title">Seks discipliner, ét fagligt fundament.</h2>
+  <p class="section-lead" data-i18n="cap.lead">Vi dækker hele kæden fra simuleringsmodel til idriftsat anlæg — med samme ingeniør som ansvarlig fra start til slut.</p>
+  <div class="cap-grid">
+    <div class="cap"><div class="cap-num">01</div><div class="cap-icon">∿</div><h3 data-i18n="cap1.title">CFD-analyse</h3><p class="cap-desc" data-i18n="cap1.desc">Computational Fluid Dynamics — beregning af tryk, hastighed og temperatur i rør, ventiler og komponenter. Vi bruger open-source-værktøjer (OpenFOAM, SU2) der kan verificeres linje for linje.</p></div>
+    <div class="cap"><div class="cap-num">02</div><div class="cap-icon">▦</div><h3 data-i18n="cap2.title">FEM-strukturanalyse</h3><p class="cap-desc" data-i18n="cap2.desc">Finite Element Method til styrkeberegning af rør, beholdere og understøtninger. Vi verificerer, at komponenter holder til tryk, temperatur og vibrationer i hele deres levetid.</p></div>
+    <div class="cap"><div class="cap-num">03</div><div class="cap-icon">⏚</div><h3 data-i18n="cap3.title">Rørsystem-design</h3><p class="cap-desc" data-i18n="cap3.desc">Fra procesdiagram til isometrisk tegning. Vi dimensionerer rør, vælger fittings og sikrer, at layout kan bygges uden kollisioner — uanset om det er sort stål, rustfrit eller PE.</p></div>
+    <div class="cap"><div class="cap-num">04</div><div class="cap-icon">Δ</div><h3 data-i18n="cap4.title">Trykfalds-beregning</h3><p class="cap-desc" data-i18n="cap4.desc">Darcy-Weisbach og Colebrook-White. Vi beregner nøjagtigt energitab over rørstrækninger, ventiler og fittings — så pumpestørrelsen passer, og anlægget kører effektivt.</p></div>
+    <div class="cap"><div class="cap-num">05</div><div class="cap-icon">⊙</div><h3 data-i18n="cap5.title">Pumpe-udvælgelse</h3><p class="cap-desc" data-i18n="cap5.desc">Valg af centrifugalpumpe, cirkulationspumpe eller doseerpumpe baseret på systemkurve, driftspunkt og NPSH. Vi leverer dokumentation der holder til myndighedernes tilsyn.</p></div>
+    <div class="cap"><div class="cap-num">06</div><div class="cap-icon">θ</div><h3 data-i18n="cap6.title">Termisk simulering</h3><p class="cap-desc" data-i18n="cap6.desc">Transient og stationær varmetransport — fra varmevekslere til fjernvarmeledninger. Vi forudsiger temperaturfald, energitab og responstid før anlægget bygges.</p></div>
+  </div>
+</section>
+
+<!-- 6. METHODOLOGY -->
+<section id="metode">
+  <span class="eyebrow" data-i18n="meth.eyebrow">Metode</span>
+  <h2 data-i18n="meth.title">Fem faser. Ingen spring.</h2>
+  <p class="section-lead" data-i18n="meth.lead">Hvert projekt følger samme fem-trins model. Det sikrer, at beregninger og installation taler samme sprog — og at intet overrasker på byggepladsen.</p>
+  <div class="method-grid">
+    <div class="method-step"><div class="method-num">01</div><h3 data-i18n="meth1.title">Opgave</h3><p data-i18n="meth1.desc">Vi starter med at forstå problemet — ikke løsningen. Hvad skal anlægget levere, og hvilke begrænsninger gælder?</p></div>
+    <div class="method-step"><div class="method-num">02</div><h3 data-i18n="meth2.title">Dataindsamling</h3><p data-i18n="meth2.desc">Målinger, driftsdata, tegninger og standarder. Vi verificerer alle input, før vi regner — fordi dårlige input giver dårlige beregninger.</p></div>
+    <div class="method-step"><div class="method-num">03</div><h3 data-i18n="meth3.title">Modellering</h3><p data-i18n="meth3.desc">CFD- og FEM-modeller opbygges i OpenFOAM, Elmer FEM og CalculiX. Hver antagelse dokumenteres, så den kan auditeres.</p></div>
+    <div class="method-step"><div class="method-num">04</div><h3 data-i18n="meth4.title">Verifikation</h3><p data-i18n="meth4.desc">Resultater sammenlignes med håndberegninger, felterfaring og publicerede korrelationer. Vi afleverer ikke et resultat vi ikke kan forklare.</p></div>
+    <div class="method-step"><div class="method-num">05</div><h3 data-i18n="meth5.title">Implementering</h3><p data-i18n="meth5.desc">Beregninger omsættes til konkrete komponentvalg, tegninger og specifikationer — klar til installatør og indkøb.</p></div>
+  </div>
+</section>
+
+<!-- 7. CASE STUDY -->
+<section id="cases">
+  <span class="eyebrow" data-i18n="case.eyebrow">Case</span>
+  <h2 data-i18n="case.title">Aalborg Fjernvarme — 28 % tryktab reduktion.</h2>
+  <p class="section-lead" data-i18n="case.lead">En distributionsledning med forhøjet tryktab blev analyseret, redesignet og idriftsat. Resultat: lavere pumpeenergi, færre klager, dokumenteret besparelse.</p>
+  <div class="case">
+    <div>
+      <div class="case-tag" data-i18n="case.tag">Fjernvarme • 2024</div>
+      <h3 data-i18n="case.h3">Fra CFD-model til idriftsat ledning</h3>
+      <p data-i18n="case.p1">En 1,8 km hovedledning viste stigende tryktab over fem år. Vi opbyggede en CFD-model i OpenFOAM, identificerede seks flaskehalse og designede nye rørstrækninger med reducerede bøjningsradier og optimerede T-stykker.</p>
+      <p data-i18n="case.p2">Efter idriftsættelse målte forsyningsselskabet 28 % lavere tryktab end baseline — svarende til 14 % besparelse på pumpeenergi.</p>
+      <div class="case-before-after">
+        <div class="ba-cell"><div class="ba-label" data-i18n="case.before">Før</div><div class="ba-value before">2.4 bar</div></div>
+        <div class="ba-cell"><div class="ba-label" data-i18n="case.after">Efter</div><div class="ba-value after">1.7 bar</div></div>
+      </div>
+    </div>
+    <div class="case-metric">
+      <div class="case-metric-num">28%</div>
+      <div class="case-metric-label" data-i18n="case.metric_label">Reduktion i tryktab</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. CALCULATOR -->
+<section id="beregner">
+  <span class="eyebrow" data-i18n="calc.eyebrow">Beregningsværktøj</span>
+  <h2 data-i18n="calc.title">Trykfalds-beregner — Darcy-Weisbach</h2>
+  <p class="section-lead" data-i18n="calc.lead">Indtast flow, rørdimension og ruhed. Vi beregner energitab over rørstrækningen med Colebrook-White til overgangs- og turbulente regimer.</p>
+  <div class="calc-wrap">
+    <div class="calc-inputs">
+      <div class="calc-row">
+        <label data-i18n="calc.q">Flow Q (m³/h)</label>
+        <input type="number" id="calcQ" value="50" min="0" step="1">
+      </div>
+      <div class="calc-row">
+        <label data-i18n="calc.d">Indvendig diameter D (mm)</label>
+        <input type="number" id="calcD" value="100" min="10" step="1">
+      </div>
+      <div class="calc-row">
+        <label data-i18n="calc.l">Rørlængde L (m)</label>
+        <input type="number" id="calcL" value="100" min="1" step="1">
+      </div>
+      <div class="calc-row">
+        <label data-i18n="calc.rough">Ruhed ε (mm)</label>
+        <select id="calcRough">
+          <option value="0.001">Rustfrit stål (0.001)</option>
+          <option value="0.045" selected>Sort stål / nyt (0.045)</option>
+          <option value="0.15">Let korroderet (0.15)</option>
+          <option value="0.5">Galvaniseret (0.5)</option>
+          <option value="1.0">Ældre støbejern (1.0)</option>
+          <option value="0.007">PE / PP plast (0.007)</option>
+        </select>
+      </div>
+      <div class="calc-row">
+        <label data-i18n="calc.fluid">Medium</label>
+        <select id="calcFluid">
+          <option value="water20" selected>Vand 20 °C</option>
+          <option value="water60">Vand 60 °C</option>
+          <option value="glycol40">Glykol 40 % (20 °C)</option>
+        </select>
+      </div>
+    </div>
+    <div class="calc-output">
+      <div class="calc-output-row"><span class="calc-out-label" data-i18n="calc.out_dp">Tryktab ΔP</span><span><span class="calc-out-value" id="outDP">—</span><span class="calc-out-unit">bar</span></span></div>
+      <div class="calc-output-row"><span class="calc-out-label" data-i18n="calc.out_dp_pa">Tryktab ΔP</span><span><span class="calc-out-value" id="outDPpa">—</span><span class="calc-out-unit">Pa</span></span></div>
+      <div class="calc-output-row"><span class="calc-out-label" data-i18n="calc.out_v">Hastighed v</span><span><span class="calc-out-value" id="outV">—</span><span class="calc-out-unit">m/s</span></span></div>
+      <div class="calc-output-row"><span class="calc-out-label" data-i18n="calc.out_re">Reynolds Re</span><span><span class="calc-out-value" id="outRe">—</span><span class="calc-out-unit">—</span></span></div>
+      <div class="calc-output-row"><span class="calc-out-label" data-i18n="calc.out_f">Friktionsfaktor f</span><span><span class="calc-out-value" id="outF">—</span><span class="calc-out-unit">—</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. INDUSTRIES -->
+<section id="branches">
+  <span class="eyebrow" data-i18n="ind.eyebrow">Brancher</span>
+  <h2 data-i18n="ind.title">Vi arbejder på tværs af seks sektorer.</h2>
+  <div class="ind-grid">
+    <div class="ind"><span class="ind-icon">♨</span><div class="ind-name" data-i18n="ind1">Fjernvarme</div></div>
+    <div class="ind"><span class="ind-icon">⚗</span><div class="ind-name" data-i18n="ind2">Pharma</div></div>
+    <div class="ind"><span class="ind-icon">🍞</span><div class="ind-name" data-i18n="ind3">Fødevarer</div></div>
+    <div class="ind"><span class="ind-icon">⚙</span><div class="ind-name" data-i18n="ind4">Procesindustri</div></div>
+    <div class="ind"><span class="ind-icon">🏛</span><div class="ind-name" data-i18n="ind5">Kommunal</div></div>
+    <div class="ind"><span class="ind-icon">⚓</span><div class="ind-name" data-i18n="ind6">Marine</div></div>
+  </div>
+</section>
+
+<!-- 10. CREDENTIALS -->
+<section id="credentials">
+  <span class="eyebrow" data-i18n="cred.eyebrow">Standarder & værktøjer</span>
+  <h2 data-i18n="cred.title">Dokumenteret faglighed — åben for revision.</h2>
+  <div class="cred-grid">
+    <div class="cred-block">
+      <h3 data-i18n="cred.std">Standarder vi arbejder efter</h3>
+      <ul class="cred-list">
+        <li>DS/EN 13480 — trykbærende rørledninger</li>
+        <li>DS/EN 13445 — ubråendte trykbeholdere</li>
+        <li>PED 2014/68/EU — direktiv for trykbærende udstyr</li>
+        <li>DS 439 — vand- og afløbsinstallationer</li>
+        <li>DS/EN 378 — køle- og varmepumpeanlæg</li>
+      </ul>
+    </div>
+    <div class="cred-block">
+      <h3 data-i18n="cred.sw">Open-source software-stack</h3>
+      <ul class="cred-list">
+        <li>OpenFOAM — CFD</li>
+        <li>SU2 — CFD (kompressor-optimering)</li>
+        <li>Elmer FEM — multiphysics FEM</li>
+        <li>CalculiX — strukturel FEM</li>
+        <li>ParaView — visualisering</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 11. CONTACT -->
+<section id="kontakt">
+  <span class="eyebrow" data-i18n="contact.eyebrow">Kontakt</span>
+  <h2 data-i18n="contact.title">Lad os tale om dit projekt.</h2>
+  <p class="section-lead" data-i18n="contact.lead">Vi svarer inden for 24 timer. Akut assistance — ring direkte.</p>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="contact-row"><span class="contact-label" data-i18n="contact.addr">Adresse</span><span class="contact-value">Vestervangsvej 12<br>8000 Aarhus C<br>Danmark</span></div>
+      <div class="contact-row"><span class="contact-label" data-i18n="contact.phone">Telefon</span><span class="contact-value">+45 86 12 34 56</span></div>
+      <div class="contact-row"><span class="contact-label" data-i18n="contact.email">E-mail</span><span class="contact-value">kontakt@aquanor.dk</span></div>
+      <div class="contact-row"><span class="contact-label" data-i18n="contact.cvr">CVR</span><span class="contact-value">39 14 22 88</span></div>
+    </div>
+    <form class="contact-form" id="contactForm">
+      <div class="form-row"><label data-i18n="form.name">Navn</label><input type="text" name="name" required></div>
+      <div class="form-row"><label data-i18n="form.company">Virksomhed</label><input type="text" name="company"></div>
+      <div class="form-row"><label data-i18n="form.email">E-mail</label><input type="email" name="email" required></div>
+      <div class="form-row"><label data-i18n="form.subject">Emne</label>
+        <select name="subject">
+          <option data-i18n="form.subj1">CFD-analyse</option>
+          <option data-i18n="form.subj2">FEM-strukturanalyse</option>
+          <option data-i18n="form.subj3">Rørsystem-design</option>
+          <option data-i18n="form.subj4">Trykfalds-beregning</option>
+          <option data-i18n="form.subj5">Andet</option>
+        </select>
+      </div>
+      <div class="form-row"><label data-i18n="form.message">Besked</label><textarea name="message" required></textarea></div>
+      <button type="submit" class="cta" data-i18n="form.submit">Send forespørgsel →</button>
+      <div class="form-success" id="formSuccess" data-i18n="form.success">✓ Tak — vi vender tilbage inden for 24 timer.</div>
+    </form>
+  </div>
+</section>
+
+<!-- 12. FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo"><span class="logo-mark">A</span><span>Aquanor Fluidteknik</span></div>
+      <p data-i18n="footer.tag">Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.</p>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.nav">Navigation</h4>
+      <ul>
+        <li><a href="#ydelser" data-i18n="nav.services">Ydelser</a></li>
+        <li><a href="#rolle" data-i18n="nav.role">Vores rolle</a></li>
+        <li><a href="#metode" data-i18n="nav.method">Metode</a></li>
+        <li><a href="#cases" data-i18n="nav.cases">Cases</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.tools">Værktøjer</h4>
+      <ul>
+        <li><a href="#beregner" data-i18n="nav.calc">Beregner</a></li>
+        <li><a href="#branches" data-i18n="nav.industries">Brancher</a></li>
+        <li><a href="#kontakt" data-i18n="nav.contact">Kontakt</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88</span>
+    <span data-i18n="footer.made">Lavet med ingeniør-præcision i Aarhus</span>
+  </div>
+</footer>
+
+<script>
+/* === HAMBURGER === */
+const ham=document.getElementById('hamburger');
+const navLinks=document.getElementById('navLinks');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');navLinks.classList.toggle('open')});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');navLinks.classList.remove('open')}));
+
+/* === I18N DICTIONARY === */
+const I18N={
+  da:{
+    "strip.oncall":"Døgnvagt 24/7 — akut assistance hele døgnet",
+    "strip.phone":"+45 86 12 34 56",
+    "nav.services":"Ydelser","nav.role":"Vores rolle","nav.method":"Metode","nav.cases":"Cases","nav.calc":"Beregner","nav.industries":"Brancher","nav.contact":"Kontakt",
+    "hero.eyebrow":"Strømningsteknik & VVS-rådgivning",
+    "hero.title":'Flow engineering der <span class="accent">holder i praksis</span>',
+    "hero.lead":"Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation. Aquanor leverer ingeniørberegninger, der kan omsættes direkte til rør, pumper og ventiler — uden omskrivning på byggepladsen.",
+    "hero.stat1":"Lavere tryktab, garanteret","hero.stat2":"Projekter gennemført","hero.stat3":"Erfaring i VVS & proces",
+    "hero.cta":"Kontakt os →","hero.cta2":"Prøv beregner",
+    "bridge.eyebrow":"Vores rolle",
+    "bridge.title":"Vi er det bindeled, som byggeprojekter mangler.",
+    "bridge.lead":"Installatører og rådgivende ingeniører taler forskellige sprog. Aquanor oversætter mellem CFD/FEM-analysen og den virkelige verden — pumper, rør og ventiler der skal virke fra dag ét.",
+    "bridge.left_title":"VVS- & byggeverdenen",
+    "bridge.left1":"VVS-installatører og entreprenører","bridge.left2":"Kommunale indkøbere og forsyningsselskaber","bridge.left3":"Byggeledelse og tilsyn","bridge.left4":"Driftsansvarlige på fjernvarme og procesanlæg","bridge.left5":"Myndighedsgodkendelser og DS-standarder",
+    "bridge.center_label":"Mellemled","bridge.center_tag":"Ingeniørberegninger → bygbare løsninger",
+    "bridge.right_title":"Ingeniørverdenen",
+    "bridge.right1":"CFD-analyse (OpenFOAM, SU2)","bridge.right2":"FEM-strukturanalyse (Elmer FEM, CalculiX)","bridge.right3":"Fluidmekanik og strømningslære","bridge.right4":"Termodynamik og varmetransport","bridge.right5":"Visualisering og rapportering (ParaView)",
+    "cap.eyebrow":"Ydelser","cap.title":"Seks discipliner, ét fagligt fundament.","cap.lead":"Vi dækker hele kæden fra simuleringsmodel til idriftsat anlæg — med samme ingeniør som ansvarlig fra start til slut.",
+    "cap1.title":"CFD-analyse","cap1.desc":"Computational Fluid Dynamics — beregning af tryk, hastighed og temperatur i rør, ventiler og komponenter. Vi bruger open-source-værktøjer (OpenFOAM, SU2) der kan verificeres linje for linje.",
+    "cap2.title":"FEM-strukturanalyse","cap2.desc":"Finite Element Method til styrkeberegning af rør, beholdere og understøtninger. Vi verificerer, at komponenter holder til tryk, temperatur og vibrationer i hele deres levetid.",
+    "cap3.title":"Rørsystem-design","cap3.desc":"Fra procesdiagram til isometrisk tegning. Vi dimensionerer rør, vælger fittings og sikrer, at layout kan bygges uden kollisioner — uanset om det er sort stål, rustfrit eller PE.",
+    "cap4.title":"Trykfalds-beregning","cap4.desc":"Darcy-Weisbach og Colebrook-White. Vi beregner nøjagtigt energitab over rørstrækninger, ventiler og fittings — så pumpestørrelsen passer, og anlægget kører effektivt.",
+    "cap5.title":"Pumpe-udvælgelse","cap5.desc":"Valg af centrifugalpumpe, cirkulationspumpe eller doseerpumpe baseret på systemkurve, driftspunkt og NPSH. Vi leverer dokumentation der holder til myndighedernes tilsyn.",
+    "cap6.title":"Termisk simulering","cap6.desc":"Transient og stationær varmetransport — fra varmevekslere til fjernvarmeledninger. Vi forudsiger temperaturfald, energitab og responstid før anlægget bygges.",
+    "meth.eyebrow":"Metode","meth.title":"Fem faser. Ingen spring.","meth.lead":"Hvert projekt følger samme fem-trins model. Det sikrer, at beregninger og installation taler samme sprog — og at intet overrasker på byggepladsen.",
+    "meth1.title":"Opgave","meth1.desc":"Vi starter med at forstå problemet — ikke løsningen. Hvad skal anlægget levere, og hvilke begrænsninger gælder?",
+    "meth2.title":"Dataindsamling","meth2.desc":"Målinger, driftsdata, tegninger og standarder. Vi verificerer alle input, før vi regner — fordi dårlige input giver dårlige beregninger.",
+    "meth3.title":"Modellering","meth3.desc":"CFD- og FEM-modeller opbygges i OpenFOAM, Elmer FEM og CalculiX. Hver antagelse dokumenteres, så den kan auditeres.",
+    "meth4.title":"Verifikation","meth4.desc":"Resultater sammenlignes med håndberegninger, felterfaring og publicerede korrelationer. Vi afleverer ikke et resultat vi ikke kan forklare.",
+    "meth5.title":"Implementering","meth5.desc":"Beregninger omsættes til konkrete komponentvalg, tegninger og specifikationer — klar til installatør og indkøb.",
+    "case.eyebrow":"Case","case.title":"Aalborg Fjernvarme — 28 % tryktab reduktion.","case.lead":"En distributionsledning med forhøjet tryktab blev analyseret, redesignet og idriftsat. Resultat: lavere pumpeenergi, færre klager, dokumenteret besparelse.",
+    "case.tag":"Fjernvarme • 2024","case.h3":"Fra CFD-model til idriftsat ledning",
+    "case.p1":"En 1,8 km hovedledning viste stigende tryktab over fem år. Vi opbyggede en CFD-model i OpenFOAM, identificerede seks flaskehalse og designede nye rørstrækninger med reducerede bøjningsradier og optimerede T-stykker.",
+    "case.p2":"Efter idriftsættelse målte forsyningsselskabet 28 % lavere tryktab end baseline — svarende til 14 % besparelse på pumpeenergi.",
+    "case.before":"Før","case.after":"Efter","case.metric_label":"Reduktion i tryktab",
+    "calc.eyebrow":"Beregningsværktøj","calc.title":"Trykfalds-beregner — Darcy-Weisbach","calc.lead":"Indtast flow, rørdimension og ruhed. Vi beregner energitab over rørstrækningen med Colebrook-White til overgangs- og turbulente regimer.",
+    "calc.q":"Flow Q (m³/h)","calc.d":"Indvendig diameter D (mm)","calc.l":"Rørlængde L (m)","calc.rough":"Ruhed ε (mm)","calc.fluid":"Medium",
+    "calc.out_dp":"Tryktab ΔP","calc.out_dp_pa":"Tryktab ΔP","calc.out_v":"Hastighed v","calc.out_re":"Reynolds Re","calc.out_f":"Friktionsfaktor f",
+    "ind.eyebrow":"Brancher","ind.title":"Vi arbejder på tværs af seks sektorer.",
+    "ind1":"Fjernvarme","ind2":"Pharma","ind3":"Fødevarer","ind4":"Procesindustri","ind5":"Kommunal","ind6":"Marine",
+    "cred.eyebrow":"Standarder & værktøjer","cred.title":"Dokumenteret faglighed — åben for revision.","cred.std":"Standarder vi arbejder efter","cred.sw":"Open-source software-stack",
+    "contact.eyebrow":"Kontakt","contact.title":"Lad os tale om dit projekt.","contact.lead":"Vi svarer inden for 24 timer. Akut assistance — ring direkte.",
+    "contact.addr":"Adresse","contact.phone":"Telefon","contact.email":"E-mail","contact.cvr":"CVR",
+    "form.name":"Navn","form.company":"Virksomhed","form.email":"E-mail","form.subject":"Emne","form.message":"Besked","form.submit":"Send forespørgsel →",
+    "form.subj1":"CFD-analyse","form.subj2":"FEM-strukturanalyse","form.subj3":"Rørsystem-design","form.subj4":"Trykfalds-beregning","form.subj5":"Andet",
+    "form.success":"✓ Tak — vi vender tilbage inden for 24 timer.",
+    "footer.tag":"Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.",
+    "footer.nav":"Navigation","footer.tools":"Værktøjer","footer.made":"Lavet med ingeniør-præcision i Aarhus"
+  },
+  en:{
+    "strip.oncall":"On-call dispatch 24/7 — emergency assistance around the clock",
+    "strip.phone":"+45 86 12 34 56",
+    "nav.services":"Services","nav.role":"Our role","nav.method":"Method","nav.cases":"Cases","nav.calc":"Sizing tool","nav.industries":"Industries","nav.contact":"Contact",
+    "hero.eyebrow":"Flow engineering & HVAC consultancy",
+    "hero.title":'Flow engineering that <span class="accent">holds up in the field</span>',
+    "hero.lead":"We bridge the gap between CFD/FEM analysis and physical installation. Aquanor delivers engineering calculations that translate directly into pipes, pumps, and valves — without rework on site.",
+    "hero.stat1":"Lower pressure drop, guaranteed","hero.stat2":"Projects delivered","hero.stat3":"Years in HVAC & process",
+    "hero.cta":"Get in touch →","hero.cta2":"Try the calculator",
+    "bridge.eyebrow":"Our role",
+    "bridge.title":"We are the link construction projects are missing.",
+    "bridge.lead":"Installers and consulting engineers speak different languages. Aquanor translates between CFD/FEM analysis and the real world — pumps, pipes, and valves that work from day one.",
+    "bridge.left_title":"HVAC & construction world",
+    "bridge.left1":"HVAC installers and contractors","bridge.left2":"Municipal procurement and utilities","bridge.left3":"Site management and supervision","bridge.left4":"Operations at district heating and process plants","bridge.left5":"Authority approvals and DS standards",
+    "bridge.center_label":"The link","bridge.center_tag":"Engineering analysis → buildable solutions",
+    "bridge.right_title":"Engineering world",
+    "bridge.right1":"CFD analysis (OpenFOAM, SU2)","bridge.right2":"FEM structural analysis (Elmer FEM, CalculiX)","bridge.right3":"Fluid mechanics and flow theory","bridge.right4":"Thermodynamics and heat transfer","bridge.right5":"Visualisation and reporting (ParaView)",
+    "cap.eyebrow":"Services","cap.title":"Six disciplines, one technical foundation.","cap.lead":"We cover the full chain from simulation model to commissioned plant — with the same engineer responsible from start to finish.",
+    "cap1.title":"CFD analysis","cap1.desc":"Computational Fluid Dynamics — pressure, velocity, and temperature prediction in pipes, valves, and components. We use open-source tools (OpenFOAM, SU2) that can be audited line by line.",
+    "cap2.title":"FEM structural analysis","cap2.desc":"Finite Element Method for strength verification of pipes, vessels, and supports. We confirm that components withstand pressure, temperature, and vibration across their full service life.",
+    "cap3.title":"Pipe system design","cap3.desc":"From P&ID to isometrics. We size pipes, select fittings, and ensure the layout can be built without clashes — whether carbon steel, stainless, or PE.",
+    "cap4.title":"Pressure drop calculation","cap4.desc":"Darcy-Weisbach and Colebrook-White. We compute exact energy loss across pipe runs, valves, and fittings — so pump sizing fits and the plant runs efficiently.",
+    "cap5.title":"Pump selection","cap5.desc":"Centrifugal, circulator, or dosing pump selection based on system curve, duty point, and NPSH. We deliver documentation that holds up to regulatory inspection.",
+    "cap6.title":"Thermal simulation","cap6.desc":"Transient and steady-state heat transfer — from heat exchangers to district heating mains. We predict temperature drop, energy loss, and response time before the plant is built.",
+    "meth.eyebrow":"Method","meth.title":"Five phases. No skipping.","meth.lead":"Every project follows the same five-step model. It ensures calculation and installation speak the same language — and nothing surprises the site team.",
+    "meth1.title":"Brief","meth1.desc":"We start by understanding the problem — not the solution. What must the plant deliver, and what constraints apply?",
+    "meth2.title":"Data collection","meth2.desc":"Measurements, operating data, drawings, and standards. We verify every input before we calculate — because bad inputs yield bad calculations.",
+    "meth3.title":"Modelling","meth3.desc":"CFD and FEM models are built in OpenFOAM, Elmer FEM, and CalculiX. Every assumption is documented for audit.",
+    "meth4.title":"Verification","meth4.desc":"Results are cross-checked against hand calculations, field experience, and published correlations. We do not deliver a result we cannot explain.",
+    "meth5.title":"Implementation","meth5.desc":"Calculations are translated into concrete component selection, drawings, and specifications — ready for installer and procurement.",
+    "case.eyebrow":"Case study","case.title":"Aalborg District Heating — 28% pressure drop reduction.","case.lead":"A distribution main with rising pressure loss was analysed, redesigned, and recommissioned. Result: lower pump energy, fewer complaints, documented savings.",
+    "case.tag":"District heating • 2024","case.h3":"From CFD model to commissioned main",
+    "case.p1":"An 1.8 km trunk main showed rising pressure loss over five years. We built a CFD model in OpenFOAM, identified six bottlenecks, and designed new pipe sections with reduced bend radii and optimised tees.",
+    "case.p2":"After commissioning, the utility measured 28% lower pressure drop than baseline — corresponding to 14% pump energy savings.",
+    "case.before":"Before","case.after":"After","case.metric_label":"Pressure drop reduction",
+    "calc.eyebrow":"Sizing tool","calc.title":"Pressure drop calculator — Darcy-Weisbach","calc.lead":"Enter flow, pipe diameter, and roughness. We compute energy loss across the pipe run with Colebrook-White for transitional and turbulent regimes.",
+    "calc.q":"Flow Q (m³/h)","calc.d":"Internal diameter D (mm)","calc.l":"Pipe length L (m)","calc.rough":"Roughness ε (mm)","calc.fluid":"Fluid",
+    "calc.out_dp":"Pressure drop ΔP","calc.out_dp_pa":"Pressure drop ΔP","calc.out_v":"Velocity v","calc.out_re":"Reynolds Re","calc.out_f":"Friction factor f",
+    "ind.eyebrow":"Industries","ind.title":"We work across six sectors.",
+    "ind1":"District heating","ind2":"Pharma","ind3":"Food & beverage","ind4":"Process industry","ind5":"Municipal","ind6":"Marine",
+    "cred.eyebrow":"Standards & tools","cred.title":"Documented expertise — open to audit.","cred.std":"Standards we work to","cred.sw":"Open-source software stack",
+    "contact.eyebrow":"Contact","contact.title":"Let's talk about your project.","contact.lead":"We reply within 24 hours. For emergencies — call directly.",
+    "contact.addr":"Address","contact.phone":"Phone","contact.email":"Email","contact.cvr":"VAT",
+    "form.name":"Name","form.company":"Company","form.email":"Email","form.subject":"Subject","form.message":"Message","form.submit":"Send enquiry →",
+    "form.subj1":"CFD analysis","form.subj2":"FEM structural analysis","form.subj3":"Pipe system design","form.subj4":"Pressure drop calculation","form.subj5":"Other",
+    "form.success":"✓ Thanks — we'll be in touch within 24 hours.",
+    "footer.tag":"Flow engineering and HVAC consultancy since 2009. We bridge the gap between CFD/FEM analysis and physical installation.",
+    "footer.nav":"Navigation","footer.tools":"Tools","footer.made":"Engineered with precision in Aarhus"
+  }
+};
+
+/* === LANGUAGE SWITCH === */
+let curLang=localStorage.getItem('aquanor-lang')||'da';
+function setLang(lang){
+  curLang=lang;
+  localStorage.setItem('aquanor-lang',lang);
+  document.documentElement.lang=lang;
+  document.documentElement.setAttribute('data-lang',lang);
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    const v=I18N[lang][key];
+    if(v!==undefined){el.innerHTML=v}
+  });
+  document.getElementById('langToggle').textContent=lang==='da'?'EN':'DA';
+}
+document.getElementById('langToggle').addEventListener('click',()=>setLang(curLang==='da'?'en':'da'));
+setLang(curLang);
+
+/* === DARCY-WEISBACH CALCULATOR === */
+const fluids={
+  water20:{rho:998,mu:1.002e-3},
+  water60:{rho:983,mu:4.67e-4},
+  glycol40:{rho:1070,mu:3.8e-3}
+};
+function calc(){
+  const Q=parseFloat(document.getElementById('calcQ').value);
+  const D_mm=parseFloat(document.getElementById('calcD').value);
+  const L=parseFloat(document.getElementById('calcL').value);
+  const eps_mm=parseFloat(document.getElementById('calcRough').value);
+  const fkey=document.getElementById('calcFluid').value;
+  if(!Q||!D_mm||!L){return}
+  const D=D_mm/1000,eps=eps_mm/1000;
+  const A=Math.PI*D*D/4;
+  const v=Q/3600/A;
+  const Re=v*D*fluids[fkey].rho/fluids[fkey].mu;
+  let f;
+  if(Re<2300){
+    f=64/Re;
+  } else {
+    // Colebrook-White iterative
+    let f0=0.02;
+    for(let i=0;i<40;i++){
+      const lhs=1/Math.sqrt(f0);
+      const rhs=-2*Math.log10(eps/(3.7*D)+2.51/(Re*Math.sqrt(f0)));
+      const fn=1/(rhs*rhs);
+      if(Math.abs(fn-f0)<1e-8){f0=fn;break}
+      f0=fn;
+    }
+    f=f0;
+  }
+  const dP=f*(L/D)*0.5*fluids[fkey].rho*v*v;
+  document.getElementById('outDP').textContent=(dP/1e5).toFixed(3);
+  document.getElementById('outDPpa').textContent=Math.round(dP);
+  document.getElementById('outV').textContent=v.toFixed(2);
+  document.getElementById('outRe').textContent=Math.round(Re).toLocaleString('da-DK');
+  document.getElementById('outF').textContent=f.toFixed(4);
+}
+['calcQ','calcD','calcL','calcRough','calcFluid'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',calc);
+  document.getElementById(id).addEventListener('change',calc);
+});
+calc();
+
+/* === CONTACT FORM === */
+document.getElementById('contactForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const data=Object.fromEntries(new FormData(e.target));
+  console.log('Aquanor contact submission:',data);
+  document.getElementById('formSuccess').classList.add('show');
+  setTimeout(()=>document.getElementById('formSuccess').classList.remove('show'),5000);
+  e.target.reset();
+});
+</script>
+</body>
+</html>

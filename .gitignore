@@ -1,0 +1,5 @@
+.netlify/
+_shots/
+build/
+*.log
+.DS_Store
