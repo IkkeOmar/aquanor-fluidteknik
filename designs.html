@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="da" data-lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aquanor — Logo Concepts</title>
+<style>
+:root{--bg:#0d1117;--bg-elev:#161b22;--bg-card:#1c2129;--border:#30363d;--text:#e6edf3;--text-dim:#8b949e;--accent:#ff6b1a;--accent-dim:#b8480f;--green:#3fb950;--mono:'JetBrains Mono',monospace;--sans:'IBM Plex Sans',system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;padding:32px clamp(16px,4vw,48px);max-width:1200px;margin:0 auto}
+h1{font-family:var(--mono);font-size:14px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+h2{font-size:clamp(28px,4vw,40px);font-weight:600;letter-spacing:-.015em;margin-bottom:12px;max-width:720px}
+p.lede{color:var(--text-dim);max-width:640px;margin-bottom:48px;font-size:16px}
+.shipped{background:var(--bg-elev);border:1px solid var(--green);border-left:4px solid var(--green);border-radius:8px;padding:16px 20px;margin-bottom:32px;font-size:14px}
+.shipped strong{color:var(--green);font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:48px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:transform .2s}
+.card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.card img{width:100%;height:280px;object-fit:contain;background:#0d1117;display:block;padding:20px}
+.card-body{padding:20px;border-top:1px solid var(--border)}
+.card h3{font-size:18px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.card .tag{font-family:var(--mono);font-size:11px;font-weight:700;background:var(--accent);color:#fff;padding:2px 8px;border-radius:3px}
+.card p{font-size:13px;color:var(--text-dim);line-height:1.55}
+.card.shipped-card{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.card.shipped-card h3{color:var(--green)}
+.specs{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px}
+.spec{font-family:var(--mono);font-size:10px;color:var(--text-dim);background:var(--bg-elev);padding:3px 8px;border-radius:3px;letter-spacing:.5px}
+.back{font-family:var(--mono);font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:24px;display:inline-block}
+</style>
+</head><body>
+<a href="./" class="back">← Tilbage til site</a>
+<h1>Brand mark — concept exploration</h1>
+<h2>Fire koncepter til Aquanor-logoet.</h2>
+<p class="lede">Iterativ design-research. Hvert koncept udforsker en anden vinkel på "fluid mekanik + industriel engineering". Du kan klikke ind på hvert kort for at se SVG-kildekoden.</p>
+
+<div class="shipped">
+<strong>⚡ Live nu (valgt)</strong>
+Jeg har skibet koncept <strong>B — Pipe Cross A</strong> som det aktive logo (i nav, footer og favicon). Det er det mest industrielle og ikoniske af de fire — skalerer til favicon-størrelse uden at miste A-silhuetten, og pipe-båndet læses som en rigtig engineering-komponent. Hvis du foretrækker et andet, så sig til — swap tager &lt;1 minut.
+</div>
+
+<div class="grid">
+
+<div class="card shipped-card">
+  <img src="_design/v2_b_pipe_cross.png" alt="Pipe Cross A">
+  <div class="card-body">
+    <h3><span class="tag">B</span>Pipe Cross A <span style="color:var(--green);font-size:12px;font-family:var(--mono);margin-left:auto">SHIP</span></h3>
+    <p>Fyldt A-silhouette i orange-gradient, delt af et vandret pipe-bånd med to flow-prikker indeni. Apex-highlight. Negativ-rum A som brandbogstav.</p>
+    <div class="specs"><span class="spec">64×64 viewBox</span><span class="spec">3 gradients</span><span class="spec">1662 bytes</span><span class="spec">v2</span></div>
+  </div>
+</div>
+
+<div class="card">
+  <img src="_design/v2_a_flow_wave.png" alt="Flow Wave A">
+  <div class="card-body">
+    <h3><span class="tag">A</span>Flow Wave A</h3>
+    <p>Tre indlejrede A-silhouetter som fluid-flow-fronter (laminær → transition → turbulent). Stroke-widths og opacity kaskaderer indad. Flow-pilehoved + cirkulationspartikler. Mest bogstavelige "fluid" aflæsning.</p>
+    <div class="specs"><span class="spec">3 stacked A's</span><span class="spec">stroke gradient</span><span class="spec">1630 bytes</span></div>
+  </div>
+</div>
+
+<div class="card">
+  <img src="_design/v2_c_vortex.png" alt="Vortex A">
+  <div class="card-body">
+    <h3><span class="tag">C</span>Vortex A</h3>
+    <p>Stiliseret A tegnet med buede cubic-Bezier-strokes — antyder centrifugalpumpe-impeller og vortex shedding. Tvillinge-flow-prikker i bunden. Mest minimalistiske og fluid-dynamiske.</p>
+    <div class="specs"><span class="spec">bezier curves</span><span class="spec">1401 bytes</span></div>
+  </div>
+</div>
+
+<div class="card">
+  <img src="_design/v2_d_drop.png" alt="Drop A">
+  <div class="card-body">
+    <h3><span class="tag">D</span>Drop A</h3>
+    <p>Stiliseret vanddråbe (teardrop) med A cut-out i midten. Subtil glasmorfisme-highlight øverst til venstre. Mest genkendelig som "fluid" men mister den tekniske/engineering-følelse.</p>
+    <div class="specs"><span class="spec">glassmorphism lite</span><span class="spec">1371 bytes</span></div>
+  </div>
+</div>
+
+</div>
+
+<h1 style="margin-top:48px">Koncept-forskelle</h1>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:16px">
+<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px">
+<h3 style="font-size:14px;font-family:var(--mono);color:var(--accent);margin-bottom:8px">AFLÆSELIGHED @ 16PX</h3>
+<p style="font-size:13px;color:var(--text-dim)">B > C > A > D. Pipe-Cross A bevarer A-silhuetten selv som favicon. Drop A mister A helt ved lille størrelse.</p>
+</div>
+<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px">
+<h3 style="font-size:14px;font-family:var(--mono);color:var(--accent);margin-bottom:8px">TEKNISK SIGNAL</h3>
+<p style="font-size:13px;color:var(--text-dim)">B = A + pipe (industrial blueprint). A = flow fronts (CFD-ish). C = vortex (pump-ish). D = droplet (consumer/SaaS-feel).</p>
+</div>
+<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px">
+<h3 style="font-size:14px;font-family:var(--mono);color:var(--accent);margin-bottom:8px">DISTINKTION I MARKE</h3>
+<p style="font-size:13px;color:var(--text-dim)">B er tættest på Alfa Laval's negative-space-tilgang. A er mest "AI-generisk". C og D er originale men risikerer at blive læst forkert.</p>
+</div>
+</div>
+
+<p style="margin-top:48px;font-size:12px;color:var(--text-dim);font-family:var(--mono)">SVG-kilde: <code>_design/v2_*.svg</code> · Live deploy: d1aaa08 · Branch: gh-pages</p>
+
+</body></html>
