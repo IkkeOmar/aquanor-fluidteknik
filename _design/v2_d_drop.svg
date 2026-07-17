@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="320" height="320" role="img" aria-label="Aquanor mark v2d — Drop A">
+  <defs>
+    <linearGradient id="bg-d" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1d23"/>
+      <stop offset="1" stop-color="#0d1117"/>
+    </linearGradient>
+    <linearGradient id="drop-d" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#ffd9b8"/>
+      <stop offset="0.4" stop-color="#ff6b1a"/>
+      <stop offset="1" stop-color="#b8480f"/>
+    </linearGradient>
+    <linearGradient id="hi-d" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg-d)"/>
+
+  <!-- Stylized droplet (teardrop) shape -->
+  <path d="M32 6 C 18 22, 12 32, 12 42 C 12 52, 21 58, 32 58 C 43 58, 52 52, 52 42 C 52 32, 46 22, 32 6 Z"
+        fill="url(#drop-d)"/>
+
+  <!-- Inner negative-space A: triangular cutout -->
+  <path d="M32 22 L22 50 H28 L30 46 H34 L36 50 H42 Z M30 40 L32 35 L34 40 Z"
+        fill="#0d1117"/>
+
+  <!-- Subtle highlight on droplet upper-left -->
+  <path d="M32 6 C 18 22, 12 32, 12 42 C 12 47, 14 51, 18 53 C 18 42, 22 32, 32 18 C 28 14, 30 10, 32 6 Z"
+        fill="url(#hi-d)" opacity="0.6"/>
+</svg>
