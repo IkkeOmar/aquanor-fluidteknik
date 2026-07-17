@@ -1031,7 +1031,7 @@ const _fluids={
 let _pipeSyncing = false;
 
 function _pipeRecompute(){
-  const{Q,D_mm,L,eps_mm,fluid:fk}=_pipeState;
+  const{Q,D:D_mm,L,eps:eps_mm,fluid:fk}=_pipeState;
   if(!Q||!D_mm||!L) return null;
   const D=D_mm/1000, eps=eps_mm/1000;
   const A=Math.PI*D*D/4;
