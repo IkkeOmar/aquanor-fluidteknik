@@ -38,8 +38,14 @@ img,svg{max-width:100%;display:block}
 .nav-links a{color:var(--text-dim);font-size:14px;font-weight:500;transition:color .15s}
 .nav-links a:hover{color:var(--accent)}
 .nav-actions{display:flex;align-items:center;gap:12px}
-.lang-toggle{font-family:var(--mono);font-size:12px;font-weight:600;padding:6px 10px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--text-dim);cursor:pointer;transition:all .15s}
+.lang-toggle{font-family:var(--mono);font-size:12px;font-weight:600;padding:6px 10px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--text-dim);cursor:pointer;transition:all .15s;min-width:46px}
 .lang-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.lang-toggle:active{transform:scale(.96)}
+.lang-toggle.flash{animation:langFlash .7s ease}
+@keyframes langFlash{
+  0%{background:var(--accent);color:#fff;border-color:var(--accent)}
+  100%{background:transparent;color:var(--text-dim);border-color:var(--border)}
+}
 .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:var(--text)}
 .hamburger span{display:block;width:22px;height:2px;background:var(--text);margin:5px 0;transition:transform .2s}
 .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
@@ -730,7 +736,7 @@ const I18N={
     "bridge.left1":"VVS-installatører og entreprenører","bridge.left2":"Kommunale indkøbere og forsyningsselskaber","bridge.left3":"Byggeledelse og tilsyn","bridge.left4":"Driftsansvarlige på fjernvarme og procesanlæg","bridge.left5":"Myndighedsgodkendelser og DS-standarder",
     "bridge.center_label":"Mellemled","bridge.center_tag":"Ingeniørberegninger → bygbare løsninger",
     "bridge.right_title":"Ingeniørverdenen",
-    "bridge.right1":"CFD-analyse (OpenFOAM, SU2)","bridge.right2":"FEM-strukturanalyse (Elmer FEM, CalculiX)","bridge.right3":"Fluidmekanik og strømningslære","bridge.right4":"Termodynamik og varmetransport","bridge.right5":"Visualisering og rapportering (ParaView)","bridge.right6":"Varme- og masseoverførsel i hardware og serverkøling",
+    "bridge.right1":"CFD-analyse (OpenFOAM, SU2)","bridge.right2":"FEM-strukturanalyse (Elmer FEM, CalculiX)","bridge.right3":"Fluidmekanik og strømningslære","bridge.right4":"Termodynamik og varmetransport","bridge.right5":"Visualisering og rapportering (ParaView)","bridge.right6":"Varme- og masseoverførsel i hardware og serverkøling","bridge.right7":"Væskekøling af servere, GPU-racks og custom hardware-loops","bridge.right8":"Single- og two-phase kølemedier, immersion og cold-plate",
     "cap.eyebrow":"Ydelser","cap.title":"Seks discipliner, ét fagligt fundament.","cap.lead":"Vi dækker hele kæden fra simuleringsmodel til idriftsat anlæg — med samme ingeniør som ansvarlig fra start til slut.","cap.readmore":"Læs mere →",
     "cap1.title":"CFD-analyse","cap1.desc":"Computational Fluid Dynamics — beregning af tryk, hastighed og temperatur i rør, ventiler og komponenter. Vi bruger open-source-værktøjer (OpenFOAM, SU2) der kan verificeres linje for linje.",
     "cap2.title":"FEM-strukturanalyse","cap2.desc":"Finite Element Method til styrkeberegning af rør, beholdere og understøtninger. Vi verificerer, at komponenter holder til tryk, temperatur og vibrationer i hele deres levetid.",
@@ -826,9 +832,34 @@ function setLang(lang){
     const v=I18N[lang][key];
     if(v!==undefined){el.innerHTML=v}
   });
-  document.getElementById('langToggle').textContent=lang==='da'?'EN':'DA';
+  const btn = document.getElementById('langToggle');
+  if(btn){
+    btn.textContent=lang==='da'?'EN':'DA';
+    btn.setAttribute('aria-label', lang==='da' ? 'Switch to English' : 'Skift til dansk');
+    // brief flash so the user gets immediate visual confirmation
+    btn.classList.remove('flash');
+    void btn.offsetWidth; // restart animation
+    btn.classList.add('flash');
+  }
+  // Update side-nav labels too (they reuse nav.* keys, but be explicit)
+  document.querySelectorAll('.side-nav [data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    const v=I18N[lang][key];
+    if(v!==undefined){el.innerHTML=v}
+  });
 }
-document.getElementById('langToggle').addEventListener('click',()=>setLang(curLang==='da'?'en':'da'));
+const _langBtn = document.getElementById('langToggle');
+if(_langBtn){
+  _langBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    setLang(curLang==='da'?'en':'da');
+  });
+  // Support keyboard
+  _langBtn.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); setLang(curLang==='da'?'en':'da'); }
+  });
+}
 setLang(curLang);
 
 /* === DARCY-WEISBACH CALCULATOR === */
