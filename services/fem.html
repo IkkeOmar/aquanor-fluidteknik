@@ -55,49 +55,67 @@
     <a href="../index.html#beregner" class="page-cta-ghost" data-i18n="nav.calc">Beregner</a>
   </div>
   <div class="hero-visual">
-    <h4 data-i18n="hero.visual">Teknisk reference</h4>
-    <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <linearGradient id="femBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2129"/><stop offset="1" stop-color="#0d1117"/></linearGradient>
-      <radialGradient id="vonMises"><stop offset="0" stop-color="#ff6b1a"/><stop offset=".5" stop-color="#d29922"/><stop offset="1" stop-color="#58a6ff"/></radialGradient>
-    </defs>
-    <rect width="320" height="240" fill="url(#femBg)" rx="8"/>
-    <!-- Pipe cylinder cross-section -->
-    <g transform="translate(160 110)">
-      <circle r="60" fill="none" stroke="#30363d" stroke-width="2"/>
-      <circle r="50" fill="none" stroke="#30363d" stroke-width="1.5"/>
-      <circle r="60" fill="url(#vonMises)" opacity=".5"/>
-      <!-- Mesh lines -->
-      <g opacity=".4" stroke="#8b949e" stroke-width=".5" fill="none">
-        <line x1="-60" y1="0" x2="60" y2="0"/>
-        <line x1="0" y1="-60" x2="0" y2="60"/>
-        <line x1="-42" y1="-42" x2="42" y2="42"/>
-        <line x1="-42" y1="42" x2="42" y2="-42"/>
-        <circle r="20" fill="none"/>
-        <circle r="35" fill="none"/>
-      </g>
-      <!-- Radial stress arrows -->
-      <g stroke="#ff6b1a" stroke-width="1.5" fill="#ff6b1a">
-        <line x1="-65" y1="0" x2="-55" y2="0" marker-end="url(#arrF)"/>
-        <line x1="55" y1="0" x2="65" y2="0"/>
-        <line x1="0" y1="-65" x2="0" y2="-55"/>
-        <line x1="0" y1="55" x2="0" y2="65"/>
-      </g>
-      <!-- Hoop stress arrows -->
-      <g stroke="#d29922" stroke-width="1.5" fill="none">
-        <path d="M -60 -5 A 60 60 0 0 1 -55 -10" />
-        <path d="M 60 5 A 60 60 0 0 1 55 10" />
-      </g>
-    </g>
-    <defs>
-      <marker id="arrF" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-        <path d="M0,0 L6,3 L0,6 Z" fill="#ff6b1a"/>
-      </marker>
-    </defs>
-    <text x="160" y="40" font-family="JetBrains Mono" font-size="11" fill="#8b949e" text-anchor="middle">cylindrisk trykbeholder</text>
-    <text x="160" y="200" font-family="JetBrains Mono" font-size="10" fill="#ff6b1a" text-anchor="middle">σ_vM = √(½·[(σ₁-σ₂)² + (σ₂-σ₃)² + (σ₃-σ₁)²])</text>
-    <text x="160" y="218" font-family="JetBrains Mono" font-size="10" fill="#8b949e" text-anchor="middle">von Mises spænding</text>
-  </svg>
+    <h4 data-i18n="hero.visual">Teknisk reference · interaktiv</h4>
+    <div class="fem-calc" aria-label="FEM beregner">
+      <div class="fem-calc-row">
+        <label>INTERN TRYK p <span class="v"><span id="femPVal">16</span> bar</span></label>
+        <input type="range" id="femP" min="1" max="100" value="16" step="1">
+      </div>
+      <div class="fem-calc-row">
+        <label>DIAMETER D <span class="v"><span id="femDVal">200</span> mm</span></label>
+        <input type="range" id="femD" min="50" max="600" value="200" step="10">
+      </div>
+      <div class="fem-calc-row">
+        <label>VÆG TYKKELSE t <span class="v"><span id="femTVal">8</span> mm</span></label>
+        <input type="range" id="femT" min="2" max="40" value="8" step="1">
+      </div>
+      <div class="fem-calc-row">
+        <label>MATERIALE</label>
+        <select id="femMat">
+          <option value="235" selected>Stål S235JR (Re 235 MPa)</option>
+          <option value="355">Stål P355GH (Re 355 MPa)</option>
+          <option value="220">Rustfrit 1.4404 (Re 220 MPa)</option>
+          <option value="450">Rustfrit duplex (Re 450 MPa)</option>
+        </select>
+      </div>
+      <svg class="fem-calc-svg" viewBox="0 0 320 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <radialGradient id="vonMisesLive"><stop offset="0" stop-color="#ff6b1a" stop-opacity=".4"/><stop offset=".6" stop-color="#d29922" stop-opacity=".3"/><stop offset="1" stop-color="#58a6ff" stop-opacity=".1"/></radialGradient>
+        </defs>
+        <g transform="translate(160 130)">
+          <!-- Outer wall -->
+          <circle id="femOuter" r="60" fill="none" stroke="#30363d" stroke-width="2"/>
+          <!-- Inner bore -->
+          <circle id="femInner" r="52" fill="none" stroke="#30363d" stroke-width="2"/>
+          <!-- Wall fill -->
+          <circle id="femWall" r="56" fill="url(#vonMisesLive)"/>
+          <!-- Mesh (subtle) -->
+          <g opacity=".25" stroke="#8b949e" stroke-width=".4" fill="none">
+            <line x1="-60" y1="0" x2="60" y2="0"/>
+            <line x1="0" y1="-60" x2="0" y2="60"/>
+            <line x1="-42" y1="-42" x2="42" y2="42"/>
+            <line x1="-42" y1="42" x2="42" y2="-42"/>
+            <circle r="35" fill="none"/>
+            <circle r="45" fill="none"/>
+          </g>
+          <!-- von Mises blob (scales with stress utilization) -->
+          <circle id="femVmBlob" r="0" fill="#ff6b1a" opacity=".5"/>
+          <!-- Radial/hoop stress arrows -->
+          <g stroke="#ff6b1a" stroke-width="1.5" fill="none">
+            <line x1="-68" y1="0" x2="-60" y2="0"/>
+            <line x1="60" y1="0" x2="68" y2="0"/>
+          </g>
+          <text x="0" y="80" font-family="JetBrains Mono" font-size="10" fill="#8b949e" text-anchor="middle" id="femGeoLabel">t = 8 · ID 192 · OD 200</text>
+        </g>
+      </svg>
+      <div class="fem-calc-out">
+        <div class="fem-out"><div class="fem-out-l">σ<sub>hoop</sub></div><div class="fem-out-v" id="femHoop">80 MPa</div></div>
+        <div class="fem-out"><div class="fem-out-l">σ<sub>vM</sub></div><div class="fem-out-v" id="femVm">92 MPa</div></div>
+        <div class="fem-out"><div class="fem-out-l">Sikkerhedsfaktor</div><div class="fem-out-v safe" id="femSf">2.55</div></div>
+        <div class="fem-out"><div class="fem-out-l">Min. godstykkelse</div><div class="fem-out-v" id="femTmin">3.2 mm</div></div>
+      </div>
+      <div class="fem-formula" id="femFormula">σ_hoop = p·D/(2·t)  ·  σ_vM ≈ σ_hoop</div>
+    </div>
   </div>
 </header>
 
@@ -247,7 +265,7 @@
 </footer>
 
 <!-- I18N DATA -->
-<script id="page-i18n" type="application/json">{"strip.oncall": ["Døgnvagt 24/7 — akut assistance hele døgnet", "On-call dispatch 24/7 — emergency assistance around the clock"], "strip.phone": ["+45 86 12 34 56", "+45 86 12 34 56"], "nav.services": ["Ydelser", "Services"], "nav.role": ["Vores rolle", "Our role"], "nav.method": ["Metode", "Method"], "nav.cases": ["Cases", "Cases"], "nav.calc": ["Beregner", "Calculator"], "nav.industries": ["Brancher", "Industries"], "nav.contact": ["Kontakt", "Contact"], "nav.back": ["← Tilbage til forsiden", "← Back to overview"], "footer.tag": ["Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.", "Flow engineering and HVAC consultancy since 2009. We bridge the gap between CFD/FEM analysis and physical installation."], "footer.nav": ["Navigation", "Navigation"], "footer.tools": ["Værktøjer", "Tools"], "footer.made": ["Lavet med ingeniør-præcision i Aarhus", "Engineered with precision in Aarhus"], "footer.copyright": ["© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88", "© 2026 Aquanor Fluidteknik ApS · VAT 39 14 22 88"], "related.title": ["Relaterede ydelser", "Related services"], "related.lead": ["Vi leverer alle seks discipliner med samme ingeniør som ansvarlig fra start til slut.", "We deliver all six disciplines with the same engineer responsible from start to finish."], "cta.title": ["Har du et projekt, der kræver denne disciplin?", "Got a project that needs this discipline?"], "cta.lead": ["Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.", "Send a short description — we'll get back with an assessment of what's needed and what it costs."], "cta.button": ["Kontakt os →", "Get in touch →"], "title": ["FEM-strukturanalyse — styrkeberegning af rør, beholdere og understøtninger", "FEM structural analysis — strength verification of pipes, vessels, and supports"], "eyebrow": ["Ydelse 02 · Finite Element Method", "Service 02 · Finite Element Method"], "lead": ["Finite Element Method opløser ligevægtsligninger for spændinger og deformationer i en vilkårlig 3D-geometri. Vi verificerer, at din komponent holder til det specificerede tryk, den specificerede temperatur og den specificerede levetid — i henhold til EN 13445, ASME VIII eller PED.", "Finite Element Method solves equilibrium equations for stresses and deformations in arbitrary 3D geometry. We verify that your component withstands the specified pressure, the specified temperature, and the specified service life — per EN 13445, ASME VIII, or PED."], "tags": [["Elmer FEM", "CalculiX", "EN 13445", "stress linearization", "PED", "varmespænding"], ["Elmer FEM", "CalculiX", "EN 13445", "stress linearization", "PED", "thermal stress"]], "sections": {"princip": ["Princippet bag FEM", "The FEM principle"], "elementer": ["Elementtyper & mesh", "Element types & mesh"], "materialer": ["Materialer & modeller", "Materials & models"], "kategorier": ["Stress-kategorisering", "Stress categorisation"], "standarder": ["Standarder", "Standards"], "lasttilfælde": ["Lasttilfælde", "Load cases"], "leverance": ["Hvad du får", "What you receive"]}}</script>
+<script id="page-i18n" type="application/json">{"strip.oncall": ["Døgnvagt 24/7 — akut assistance hele døgnet", "On-call dispatch 24/7 — emergency assistance around the clock"], "strip.phone": ["+45 86 12 34 56", "+45 86 12 34 56"], "nav.services": ["Ydelser", "Services"], "nav.role": ["Vores rolle", "Our role"], "nav.method": ["Metode", "Method"], "nav.cases": ["Cases", "Cases"], "nav.calc": ["Beregner", "Calculator"], "nav.industries": ["Brancher", "Industries"], "nav.contact": ["Kontakt", "Contact"], "nav.back": ["← Tilbage til forsiden", "← Back to overview"], "footer.tag": ["Strømningsteknik og VVS-rådgivning siden 2009. Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation.", "Flow engineering and HVAC consultancy since 2009. We bridge the gap between CFD/FEM analysis and physical installation."], "footer.nav": ["Navigation", "Navigation"], "footer.tools": ["Værktøjer", "Tools"], "footer.made": ["Lavet med ingeniør-præcision i Aarhus", "Engineered with precision in Aarhus"], "footer.copyright": ["© 2026 Aquanor Fluidteknik ApS · CVR 39 14 22 88", "© 2026 Aquanor Fluidteknik ApS · VAT 39 14 22 88"], "related.title": ["Relaterede ydelser", "Related services"], "related.lead": ["Vi leverer alle seks discipliner med samme ingeniør som ansvarlig fra start til slut.", "We deliver all six disciplines with the same engineer responsible from start to finish."], "cta.title": ["Har du et projekt, der kræver denne disciplin?", "Got a project that needs this discipline?"], "cta.lead": ["Send en kort beskrivelse — vi vender tilbage med en vurdering af, hvad der skal til, og hvad det koster.", "Send a short description — we'll get back with an assessment of what's needed and what it costs."], "cta.button": ["Kontakt os →", "Get in touch →"], "hero.visual": ["Teknisk reference · interaktiv", "Technical reference · interactive"], "widget.p_label": ["Intern tryk p", "Internal pressure p"], "widget.d_label": ["Diameter D", "Diameter D"], "widget.t_label": ["Væg tykkelse t", "Wall thickness t"], "widget.mat_label": ["Materiale", "Material"], "widget.hoop": ["σ_hoop", "σ_hoop"], "widget.vm": ["σ_vM", "σ_vM"], "widget.sf": ["Sikkerhedsfaktor", "Safety factor"], "widget.tmin": ["Min. godstykkelse", "Min. wall thickness"], "title": ["FEM-strukturanalyse — styrkeberegning af rør, beholdere og understøtninger", "FEM structural analysis — strength verification of pipes, vessels, and supports"], "eyebrow": ["Ydelse 02 · Finite Element Method", "Service 02 · Finite Element Method"], "lead": ["Finite Element Method opløser ligevægtsligninger for spændinger og deformationer i en vilkårlig 3D-geometri. Vi verificerer, at din komponent holder til det specificerede tryk, den specificerede temperatur og den specificerede levetid — i henhold til EN 13445, ASME VIII eller PED.", "Finite Element Method solves equilibrium equations for stresses and deformations in arbitrary 3D geometry. We verify that your component withstands the specified pressure, the specified temperature, and the specified service life — per EN 13445, ASME VIII, or PED."], "tags": [["Elmer FEM", "CalculiX", "EN 13445", "stress linearization", "PED", "varmespænding"], ["Elmer FEM", "CalculiX", "EN 13445", "stress linearization", "PED", "thermal stress"]], "sections": {"princip": ["Princippet bag FEM", "The FEM principle"], "elementer": ["Elementtyper & mesh", "Element types & mesh"], "materialer": ["Materialer & modeller", "Materials & models"], "kategorier": ["Stress-kategorisering", "Stress categorisation"], "standarder": ["Standarder", "Standards"], "lasttilfælde": ["Lasttilfælde", "Load cases"], "leverance": ["Hvad du får", "What you receive"]}}</script>
 
 <script>
 (function(){
@@ -328,6 +346,71 @@
       _scrollTick = true;
     }
   }, {passive:true});
+
+  // FEM interactive calculator
+  (function(){
+    const P = document.getElementById('femP');
+    const D = document.getElementById('femD');
+    const T = document.getElementById('femT');
+    const M = document.getElementById('femMat');
+    if(!P || !D || !T || !M) return;
+    const PVal = document.getElementById('femPVal');
+    const DVal = document.getElementById('femDVal');
+    const TVal = document.getElementById('femTVal');
+    const Hoop = document.getElementById('femHoop');
+    const Vm = document.getElementById('femVm');
+    const Sf = document.getElementById('femSf');
+    const Tmin = document.getElementById('femTmin');
+    const GeoLabel = document.getElementById('femGeoLabel');
+    const VmBlob = document.getElementById('femVmBlob');
+    const Outer = document.getElementById('femOuter');
+    const Inner = document.getElementById('femInner');
+    const Wall = document.getElementById('femWall');
+    const Formula = document.getElementById('femFormula');
+    const SAFETY_FACTOR = 1.5; // EN 13445 typical
+    function compute(){
+      const pBar = +P.value;            // bar
+      const dMm  = +D.value;            // mm
+      const tMm  = +T.value;            // mm
+      const ReMPa = +M.value;           // MPa
+      const pMPa = pBar * 0.1;          // 1 bar = 0.1 MPa
+      const tReqMm = (pMPa * dMm) / (2 * ReMPa / SAFETY_FACTOR); // Barlow rearranged, in mm
+      // hoop stress = p*D/(2*t)
+      const hoopMPa = (pMPa * dMm) / (2 * tMm);
+      // approximate von Mises ≈ hoop for thin wall (axial << hoop)
+      const vmMPa = hoopMPa * 1.04;
+      // safety factor = Re / vm
+      const sf = ReMPa / Math.max(vmMPa, 0.01);
+      // update numeric outputs
+      PVal.textContent = pBar;
+      DVal.textContent = dMm;
+      TVal.textContent = tMm;
+      Hoop.textContent = hoopMPa.toFixed(1) + ' MPa';
+      Vm.textContent = vmMPa.toFixed(1) + ' MPa';
+      Tmin.textContent = Math.max(0.1, tReqMm).toFixed(1) + ' mm';
+      GeoLabel.textContent = 't = ' + tMm + ' · ID ' + (dMm - 2*tMm) + ' · OD ' + dMm;
+      // color safety factor
+      Sf.classList.remove('safe','warn','danger');
+      if(sf >= 1.5){ Sf.classList.add('safe'); }
+      else if(sf >= 1.0){ Sf.classList.add('warn'); }
+      else { Sf.classList.add('danger'); }
+      Sf.textContent = sf.toFixed(2);
+      // scale SVG geometry: outer=60, inner=tMm-derived; cap thickness mapping
+      // map wall thickness slider [2..40] → SVG inner radius [50..30]
+      const innerR = 60 - Math.min(28, Math.max(4, (tMm * 1.2)));
+      Inner.setAttribute('r', innerR.toFixed(1));
+      Wall.setAttribute('r', ((60 + innerR) / 2).toFixed(1));
+      // von Mises blob: 0..1 utilization, radius 0..35
+      const util = Math.min(1.0, vmMPa / ReMPa);
+      VmBlob.setAttribute('r', (util * 38).toFixed(1));
+      VmBlob.setAttribute('fill', util > 1.0 ? '#f85149' : util > 0.66 ? '#d29922' : '#3fb950');
+      VmBlob.setAttribute('opacity', Math.max(0.15, util).toFixed(2));
+      // formula line
+      Formula.textContent = 'σ_hoop = p·D/(2·t) = ' + hoopMPa.toFixed(1) + ' MPa  ·  σ_vM ≈ σ_hoop  ·  SF = Re/σ_vM = ' + sf.toFixed(2);
+    }
+    [P, D, T, M].forEach(el => el.addEventListener('input', compute));
+    compute();
+  })();
 
   // Reveal on scroll
   const obs = new IntersectionObserver((entries) => {
