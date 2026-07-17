@@ -114,19 +114,40 @@
 <div class="formula reveal" data-delay="1">Colebrook-White (implicit):  1/√f = −2·log₁₀(ε/(3.7·D) + 2.51/(Re·√f))</div>
 <div class="formula reveal" data-delay="1">Swamee-Jain (eksplicit, nøjagtig inden for 1–2%):  f = 0.25 / [log₁₀(ε/(3.7·D) + 5.74/Re⁰·⁹)]²</div>
 <div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Colebrook-White er en implicit ligning — f optræder på begge sider. Vi løser den iterativt (40 iterationer er nok til konvergens &amp;lt; 10⁻⁸). Swamee-Jain er en eksplicit approksimation der giver nøjagtighed inden for 1–2% af Colebrook-White over hele det praktiske område (Re &amp;gt; 5000, 10⁻⁶ &amp;lt; ε/D &amp;lt; 10⁻²). Den er ideel til håndregning eller indlejrede beregnings-værktøjer." data-en="Colebrook-White is an implicit equation — f appears on both sides. We solve it iteratively (40 iterations are enough for convergence &amp;lt; 10⁻⁸). Swamee-Jain is an explicit approximation accurate within 1–2% of Colebrook-White over the full practical range (Re &amp;gt; 5000, 10⁻⁶ &amp;lt; ε/D &amp;lt; 10⁻²). Ideal for hand calculations or embedded tools.">Colebrook-White er en implicit ligning — f optræder på begge sider. Vi løser den iterativt (40 iterationer er nok til konvergens &lt; 10⁻⁸). Swamee-Jain er en eksplicit approksimation der giver nøjagtighed inden for 1–2% af Colebrook-White over hele det praktiske område (Re &gt; 5000, 10⁻⁶ &lt; ε/D &lt; 10⁻²). Den er ideel til håndregning eller indlejrede beregnings-værktøjer.</p></div>
-<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="reveal" data-delay="1"><table class="spec"><thead><tr><th>Regime</th><th>Re-område</th><th>f</th></tr></thead><tbody>
+             <tr><td>Laminar</td><td>Re &lt; 2300</td><td>f = 64/Re  (teoretisk, ingen afhængighed af ε)</td></tr>
+             <tr><td>Transitional</td><td>2300 &lt; Re &lt; 4000</td><td>Colebrook-White (upålidelig; undgå at designe i dette område)</td></tr>
+             <tr><td>Turbulent</td><td>Re &gt; 4000</td><td>Colebrook-White eller Swamee-Jain</td></tr>
+             <tr><td>Helt turbulent (rough)</td><td>Re → ∞</td><td>f = 1 / [2·log₁₀(3.7·D/ε)]²  (uafhængig af Re)</td></tr>
+             </tbody></table></div>
 </div>
 <div class="block" id="fittings">
 <h2 data-i18n-da="Fittings &amp; K-værdier">Fittings & K-værdier</h2>
 <div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="For hver komponent i rørsystemet — bøjning, T-rør, ventil, pludselig indsnævring — kan tryktabet enten udtrykkes som en ækvivalent længde L_eq/D (Tillads-metoden) eller som en K-værdi (singularitets-metoden). Vi bruger K-værdier, fordi de er uafhængige af rør-diameteren og kan genbruges direkte." data-en="For each component in the system — bend, tee, valve, sudden contraction — the pressure loss can be expressed either as an equivalent length L_eq/D or as a K-value (singularity method). We use K-values because they're independent of pipe diameter and can be reused directly.">For hver komponent i rørsystemet — bøjning, T-rør, ventil, pludselig indsnævring — kan tryktabet enten udtrykkes som en ækvivalent længde L_eq/D (Tillads-metoden) eller som en K-værdi (singularitets-metoden). Vi bruger K-værdier, fordi de er uafhængige af rør-diameteren og kan genbruges direkte.</p></div>
 <div class="formula reveal" data-delay="1">ΔP_fitting = K · (ρ·v²/2)</div>
-<div class="reveal" data-delay="1"><table class="spec">None</table></div>
+<div class="reveal" data-delay="1"><table class="spec"><thead><tr><th>Fitting</th><th>K (typisk)</th></tr></thead><tbody>
+             <tr><td>90° bøjning, r=1.5·D (long radius)</td><td>0.2</td></tr>
+             <tr><td>90° bøjning, r=1.0·D (standard)</td><td>0.9</td></tr>
+             <tr><td>90° skarp kant (miter)</td><td>1.3</td></tr>
+             <tr><td>T-rør, lige gennemløb</td><td>0.3</td></tr>
+             <tr><td>T-rør, sidegren</td><td>1.0–1.5</td></tr>
+             <tr><td>Kugleventil, fuldt åben</td><td>0.05</td></tr>
+             <tr><td>Sædeventil, fuldt åben</td><td>6–10</td></tr>
+             <tr><td>Butterfly-ventil, fuldt åben</td><td>0.3–1.5</td></tr>
+             <tr><td>Pludselig indsnævring (D₁/D₂=0.5)</td><td>0.4</td></tr>
+             <tr><td>Pludselig ekspansion (D₁/D₂=0.5)</td><td>0.7</td></tr>
+             </tbody></table></div>
 </div>
 <div class="block" id="toefase">
 <h2 data-i18n-da="To-fase strømning">To-fase strømning</h2>
 <div class="reveal" data-delay="1"><p data-i18n-dp="0" data-da="Når to faser strømmer sammen — f.eks. væske og damp, eller to ikke-blandbare væsker — stiger kompleksiteten markant. Der findes ikke én enkelt ligning for tryktab; man skal specificere strømnings-mønsteret (flow pattern) først." data-en="When two phases flow together — e.g. liquid and vapour, or two immiscible liquids — complexity rises sharply. There is no single equation for pressure loss; one must first specify the flow pattern.">Når to faser strømmer sammen — f.eks. væske og damp, eller to ikke-blandbare væsker — stiger kompleksiteten markant. Der findes ikke én enkelt ligning for tryktab; man skal specificere strømnings-mønsteret (flow pattern) først.</p></div>
-<div class="reveal" data-delay="1"><table class="spec">None</table></div>
-<div class="callout warn reveal" data-delay="1"><div class="icon">!</div><p>None</p></div>
+<div class="reveal" data-delay="1"><table class="spec"><thead><tr><th>Mønster</th><th>Beskrivelse</th><th>Model</th></tr></thead><tbody>
+             <tr><td>Bubbly flow</td><td>Dampbobler i væske</td><td>Homogen model (slip ratio ≈ 1)</td></tr>
+             <tr><td>Slug flow</td><td>Periodiske damp-pocket</td><td>Slip + momentum flux korrektion</td></tr>
+             <tr><td>Annular flow</td><td>Væske-film på væggen, damp i kernen</td><td>Separeret model med film-korrelation</td></tr>
+             <tr><td>Dryout</td><td>Film fordamper, væggen tørrer</td><td>Kritisk varmeflux — design-grænse</td></tr>
+             </tbody></table></div>
+<div class="callout warn reveal" data-delay="1"><div class="icon">!</div><p><strong>Dryout er den farligste tilstand</strong> i et væskekølet system: væsken på overfladen fordamper, og varmeoverføringen falder drastisk. Overfladetemperaturen stiger, og komponenten kan fejle på sekunder. Vi designer alle væskekølede systemer til at ligge komfortabelt under dryout-grænsen.</p></div>
 </div>
 <div class="block" id="saltfluid">
 <h2 data-i18n-da="Salt-fluid &amp; høj-temperatur">Salt-fluid & høj-temperatur</h2>
