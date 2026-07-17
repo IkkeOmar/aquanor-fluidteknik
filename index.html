@@ -180,8 +180,7 @@ h3{font-size:clamp(18px,2vw,22px);font-weight:600;margin-bottom:10px}
 .form-row input,.form-row textarea,.form-row select{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:12px;color:var(--text);font-family:var(--sans);font-size:14px;transition:border-color .15s}
 .form-row input:focus,.form-row textarea:focus,.form-row select:focus{outline:none;border-color:var(--accent)}
 .form-row textarea{resize:vertical;min-height:110px;font-family:var(--mono);font-size:13px}
-.form-success{background:rgba(63,185,80,.1);border:1px solid var(--green);color:var(--green);padding:14px;border-radius:6px;font-size:14px;display:none}
-.form-success.show{display:block}
+.form-success{background:rgba(63,185,80,.1);border:1px solid var(--green);color:var(--green);padding:14px;border-radius:6px;font-size:14px}
 
 /* === FOOTER === */
 footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px clamp(16px,4vw,48px) 24px;margin-top:64px}
@@ -194,6 +193,89 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
 .footer-col a{color:var(--text-dim);transition:color .15s}
 .footer-col a:hover{color:var(--accent)}
 .footer-bottom{max-width:1280px;margin:32px auto 0;padding-top:24px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;color:var(--text-faint);font-size:12px;font-family:var(--mono)}
+
+/* === SCROLL PROGRESS === */
+.scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),#ffaa66,var(--accent));width:0;z-index:60;transition:width .08s linear;box-shadow:0 0 10px rgba(255,107,26,.6)}
+@media(prefers-reduced-motion:reduce){.scroll-progress{transition:none}}
+
+/* === NAV SCROLL STATE === */
+.nav{transition:background .3s,border-bottom-color .3s,backdrop-filter .3s,box-shadow .3s}
+.nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,.3)}
+
+/* === REVEAL === */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.revealed{opacity:1;transform:translateY(0)}
+.reveal[data-delay="1"]{transition-delay:.08s}
+.reveal[data-delay="2"]{transition-delay:.16s}
+.reveal[data-delay="3"]{transition-delay:.24s}
+.reveal[data-delay="4"]{transition-delay:.32s}
+.reveal[data-delay="5"]{transition-delay:.40s}
+.reveal[data-delay="6"]{transition-delay:.48s}
+.reveal[data-delay="7"]{transition-delay:.56s}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* === PIPE WIDGET === */
+.pipe-widget{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:clamp(16px,2vw,24px);display:flex;flex-direction:column;gap:16px}
+.pipe-sliders{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 14px}
+@media(max-width:600px){.pipe-sliders{grid-template-columns:1fr}}
+.pipe-slider-row{display:flex;flex-direction:column;gap:4px}
+.pipe-slider-row label{font-family:var(--mono);font-size:10px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between;align-items:baseline}
+.pipe-slider-row label .val{color:var(--accent);font-weight:600}
+.pipe-slider-row input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;cursor:pointer}
+.pipe-slider-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--bg);box-shadow:0 0 8px rgba(255,107,26,.5);transition:transform .15s}
+.pipe-slider-row input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+.pipe-slider-row input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--bg);box-shadow:0 0 8px rgba(255,107,26,.5)}
+.pipe-slider-row select{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:6px 8px;color:var(--text);font-family:var(--mono);font-size:11px;cursor:pointer}
+.regime-badge{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1.5px}
+@keyframes particleMove{0%{transform:translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateX(260px);opacity:0}}
+.pipe-particle{animation:particleMove 2s linear infinite}
+.pipe-particle:nth-child(2){animation-delay:.4s}
+.pipe-particle:nth-child(3){animation-delay:.8s}
+.pipe-particle:nth-child(4){animation-delay:1.2s}
+.pipe-particle:nth-child(5){animation-delay:1.6s}
+@media(prefers-reduced-motion:reduce){.pipe-particle{animation:none}}
+
+/* === CTA SHIMMER === */
+.cta{position:relative;overflow:hidden}
+.cta::after{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:left .6s ease;pointer-events:none}
+.cta:hover::after{left:100%}
+@media(prefers-reduced-motion:reduce){.cta::after{display:none}}
+
+/* === CAPABILITY CARD GLOW === */
+.cap::before{content:"";position:absolute;inset:0;border-radius:10px;padding:1px;background:linear-gradient(135deg,var(--accent) 0%,transparent 50%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .35s;pointer-events:none}
+.cap:hover::before{opacity:1}
+.cap:hover{transform:translateY(-4px);box-shadow:0 12px 28px -10px rgba(255,107,26,.3)}
+
+/* === METHOD STEP DOT === */
+.method-step .step-dot{position:absolute;top:18px;right:18px;width:10px;height:10px;border-radius:50%;border:1.5px solid var(--border);background:transparent;transition:all .5s cubic-bezier(.2,.7,.2,1)}
+.method-step.revealed .step-dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 12px rgba(255,107,26,.6)}
+
+/* === BRIDGE ARROWS PULSE === */
+@keyframes arrowPulse{0%,100%{opacity:.5;transform:translateY(-50%) translateX(0)}50%{opacity:1;transform:translateY(-50%) translateX(4px)}}
+.bridge-center-arrows{animation:arrowPulse 2.4s ease-in-out infinite}
+@keyframes arrowPulseRight{0%,100%{opacity:.5;transform:translateY(-50%) translateX(0)}50%{opacity:1;transform:translateY(-50%) translateX(-4px)}}
+.bridge-center-arrows.right{animation:arrowPulseRight 2.4s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.bridge-center-arrows,.bridge-center-arrows.right{animation:none}}
+
+/* === INDUSTRY 3D TILT === */
+.ind{transform-style:preserve-3d;will-change:transform}
+
+/* === FORM FLOATING LABEL === */
+.form-row{position:relative}
+.form-row label{transition:color .2s}
+.form-row input:focus ~ label,
+.form-row textarea:focus ~ label,
+.form-row select:focus ~ label,
+.form-row:has(input:focus) label,
+.form-row:has(textarea:focus) label,
+.form-row:has(select:focus) label{color:var(--accent)}
+.form-success{transform:translateY(-8px);opacity:0;max-height:0;padding-top:0;padding-bottom:0;margin:0;overflow:hidden;border-width:0;transition:transform .4s cubic-bezier(.2,.7,.2,1),opacity .4s,max-height .4s cubic-bezier(.2,.7,.2,1),padding .4s,margin .4s,border-width .4s}
+.form-success.show{transform:translateY(0);opacity:1;max-height:200px;padding-top:14px;padding-bottom:14px;margin-top:14px;border-width:1px}
+@media(prefers-reduced-motion:reduce){.form-success{transition:opacity .4s,max-height .4s,padding .4s,margin .4s,border-width .4s}}
+
+/* === HAMBURGER PRESS === */
+.hamburger{transition:transform .15s,background .15s}
+.hamburger:active{transform:scale(.92)}
 </style>
 </head>
 <body>
@@ -227,6 +309,8 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
   </div>
 </nav>
 
+<div class="scroll-progress" id="scrollProgress"></div>
+
 <!-- 3. HERO -->
 <section class="hero">
   <div class="hero-text">
@@ -235,15 +319,15 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
     <p class="lead" data-i18n="hero.lead">Vi bygger bro mellem CFD/FEM-analysen og den fysiske installation — fra VVS, fjernvarme og direkte væskekøling af hardware til termisk-hydraulik for saltfluider i avanceret energiteknologi. Aquanor leverer ingeniørberegninger, der kan omsættes direkte til rør, pumper, køleplader, CDU'er og reaktor-kredsløb — uden omskrivning på byggepladsen.</p>
     <div class="hero-stats">
       <div class="stat">
-        <div class="stat-num">700°C</div>
+        <div class="stat-num counter" data-target="700" data-suffix="°C">700°C</div>
         <div class="stat-label" data-i18n="hero.stat1">Saltfluider, termisk-hydraulik</div>
       </div>
       <div class="stat">
-        <div class="stat-num">350+</div>
+        <div class="stat-num counter" data-target="350" data-suffix="+">350+</div>
         <div class="stat-label" data-i18n="hero.stat2">Projekter gennemført</div>
       </div>
       <div class="stat">
-        <div class="stat-num">15 år</div>
+        <div class="stat-num counter" data-target="15" data-suffix=" år">15 år</div>
         <div class="stat-label" data-i18n="hero.stat3">Erfaring i VVS & proces</div>
       </div>
     </div>
@@ -251,38 +335,92 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
     <a href="#beregner" class="cta-ghost" data-i18n="hero.cta2">Prøv beregner</a>
   </div>
   <div>
-    <svg class="pipe-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <linearGradient id="pipeGrad" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stop-color="#30363d"/>
-          <stop offset="1" stop-color="#161b22"/>
-        </linearGradient>
-        <linearGradient id="flowGrad" x1="0" x2="1">
-          <stop offset="0" stop-color="#ff6b1a" stop-opacity="0.2"/>
-          <stop offset=".5" stop-color="#ff6b1a" stop-opacity="1"/>
-          <stop offset="1" stop-color="#ff6b1a" stop-opacity="0.2"/>
-        </linearGradient>
-      </defs>
-      <!-- Pipe body -->
-      <rect x="40" y="120" width="320" height="60" rx="30" fill="none" stroke="url(#pipeGrad)" stroke-width="2"/>
-      <rect x="40" y="120" width="320" height="60" rx="30" fill="none" stroke="#30363d" stroke-width="3"/>
-      <!-- Flow line -->
-      <line x1="60" y1="150" x2="340" y2="150" stroke="url(#flowGrad)" stroke-width="6" stroke-linecap="round" class="flow"/>
-      <!-- Inlet -->
-      <rect x="20" y="135" width="20" height="30" fill="#30363d" stroke="#6e7681"/>
-      <line x1="20" y1="150" x2="40" y2="150" stroke="#8b949e" stroke-width="1.5"/>
-      <!-- Outlet -->
-      <rect x="360" y="135" width="20" height="30" fill="#30363d" stroke="#6e7681"/>
-      <line x1="360" y1="150" x2="380" y2="150" stroke="#8b949e" stroke-width="1.5"/>
-      <!-- Annotations -->
-      <text x="60" y="100" font-family="JetBrains Mono" font-size="11" fill="#8b949e">P₁ inlet</text>
-      <text x="340" y="100" font-family="JetBrains Mono" font-size="11" fill="#8b949e" text-anchor="end">P₂ outlet</text>
-      <text x="200" y="220" font-family="JetBrains Mono" font-size="11" fill="#ff6b1a" text-anchor="middle">ΔP = f(L, D, ρ, v, ε)</text>
-      <!-- Pressure drop arrow -->
-      <line x1="80" y1="200" x2="320" y2="200" stroke="#30363d" stroke-width="1" stroke-dasharray="4 4"/>
-      <polygon points="320,200 312,196 312,204" fill="#ff6b1a"/>
-      <polygon points="80,200 88,196 88,204" fill="#ff6b1a"/>
-    </svg>
+    <div class="pipe-widget">
+      <div class="pipe-sliders">
+        <div class="pipe-slider-row">
+          <label>FLOW Q <span class="val" id="heroQVal">50 m³/h</span></label>
+          <input type="range" id="heroQ" min="5" max="200" value="50" step="1">
+        </div>
+        <div class="pipe-slider-row">
+          <label>DIAMETER D <span class="val" id="heroDVal">100mm</span></label>
+          <input type="range" id="heroD" min="25" max="300" value="100" step="1">
+        </div>
+        <div class="pipe-slider-row">
+          <label>LENGTH L <span class="val" id="heroLVal">100m</span></label>
+          <input type="range" id="heroL" min="10" max="500" value="100" step="1">
+        </div>
+        <div class="pipe-slider-row">
+          <label>ROUGHNESS ε</label>
+          <select id="heroRough">
+            <option value="0.001">Rustfrit stål</option>
+            <option value="0.045" selected>Sort stål / nyt</option>
+            <option value="0.15">Let korroderet</option>
+            <option value="0.5">Galvaniseret</option>
+            <option value="1.0">Ældre støbejern</option>
+            <option value="0.007">PE / PP plast</option>
+          </select>
+        </div>
+        <div class="pipe-slider-row">
+          <label>FLUID</label>
+          <select id="heroFluid">
+            <option value="water20" selected>Vand 20 °C</option>
+            <option value="water60">Vand 60 °C</option>
+            <option value="glycol40">Glykol 40 %</option>
+          </select>
+        </div>
+        <div class="pipe-slider-row">
+          <label>ΔP · V · RE</label>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--accent);padding:6px 0" id="liveFormula">ΔP = — bar</div>
+        </div>
+      </div>
+      <svg class="pipe-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="pipeGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#30363d"/>
+            <stop offset="1" stop-color="#161b22"/>
+          </linearGradient>
+          <linearGradient id="flowGrad" x1="0" x2="1">
+            <stop offset="0" stop-color="#ff6b1a" stop-opacity="0.2"/>
+            <stop offset=".5" stop-color="#ff6b1a" stop-opacity="1"/>
+            <stop offset="1" stop-color="#ff6b1a" stop-opacity="0.2"/>
+          </linearGradient>
+          <clipPath id="pipeClip">
+            <rect x="40" y="120" width="320" height="60" rx="30"/>
+          </clipPath>
+        </defs>
+        <!-- Regime-tinted interior -->
+        <rect x="40" y="120" width="320" height="60" rx="30" fill="rgba(63,185,80,0.08)" id="pipeInterior"/>
+        <!-- Pipe body -->
+        <rect x="40" y="120" width="320" height="60" rx="30" fill="none" stroke="url(#pipeGrad)" stroke-width="2"/>
+        <rect x="40" y="120" width="320" height="60" rx="30" fill="none" stroke="#30363d" stroke-width="3"/>
+        <!-- Animated particles (clipped to pipe interior) -->
+        <g clip-path="url(#pipeClip)">
+          <circle class="pipe-particle" cx="80"  cy="150" r="2.2" fill="#ffffff" opacity="0.85"/>
+          <circle class="pipe-particle" cx="80"  cy="150" r="2.2" fill="#ffd9b8" opacity="0.9"/>
+          <circle class="pipe-particle" cx="80"  cy="150" r="2.2" fill="#ffffff" opacity="0.85"/>
+          <circle class="pipe-particle" cx="80"  cy="150" r="2.2" fill="#ffd9b8" opacity="0.9"/>
+          <circle class="pipe-particle" cx="80"  cy="150" r="2.2" fill="#ffffff" opacity="0.85"/>
+        </g>
+        <!-- Inlet -->
+        <rect x="20" y="135" width="20" height="30" fill="#30363d" stroke="#6e7681"/>
+        <line x1="20" y1="150" x2="40" y2="150" stroke="#8b949e" stroke-width="1.5"/>
+        <!-- Outlet -->
+        <rect x="360" y="135" width="20" height="30" fill="#30363d" stroke="#6e7681"/>
+        <line x1="360" y1="150" x2="380" y2="150" stroke="#8b949e" stroke-width="1.5"/>
+        <!-- Annotations -->
+        <text x="60" y="100" font-family="JetBrains Mono" font-size="11" fill="#8b949e">P₁ inlet</text>
+        <text x="340" y="100" font-family="JetBrains Mono" font-size="11" fill="#8b949e" text-anchor="end">P₂ outlet</text>
+        <!-- Regime badge -->
+        <g>
+          <rect x="295" y="80" width="90" height="16" rx="8" id="regimeBadgeBg" fill="#3fb950"/>
+          <text x="340" y="92" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#0d1117" text-anchor="middle" id="regimeBadge">LAMINAR</text>
+        </g>
+        <!-- Pressure drop bar -->
+        <text x="60" y="225" font-family="JetBrains Mono" font-size="10" fill="#8b949e">ΔP</text>
+        <rect x="80" y="218" width="260" height="8" rx="4" fill="#1c2129" stroke="#30363d" stroke-width="0.5"/>
+        <rect x="80" y="218" width="0" height="8" rx="4" id="dpBar" fill="#3fb950"/>
+      </svg>
+    </div>
   </div>
 </section>
 
@@ -333,12 +471,12 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
   <h2 data-i18n="cap.title">Seks discipliner, ét fagligt fundament.</h2>
   <p class="section-lead" data-i18n="cap.lead">Vi dækker hele kæden fra simuleringsmodel til idriftsat anlæg — med samme ingeniør som ansvarlig fra start til slut.</p>
   <div class="cap-grid">
-    <div class="cap"><div class="cap-num">01</div><div class="cap-icon">∿</div><h3 data-i18n="cap1.title">CFD-analyse</h3><p class="cap-desc" data-i18n="cap1.desc">Computational Fluid Dynamics — beregning af tryk, hastighed og temperatur i rør, ventiler og komponenter. Vi bruger open-source-værktøjer (OpenFOAM, SU2) der kan verificeres linje for linje.</p></div>
-    <div class="cap"><div class="cap-num">02</div><div class="cap-icon">▦</div><h3 data-i18n="cap2.title">FEM-strukturanalyse</h3><p class="cap-desc" data-i18n="cap2.desc">Finite Element Method til styrkeberegning af rør, beholdere og understøtninger. Vi verificerer, at komponenter holder til tryk, temperatur og vibrationer i hele deres levetid.</p></div>
-    <div class="cap"><div class="cap-num">03</div><div class="cap-icon">⏚</div><h3 data-i18n="cap3.title">Rørsystem-design</h3><p class="cap-desc" data-i18n="cap3.desc">Fra procesdiagram til isometrisk tegning. Vi dimensionerer rør, vælger fittings og sikrer, at layout kan bygges uden kollisioner — uanset om det er sort stål, rustfrit eller PE.</p></div>
-    <div class="cap"><div class="cap-num">04</div><div class="cap-icon">Δ</div><h3 data-i18n="cap4.title">Trykfalds-beregning</h3><p class="cap-desc" data-i18n="cap4.desc">Darcy-Weisbach og Colebrook-White. Vi beregner nøjagtigt energitab over rørstrækninger, ventiler og fittings — så pumpestørrelsen passer, og anlægget kører effektivt.</p></div>
-    <div class="cap"><div class="cap-num">05</div><div class="cap-icon">⊙</div><h3 data-i18n="cap5.title">Pumpe-udvælgelse</h3><p class="cap-desc" data-i18n="cap5.desc">Valg af centrifugalpumpe, cirkulationspumpe eller doseerpumpe baseret på systemkurve, driftspunkt og NPSH. Vi leverer dokumentation der holder til myndighedernes tilsyn.</p></div>
-    <div class="cap"><div class="cap-num">06</div><div class="cap-icon">θ</div><h3 data-i18n="cap6.title">Termisk simulering</h3><p class="cap-desc" data-i18n="cap6.desc">Transient og stationær varmetransport — fra varmevekslere til fjernvarmeledninger. Vi forudsiger temperaturfald, energitab og responstid før anlægget bygges.</p></div>
+    <div class="cap reveal" data-delay="1"><div class="cap-num">01</div><div class="cap-icon">∿</div><h3 data-i18n="cap1.title">CFD-analyse</h3><p class="cap-desc" data-i18n="cap1.desc">Computational Fluid Dynamics — beregning af tryk, hastighed og temperatur i rør, ventiler og komponenter. Vi bruger open-source-værktøjer (OpenFOAM, SU2) der kan verificeres linje for linje.</p></div>
+    <div class="cap reveal" data-delay="2"><div class="cap-num">02</div><div class="cap-icon">▦</div><h3 data-i18n="cap2.title">FEM-strukturanalyse</h3><p class="cap-desc" data-i18n="cap2.desc">Finite Element Method til styrkeberegning af rør, beholdere og understøtninger. Vi verificerer, at komponenter holder til tryk, temperatur og vibrationer i hele deres levetid.</p></div>
+    <div class="cap reveal" data-delay="3"><div class="cap-num">03</div><div class="cap-icon">⏚</div><h3 data-i18n="cap3.title">Rørsystem-design</h3><p class="cap-desc" data-i18n="cap3.desc">Fra procesdiagram til isometrisk tegning. Vi dimensionerer rør, vælger fittings og sikrer, at layout kan bygges uden kollisioner — uanset om det er sort stål, rustfrit eller PE.</p></div>
+    <div class="cap reveal" data-delay="4"><div class="cap-num">04</div><div class="cap-icon">Δ</div><h3 data-i18n="cap4.title">Trykfalds-beregning</h3><p class="cap-desc" data-i18n="cap4.desc">Darcy-Weisbach og Colebrook-White. Vi beregner nøjagtigt energitab over rørstrækninger, ventiler og fittings — så pumpestørrelsen passer, og anlægget kører effektivt.</p></div>
+    <div class="cap reveal" data-delay="5"><div class="cap-num">05</div><div class="cap-icon">⊙</div><h3 data-i18n="cap5.title">Pumpe-udvælgelse</h3><p class="cap-desc" data-i18n="cap5.desc">Valg af centrifugalpumpe, cirkulationspumpe eller doseerpumpe baseret på systemkurve, driftspunkt og NPSH. Vi leverer dokumentation der holder til myndighedernes tilsyn.</p></div>
+    <div class="cap reveal" data-delay="6"><div class="cap-num">06</div><div class="cap-icon">θ</div><h3 data-i18n="cap6.title">Termisk simulering</h3><p class="cap-desc" data-i18n="cap6.desc">Transient og stationær varmetransport — fra varmevekslere til fjernvarmeledninger. Vi forudsiger temperaturfald, energitab og responstid før anlægget bygges.</p></div>
   </div>
 </section>
 
@@ -348,11 +486,11 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
   <h2 data-i18n="meth.title">Fem faser. Ingen spring.</h2>
   <p class="section-lead" data-i18n="meth.lead">Hvert projekt følger samme fem-trins model. Det sikrer, at beregninger og installation taler samme sprog — og at intet overrasker på byggepladsen.</p>
   <div class="method-grid">
-    <div class="method-step"><div class="method-num">01</div><h3 data-i18n="meth1.title">Opgave</h3><p data-i18n="meth1.desc">Vi starter med at forstå problemet — ikke løsningen. Hvad skal anlægget levere, og hvilke begrænsninger gælder?</p></div>
-    <div class="method-step"><div class="method-num">02</div><h3 data-i18n="meth2.title">Dataindsamling</h3><p data-i18n="meth2.desc">Målinger, driftsdata, tegninger og standarder. Vi verificerer alle input, før vi regner — fordi dårlige input giver dårlige beregninger.</p></div>
-    <div class="method-step"><div class="method-num">03</div><h3 data-i18n="meth3.title">Modellering</h3><p data-i18n="meth3.desc">CFD- og FEM-modeller opbygges i OpenFOAM, Elmer FEM og CalculiX. Hver antagelse dokumenteres, så den kan auditeres.</p></div>
-    <div class="method-step"><div class="method-num">04</div><h3 data-i18n="meth4.title">Verifikation</h3><p data-i18n="meth4.desc">Resultater sammenlignes med håndberegninger, felterfaring og publicerede korrelationer. Vi afleverer ikke et resultat vi ikke kan forklare.</p></div>
-    <div class="method-step"><div class="method-num">05</div><h3 data-i18n="meth5.title">Implementering</h3><p data-i18n="meth5.desc">Beregninger omsættes til konkrete komponentvalg, tegninger og specifikationer — klar til installatør og indkøb.</p></div>
+    <div class="method-step reveal" data-delay="1"><span class="step-dot"></span><div class="method-num">01</div><h3 data-i18n="meth1.title">Opgave</h3><p data-i18n="meth1.desc">Vi starter med at forstå problemet — ikke løsningen. Hvad skal anlægget levere, og hvilke begrænsninger gælder?</p></div>
+    <div class="method-step reveal" data-delay="2"><span class="step-dot"></span><div class="method-num">02</div><h3 data-i18n="meth2.title">Dataindsamling</h3><p data-i18n="meth2.desc">Målinger, driftsdata, tegninger og standarder. Vi verificerer alle input, før vi regner — fordi dårlige input giver dårlige beregninger.</p></div>
+    <div class="method-step reveal" data-delay="3"><span class="step-dot"></span><div class="method-num">03</div><h3 data-i18n="meth3.title">Modellering</h3><p data-i18n="meth3.desc">CFD- og FEM-modeller opbygges i OpenFOAM, Elmer FEM og CalculiX. Hver antagelse dokumenteres, så den kan auditeres.</p></div>
+    <div class="method-step reveal" data-delay="4"><span class="step-dot"></span><div class="method-num">04</div><h3 data-i18n="meth4.title">Verifikation</h3><p data-i18n="meth4.desc">Resultater sammenlignes med håndberegninger, felterfaring og publicerede korrelationer. Vi afleverer ikke et resultat vi ikke kan forklare.</p></div>
+    <div class="method-step reveal" data-delay="5"><span class="step-dot"></span><div class="method-num">05</div><h3 data-i18n="meth5.title">Implementering</h3><p data-i18n="meth5.desc">Beregninger omsættes til konkrete komponentvalg, tegninger og specifikationer — klar til installatør og indkøb.</p></div>
   </div>
 </section>
 
@@ -361,7 +499,7 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
   <span class="eyebrow" data-i18n="case.eyebrow">Case</span>
   <h2 data-i18n="case.title">Aalborg Fjernvarme — 28 % tryktab reduktion.</h2>
   <p class="section-lead" data-i18n="case.lead">En distributionsledning med forhøjet tryktab blev analyseret, redesignet og idriftsat. Resultat: lavere pumpeenergi, færre klager, dokumenteret besparelse.</p>
-  <div class="case">
+  <div class="case reveal">
     <div>
       <div class="case-tag" data-i18n="case.tag">Fjernvarme • 2024</div>
       <h3 data-i18n="case.h3">Fra CFD-model til idriftsat ledning</h3>
@@ -373,7 +511,7 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
       </div>
     </div>
     <div class="case-metric">
-      <div class="case-metric-num">28%</div>
+      <div class="case-metric-num counter" data-target="28" data-suffix="%">28%</div>
       <div class="case-metric-label" data-i18n="case.metric_label">Reduktion i tryktab</div>
     </div>
   </div>
@@ -384,7 +522,7 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
   <span class="eyebrow" data-i18n="calc.eyebrow">Beregningsværktøj</span>
   <h2 data-i18n="calc.title">Trykfalds-beregner — Darcy-Weisbach</h2>
   <p class="section-lead" data-i18n="calc.lead">Indtast flow, rørdimension og ruhed. Vi beregner energitab over rørstrækningen med Colebrook-White til overgangs- og turbulente regimer.</p>
-  <div class="calc-wrap">
+  <div class="calc-wrap reveal">
     <div class="calc-inputs">
       <div class="calc-row">
         <label data-i18n="calc.q">Flow Q (m³/h)</label>
@@ -433,13 +571,13 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
   <span class="eyebrow" data-i18n="ind.eyebrow">Brancher</span>
   <h2 data-i18n="ind.title">Vi arbejder på tværs af syv sektorer.</h2>
   <div class="ind-grid">
-    <div class="ind"><span class="ind-icon">♨</span><div class="ind-name" data-i18n="ind1">Fjernvarme</div></div>
-    <div class="ind"><span class="ind-icon">⚗</span><div class="ind-name" data-i18n="ind2">Pharma</div></div>
-    <div class="ind"><span class="ind-icon">🍞</span><div class="ind-name" data-i18n="ind3">Fødevarer</div></div>
-    <div class="ind"><span class="ind-icon">⚙</span><div class="ind-name" data-i18n="ind4">Procesindustri</div></div>
-    <div class="ind"><span class="ind-icon">🏛</span><div class="ind-name" data-i18n="ind5">Kommunal</div></div>
-    <div class="ind"><span class="ind-icon">⚓</span><div class="ind-name" data-i18n="ind6">Marine</div></div>
-    <div class="ind"><span class="ind-icon">🖥</span><div class="ind-name" data-i18n="ind7">Hardware & salt-fluidteknologi</div></div>
+    <div class="ind reveal" data-delay="1"><span class="ind-icon">♨</span><div class="ind-name" data-i18n="ind1">Fjernvarme</div></div>
+    <div class="ind reveal" data-delay="2"><span class="ind-icon">⚗</span><div class="ind-name" data-i18n="ind2">Pharma</div></div>
+    <div class="ind reveal" data-delay="3"><span class="ind-icon">🍞</span><div class="ind-name" data-i18n="ind3">Fødevarer</div></div>
+    <div class="ind reveal" data-delay="4"><span class="ind-icon">⚙</span><div class="ind-name" data-i18n="ind4">Procesindustri</div></div>
+    <div class="ind reveal" data-delay="5"><span class="ind-icon">🏛</span><div class="ind-name" data-i18n="ind5">Kommunal</div></div>
+    <div class="ind reveal" data-delay="6"><span class="ind-icon">⚓</span><div class="ind-name" data-i18n="ind6">Marine</div></div>
+    <div class="ind reveal" data-delay="7"><span class="ind-icon">🖥</span><div class="ind-name" data-i18n="ind7">Hardware & salt-fluidteknologi</div></div>
   </div>
 </section>
 
@@ -448,7 +586,7 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
   <span class="eyebrow" data-i18n="cred.eyebrow">Standarder & værktøjer</span>
   <h2 data-i18n="cred.title">Dokumenteret faglighed — åben for revision.</h2>
   <div class="cred-grid">
-    <div class="cred-block">
+    <div class="cred-block reveal">
       <h3 data-i18n="cred.std">Standarder vi arbejder efter</h3>
       <ul class="cred-list">
         <li>DS/EN 13480 — trykbærende rørledninger</li>
@@ -458,7 +596,7 @@ footer{background:var(--bg-elev);border-top:1px solid var(--border);padding:48px
         <li>DS/EN 378 — køle- og varmepumpeanlæg</li>
       </ul>
     </div>
-    <div class="cred-block">
+    <div class="cred-block reveal">
       <h3 data-i18n="cred.sw">Open-source software-stack</h3>
       <ul class="cred-list">
         <li>OpenFOAM — CFD</li>
@@ -714,6 +852,213 @@ document.getElementById('contactForm').addEventListener('submit',e=>{
   setTimeout(()=>document.getElementById('formSuccess').classList.remove('show'),5000);
   e.target.reset();
 });
+
+/* === SCROLL PROGRESS === */
+let _scrollTick = false;
+window.addEventListener('scroll',()=>{
+  if(!_scrollTick){
+    requestAnimationFrame(()=>{
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      const bar = document.getElementById('scrollProgress');
+      if(bar) bar.style.width = pct + '%';
+      _scrollTick = false;
+    });
+    _scrollTick = true;
+  }
+},{passive:true});
+
+/* === NAV SCROLL STATE === */
+const _navEl = document.querySelector('.nav');
+function _updateNavScroll(){
+  if(window.scrollY > 80) _navEl.classList.add('scrolled');
+  else _navEl.classList.remove('scrolled');
+}
+window.addEventListener('scroll',_updateNavScroll,{passive:true});
+_updateNavScroll();
+
+/* === SCROLL REVEAL === */
+const _revealObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('revealed');
+      _revealObs.unobserve(e.target);
+    }
+  });
+},{threshold:.15,rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.reveal').forEach(el=>_revealObs.observe(el));
+
+/* === COUNTER ANIMATION === */
+function _animateCounter(el){
+  if(el.dataset.counted) return;
+  el.dataset.counted = '1';
+  const target = parseFloat(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const decimals = parseInt(el.dataset.decimals || '0');
+  const duration = 1200;
+  const start = performance.now();
+  function tick(now){
+    const t = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = (target * eased).toFixed(decimals) + suffix;
+    if(t < 1) requestAnimationFrame(tick);
+    else el.textContent = target.toFixed(decimals) + suffix;
+  }
+  requestAnimationFrame(tick);
+}
+const _counterObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){_animateCounter(e.target);_counterObs.unobserve(e.target);}
+  });
+},{threshold:.4});
+document.querySelectorAll('.counter').forEach(el=>_counterObs.observe(el));
+
+/* === INDUSTRY 3D TILT === */
+document.querySelectorAll('.ind').forEach(card=>{
+  card.addEventListener('mousemove',(e)=>{
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `perspective(800px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateZ(4px)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
+});
+
+/* === INTERACTIVE PIPE WIDGET === */
+const _pipeState = {Q:50,D:100,L:100,eps:0.045,fluid:'water20'};
+const _fluids={
+  water20:{rho:998,mu:1.002e-3},
+  water60:{rho:983,mu:4.67e-4},
+  glycol40:{rho:1070,mu:3.8e-3}
+};
+let _pipeSyncing = false;
+
+function _pipeRecompute(){
+  const{Q,D_mm,L,eps_mm,fluid:fk}=_pipeState;
+  if(!Q||!D_mm||!L) return null;
+  const D=D_mm/1000, eps=eps_mm/1000;
+  const A=Math.PI*D*D/4;
+  const v=Q/3600/A;
+  const Re=v*D*_fluids[fk].rho/_fluids[fk].mu;
+  let f;
+  if(Re<2300){f=64/Re;}
+  else{
+    let f0=0.02;
+    for(let i=0;i<40;i++){
+      const lhs=1/Math.sqrt(f0);
+      const rhs=-2*Math.log10(eps/(3.7*D)+2.51/(Re*Math.sqrt(f0)));
+      const fn=1/(rhs*rhs);
+      if(Math.abs(fn-f0)<1e-8){f0=fn;break;}
+      f0=fn;
+    }
+    f=f0;
+  }
+  const dP=f*(L/D)*0.5*_fluids[fk].rho*v*v;
+  return{v,Re,f,dP,dPbar:dP/1e5};
+}
+
+function _updatePipeVisual(skipOutputs){
+  const r = _pipeRecompute();
+  if(!r) return;
+  const{v,Re,f,dP,dPbar}=r;
+  let regime,regimeColor;
+  if(Re<2300){regime='LAMINAR';regimeColor='#3fb950';}
+  else if(Re<4000){regime='TRANSITIONAL';regimeColor='#d29922';}
+  else{regime='TURBULENT';regimeColor='#ff6b1a';}
+  // Particle speed
+  const dur = Math.max(0.4, Math.min(4, 4 / Math.max(0.5, v)));
+  document.querySelectorAll('.pipe-particle').forEach(p=>{
+    p.style.animationDuration = dur + 's';
+  });
+  // Interior tint
+  const tint = Re<2300?'rgba(63,185,80,0.08)':Re<4000?'rgba(210,153,34,0.10)':'rgba(248,81,73,0.12)';
+  const interior = document.getElementById('pipeInterior');
+  if(interior) interior.setAttribute('fill', tint);
+  // ΔP bar width (cap at 5 bar = 100% of 260px)
+  const pct = Math.min(100, (dPbar / 5) * 100);
+  const dpBar = document.getElementById('dpBar');
+  if(dpBar){dpBar.setAttribute('width', pct * 2.6); dpBar.setAttribute('fill', regimeColor);}
+  // Regime badge
+  const badge = document.getElementById('regimeBadge');
+  const badgeBg = document.getElementById('regimeBadgeBg');
+  if(badge){badge.textContent = regime;}
+  if(badgeBg){badgeBg.setAttribute('fill', regimeColor);}
+  // Live formula
+  const liveFormula = document.getElementById('liveFormula');
+  if(liveFormula){
+    liveFormula.textContent = `ΔP = ${dPbar.toFixed(3)} bar · v=${v.toFixed(2)} m/s · Re=${Math.round(Re).toLocaleString('da-DK')}`;
+  }
+  // Update calc outputs (skip when called from calc form — calc() already updated them)
+    if(!skipOutputs && !_pipeSyncing){
+    document.getElementById('outDP').textContent = dPbar.toFixed(3);
+    document.getElementById('outDPpa').textContent = Math.round(dP);
+    document.getElementById('outV').textContent = v.toFixed(2);
+    document.getElementById('outRe').textContent = Math.round(Re).toLocaleString('da-DK');
+    document.getElementById('outF').textContent = f.toFixed(4);
+  }
+}
+
+function _setPipeState(key,value){
+  _pipeState[key]=value;
+  _pipeSyncing = true;
+  const map = {Q:'calcQ',D:'calcD',L:'calcL',eps:'calcRough',fluid:'calcFluid'};
+  const el = document.getElementById(map[key]);
+  if(el && el.value !== String(value)) el.value = value;
+  _pipeSyncing = false;
+  _updatePipeVisual();
+}
+
+// Wire hero sliders
+['heroQ','heroD','heroL'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('input',()=>{
+    const k = id==='heroQ'?'Q':id==='heroD'?'D':'L';
+    _setPipeState(k, parseFloat(el.value));
+    const out = document.getElementById(id+'Val');
+    if(out) out.textContent = el.value + (k==='D'?'mm':k==='L'?'m':' m³/h');
+  });
+});
+const heroRough = document.getElementById('heroRough');
+if(heroRough){
+  heroRough.addEventListener('change',()=>{
+    _setPipeState('eps', parseFloat(heroRough.value));
+  });
+}
+const heroFluid = document.getElementById('heroFluid');
+if(heroFluid){
+  heroFluid.addEventListener('change',()=>{
+    _setPipeState('fluid', heroFluid.value);
+  });
+}
+
+// Calc form → sync to pipe widget
+['calcQ','calcD','calcL','calcRough','calcFluid'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(!el) return;
+  const handler = ()=>{
+    _pipeSyncing = true;
+    _pipeState.Q = parseFloat(document.getElementById('calcQ').value)||_pipeState.Q;
+    _pipeState.D = parseFloat(document.getElementById('calcD').value)||_pipeState.D;
+    _pipeState.L = parseFloat(document.getElementById('calcL').value)||_pipeState.L;
+    _pipeState.eps = parseFloat(document.getElementById('calcRough').value);
+    _pipeState.fluid = document.getElementById('calcFluid').value;
+    // Sync hero sliders
+    const heroMap = {calcQ:'heroQ',calcD:'heroD',calcL:'heroL',calcRough:'heroRough',calcFluid:'heroFluid'};
+    Object.entries(heroMap).forEach(([cid,hid])=>{
+      const h = document.getElementById(hid);
+      const c = document.getElementById(cid);
+      if(h && c && h.value !== c.value) h.value = c.value;
+    });
+    _pipeSyncing = false;
+    _updatePipeVisual(true);  // skip output writes — calc() already did them
+  };
+  el.addEventListener('input', handler);
+  el.addEventListener('change', handler);
+});
+
+// Initial pipe render
+_updatePipeVisual();
 </script>
 </body>
 </html>
